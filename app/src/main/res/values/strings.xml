@@ -1,0 +1,41 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Ocarina do Tempo</string>
+    <string name="open_drawer">Abrir</string>
+    <string name="close_drawer">Fechar</string>
+    <string name="hint_etRegAgActTitulo">Título</string>
+    <string name="txt_tvRegAgActData">Selecionar\nData</string>
+    <string name="txt_tvRegAgActHora">Selecionar\nHora</string>
+    <string name="hint_etRegAgActDescricao">Descrição</string>
+    <string name="txt_btnRegAgActRegistrar">Registrar</string>
+    <string name="hint_etRegLocActLocal">Local</string>
+    <string name="txt_btnRegLocActMapa">Mapa</string>
+    <string name="hint_etRegLocActDescricao">Descrição (Opcional)</string>
+    <string name="txt_btnRegLocActRegistrar">Registrar</string>
+    <string name="hint_etRegLocActLatitude">Latitude (-23.123)</string>
+    <string name="hint_etRegLocActLongitude">Longitude (-45.123)</string>
+    <string name="hint_etLocEdDiagLocal">Local</string>
+    <string name="label_tvLocEdDiagLatitude">Latitude:</string>
+    <string name="label_tvLocEdDiagLongitude">Longitude:</string>
+    <string name="hint_etLocEdDiagDescricao">Descrição</string>
+    <string name="txt_btnLocEdDiagDeletar">Deletar</string>
+    <string name="menu1">Home</string>
+    <string name="menu1_1">Eventos do Dia</string>
+    <string name="menu2">Consulta</string>
+    <string name="menu2_1">Eventos</string>
+    <string name="menu2_2">Período Solar</string>
+    <string name="menu3">Localização</string>
+    <string name="menu3_1">Meus Locais</string>
+
+    <string-array name="tipo_registro">
+        <item>Tipo</item>
+        <item>Feriado</item>
+        <item>Compromisso</item>
+        <item>Lembrete</item>
+    </string-array>
+    <string-array name="recorrencia_registro">
+        <item>Recorrência</item>
+        <item tools:ignore="Typos">Anual</item>
+        <item>Mensal</item>
+        <item>Semanal</item>
+    </string-array>
+</resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:menuCategory="container">
+        <item android:title="@string/menu1">
+            <menu>
+                <item
+                    android:id="@+id/menuMainAct"
+                    android:icon="@android:drawable/ic_menu_day"
+                    android:title="@string/menu1_1" />
+            </menu>
+        </item>
+    </group>
+
+    <group android:menuCategory="container">
+        <item android:title="@string/menu2">
+            <menu>
+                <item
+                    android:id="@+id/menuCalAct_calendario"
+                    android:icon="@android:drawable/ic_menu_my_calendar"
+                    android:title="@string/menu2_1" />
+                <item
+                    android:id="@+id/menuCalAct_solar"
+                    android:icon="@android:drawable/ic_menu_compass"
+                    android:title="@string/menu2_2" />
+            </menu>
+        </item>
+    </group>
+
+    <group android:menuCategory="container">
+        <item android:title="@string/menu3">
+            <menu>
+                <item
+                    android:id="@+id/menuLocalAct"
+                    android:icon="@android:drawable/ic_menu_compass"
+                    android:title="@string/menu3_1" />
+            </menu>
+        </item>
+    </group>
+
+</menu>

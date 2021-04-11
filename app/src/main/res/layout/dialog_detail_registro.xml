@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:scrollbarFadeDuration="2000"
+    tools:context=".RegistroEventoActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroudSecundario"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvRegDetDiagTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Título"
+            style="@style/regViewStyle"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:background="@color/backgroudPrimario"
+            android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvRegDetDiagTipo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Tipo"
+                    style="@style/regViewStyle"/>
+                <TextView
+                    android:id="@+id/tvRegDetDiagRecorrencia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Recorrencia"
+                    style="@style/regViewStyle"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvRegDetDiagData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="DD/MM/AAAA"
+                    style="@style/regViewStyle"/>
+                <TextView
+                    android:id="@+id/tvRegDetDiagHora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="HH:MM"
+                    style="@style/regViewStyle"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvRegDetDiagDescricao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Descrição"
+                style="@style/regViewStyle"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

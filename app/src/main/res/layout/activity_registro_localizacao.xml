@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:openDrawer="start">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:scrollbarFadeDuration="2000"
+        tools:context=".RegistroLocalizacaoActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/backgroudSecundario"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:title="Novo Local"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:background="@color/backgroudPrimario"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/etRegLocActLocal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:padding="16dp"
+                    android:textSize="24sp"
+                    android:inputType="text"
+                    android:hint="@string/hint_etRegLocActLocal"
+                    tools:ignore="Autofill" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/etRegLocActLatitude"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="8dp"
+                            android:padding="16dp"
+                            android:textSize="24sp"
+                            android:inputType="numberDecimal"
+                            android:digits="-"
+                            android:hint="@string/hint_etRegLocActLatitude"
+                            tools:ignore="Autofill" />
+                        <EditText
+                            android:id="@+id/etRegLocActLongitude"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="8dp"
+                            android:padding="16dp"
+                            android:textSize="24sp"
+                            android:inputType="number"
+                            android:digits="-0.123456789"
+                            android:hint="@string/hint_etRegLocActLongitude"
+                            tools:ignore="Autofill" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/selecao"
+                        android:orientation="vertical">
+                        <Button
+                            android:id="@+id/btnRegLocActMapa"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="1dp"
+                            android:text="@string/txt_btnRegLocActMapa"
+                            android:drawableBottom="@drawable/ic_baseline_map_64"
+                            style="@style/btnStyle"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <EditText
+                    android:id="@+id/etRegLocActDescricao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:padding="16dp"
+                    android:textSize="24sp"
+                    android:inputType="textMultiLine"
+                    android:background="@color/backgroudSecundario"
+                    android:hint="@string/hint_etRegLocActDescricao"
+                    tools:ignore="Autofill" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/selecao"
+                    android:orientation="vertical">
+                    <Button
+                        android:id="@+id/btnRegLocActRegistrar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:text="@string/txt_btnRegLocActRegistrar"
+                        style="@style/btnStyle"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity = "start"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/menu_main"/>
+</androidx.drawerlayout.widget.DrawerLayout>
