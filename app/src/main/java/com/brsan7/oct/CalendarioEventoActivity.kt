@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
-import com.brsan7.oct.dialogs.RegistroAgendaDetailDialog
+import com.brsan7.oct.dialogs.EventoDetailDialog
 import com.brsan7.oct.utils.CalendarUtils
 import com.brsan7.oct.viewmodels.CalEvtActivityViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -98,7 +98,7 @@ class CalendarioEventoActivity : DrawerMenuActivity() {
 
                 if(position > 0 && !calEvtActivityViewModel.reStartActivity) {
 
-                    val fragment = RegistroAgendaDetailDialog.newInstance(
+                    val fragment = EventoDetailDialog.newInstance(
                             calEvtActivityViewModel.getIdRegistro("Feriado",position)
                     )
                     fragment.show(supportFragmentManager, "dialog")
@@ -123,7 +123,7 @@ class CalendarioEventoActivity : DrawerMenuActivity() {
             override fun onItemSelected(item: AdapterView<*>, view: View?, position: Int, id: Long) {
                 if(position != 0 && !calEvtActivityViewModel.reStartActivity) {
 
-                    val fragment = RegistroAgendaDetailDialog.newInstance(
+                    val fragment = EventoDetailDialog.newInstance(
                             calEvtActivityViewModel.getIdRegistro("Compromisso",position)
                     )
                     fragment.show(supportFragmentManager, "dialog")
@@ -148,7 +148,7 @@ class CalendarioEventoActivity : DrawerMenuActivity() {
             override fun onItemSelected(item: AdapterView<*>, view: View?, position: Int, id: Long) {
                 if(position != 0 && !calEvtActivityViewModel.reStartActivity) {
 
-                    val fragment = RegistroAgendaDetailDialog.newInstance(
+                    val fragment = EventoDetailDialog.newInstance(
                             calEvtActivityViewModel.getIdRegistro("Lembrete",position)
                     )
                     fragment.show(supportFragmentManager, "dialog")

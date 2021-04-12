@@ -14,48 +14,70 @@ class HelperDB (
         private const val VESAO_ATUAL = 1
 
     }
-
-    val TABLE_NAME = "eventos"
-    val COLUMNS_ID = "id"
-    val COLUMNS_TITULO = "titulo"
-    val COLUMNS_DATA = "data"
-    val COLUMNS_HORA = "hora"
-    val COLUMNS_TIPO = "tipo"
-    val COLUMNS_RECORRENCIA = "recorrencia"
-    val COLUMNS_DESCRICAO = "descricao"
-    val DROP_TABLE = "DROP TABLE IF EXISTS $TABLE_NAME"
-    val CREATE_TABLE = "CREATE TABLE $TABLE_NAME(" +
-            "$COLUMNS_ID INTEGER NOT NULL," +
-            "$COLUMNS_TITULO TEXT NOT NULL," +
-            "$COLUMNS_DATA TEXT NOT NULL," +
-            "$COLUMNS_HORA TEXT NOT NULL," +
-            "$COLUMNS_TIPO TEXT NOT NULL," +
-            "$COLUMNS_RECORRENCIA TEXT NOT NULL," +
-            "$COLUMNS_DESCRICAO TEXT NOT NULL," +
+//////////////////////EVENTOS//////////////////////////
+    var TABLE_EVENTOS = "eventos"
+    val COLUMNS_ID_EVENTOS = "id"
+    val COLUMNS_TITULO_EVENTOS = "titulo"
+    val COLUMNS_DATA_EVENTOS = "data"
+    val COLUMNS_HORA_EVENTOS = "hora"
+    val COLUMNS_TIPO_EVENTOS = "tipo"
+    val COLUMNS_RECORRENCIA_EVENTOS = "recorrencia"
+    val COLUMNS_DESCRICAO_EVENTOS = "descricao"
+    val DROP_TABLE_EVENTOS = "DROP TABLE IF EXISTS $TABLE_EVENTOS"
+    val CREATE_TABLE_EVENTOS = "CREATE TABLE $TABLE_EVENTOS(" +
+            "$COLUMNS_ID_EVENTOS INTEGER NOT NULL," +
+            "$COLUMNS_TITULO_EVENTOS TEXT NOT NULL," +
+            "$COLUMNS_DATA_EVENTOS TEXT NOT NULL," +
+            "$COLUMNS_HORA_EVENTOS TEXT NOT NULL," +
+            "$COLUMNS_TIPO_EVENTOS TEXT NOT NULL," +
+            "$COLUMNS_RECORRENCIA_EVENTOS TEXT NOT NULL," +
+            "$COLUMNS_DESCRICAO_EVENTOS TEXT NOT NULL," +
             "" +
-            "PRIMARY KEY($COLUMNS_ID AUTOINCREMENT)" +
+            "PRIMARY KEY($COLUMNS_ID_EVENTOS AUTOINCREMENT)" +
             ")"
+//////////////////////EVENTOS//////////////////////////
+//////////////////////LOCAIS//////////////////////////
+    var TABLE_LOCAIS = "locais"
+    val COLUMNS_ID_LOCAIS = "id"
+    val COLUMNS_TITULO_LOCAIS = "titulo"
+    val COLUMNS_LATITUDE_LOCAIS = "latitude"
+    val COLUMNS_LONGITUDE_LOCAIS = "longitude"
+    val COLUMNS_DESCRICAO_LOCAIS = "descricao"
+    val DROP_TABLE_LOCAIS = "DROP TABLE IF EXISTS $TABLE_LOCAIS"
+    val CREATE_TABLE_LOCAIS = "CREATE TABLE $TABLE_LOCAIS(" +
+            "$COLUMNS_ID_LOCAIS INTEGER NOT NULL," +
+            "$COLUMNS_TITULO_LOCAIS TEXT NOT NULL," +
+            "$COLUMNS_LATITUDE_LOCAIS TEXT NOT NULL," +
+            "$COLUMNS_LONGITUDE_LOCAIS TEXT NOT NULL," +
+            "$COLUMNS_DESCRICAO_LOCAIS TEXT NOT NULL," +
+            "" +
+            "PRIMARY KEY($COLUMNS_ID_LOCAIS AUTOINCREMENT)" +
+            ")"
+//////////////////////LOCAIS//////////////////////////
 
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL(CREATE_TABLE)
+        db?.execSQL(CREATE_TABLE_EVENTOS)
+        db?.execSQL(CREATE_TABLE_LOCAIS)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         if(oldVersion != newVersion){
-            db?.execSQL(DROP_TABLE)
+            db?.execSQL(DROP_TABLE_EVENTOS)
+            db?.execSQL(DROP_TABLE_LOCAIS)
         }
         onCreate(db)
     }
 
-    fun buscarRegistros(argumento : String, isBuscaPorData : Boolean = false) : List<EventoVO>{
+    fun buscarEventos(busca : String, isBuscaPorData : Boolean = false) : List<EventoVO>{
 
         val db = readableDatabase ?: return mutableListOf()
         val lista = mutableListOf<EventoVO>()
         val sql:String
         if(isBuscaPorData){
-            sql = "SELECT * FROM $TABLE_NAME WHERE $COLUMNS_TITULO LIKE '%$argumento%'"
+            sql = "SELECT * FROM $TABLE_EVENTOS WHERE $COLUMNS_DATA_EVENTOS LIKE '%$busca%'"
         }else{
-            sql = "SELECT * FROM $TABLE_NAME WHERE $COLUMNS_ID LIKE '%$argumento%'"
+            //sql = "SELECT * FROM $TABLE_EVENTOS"
+            sql = "SELECT * FROM $TABLE_EVENTOS WHERE $COLUMNS_ID_EVENTOS LIKE '%$busca%'"
         }
         val cursor = db.rawQuery(sql, arrayOf())
         if (cursor == null){
@@ -64,13 +86,13 @@ class HelperDB (
         }
         while (cursor.moveToNext()){
             val itemHist = EventoVO(
-                    cursor.getInt(cursor.getColumnIndex(COLUMNS_ID)),
-                    cursor.getString(cursor.getColumnIndex(COLUMNS_TITULO)),
-                    cursor.getString(cursor.getColumnIndex(COLUMNS_DATA)),
-                    cursor.getString(cursor.getColumnIndex(COLUMNS_HORA)),
-                    cursor.getString(cursor.getColumnIndex(COLUMNS_TIPO)),
-                    cursor.getString(cursor.getColumnIndex(COLUMNS_RECORRENCIA)),
-                    cursor.getString(cursor.getColumnIndex(COLUMNS_DESCRICAO))
+                    cursor.getInt(cursor.getColumnIndex(COLUMNS_ID_EVENTOS)),
+                    cursor.getString(cursor.getColumnIndex(COLUMNS_TITULO_EVENTOS)),
+                    cursor.getString(cursor.getColumnIndex(COLUMNS_DATA_EVENTOS)),
+                    cursor.getString(cursor.getColumnIndex(COLUMNS_HORA_EVENTOS)),
+                    cursor.getString(cursor.getColumnIndex(COLUMNS_TIPO_EVENTOS)),
+                    cursor.getString(cursor.getColumnIndex(COLUMNS_RECORRENCIA_EVENTOS)),
+                    cursor.getString(cursor.getColumnIndex(COLUMNS_DESCRICAO_EVENTOS))
             )
             lista.add(itemHist)
         }
@@ -79,33 +101,53 @@ class HelperDB (
         return lista
     }
 
-    fun salvarRegistro(itemHist: EventoVO){
+    fun registrarEvento(itemEvento: EventoVO){
         val db: SQLiteDatabase = writableDatabase ?: return
-        val sql = "INSERT INTO $TABLE_NAME " +
-                "($COLUMNS_TITULO,$COLUMNS_DATA,$COLUMNS_HORA,$COLUMNS_TIPO,$COLUMNS_RECORRENCIA,$COLUMNS_DESCRICAO) " +
+        val sql = "INSERT INTO $TABLE_EVENTOS " +
+                "($COLUMNS_TITULO_EVENTOS," +
+                "$COLUMNS_DATA_EVENTOS," +
+                "$COLUMNS_HORA_EVENTOS," +
+                "$COLUMNS_TIPO_EVENTOS," +
+                "$COLUMNS_RECORRENCIA_EVENTOS," +
+                "$COLUMNS_DESCRICAO_EVENTOS) " +
                 "VALUES(?,?,?,?,?,?)"
-        val argumento = arrayOf(itemHist.titulo,
-                                itemHist.data,
-                                itemHist.hora,
-                                itemHist.tipo,
-                                itemHist.recorrencia,
-                                itemHist.descricao)
+        val argumento = arrayOf(
+                itemEvento.titulo,
+                itemEvento.data,
+                itemEvento.hora,
+                itemEvento.tipo,
+                itemEvento.recorrencia,
+                itemEvento.descricao)
         db.execSQL(sql,argumento)
         db.close()
     }
 
-    fun deletarRegistro(id:Int){
+    fun deletarEvento(id:Int){
         val db = writableDatabase ?: return
-        val sql = "DELETE FROM $TABLE_NAME WHERE $COLUMNS_ID = ?"
+        val sql = "DELETE FROM $TABLE_EVENTOS WHERE $COLUMNS_ID_EVENTOS = ?"
         val argumento = arrayOf("$id")
         db.execSQL(sql,argumento)
         db.close()
     }
 
-    fun editarRegistro(itemHist: EventoVO){
+    fun modificarEvento(itemEvento: EventoVO){
         val db = writableDatabase ?: return
-        val sql = "UPDATE $TABLE_NAME SET $COLUMNS_DESCRICAO = ? WHERE $COLUMNS_ID = ?"
-        val argumento = arrayOf(itemHist.descricao,itemHist.id)
+        val sql = "UPDATE $TABLE_EVENTOS " +
+                "SET $COLUMNS_TITULO_EVENTOS = ?, " +
+                "$COLUMNS_DATA_EVENTOS = ?, " +
+                "$COLUMNS_HORA_EVENTOS = ?, " +
+                "$COLUMNS_TIPO_EVENTOS = ?, " +
+                "$COLUMNS_RECORRENCIA_EVENTOS = ?, " +
+                "$COLUMNS_DESCRICAO_EVENTOS = ? " +
+                "WHERE $COLUMNS_ID_EVENTOS = ?"
+        val argumento = arrayOf(
+                itemEvento.titulo,
+                itemEvento.data,
+                itemEvento.hora,
+                itemEvento.tipo,
+                itemEvento.recorrencia,
+                itemEvento.descricao,
+                itemEvento.id)
         db.execSQL(sql,argumento)
         db.close()
     }

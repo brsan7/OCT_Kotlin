@@ -1,5 +1,6 @@
 package com.brsan7.oct
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -18,6 +19,7 @@ class RegistroEventoActivity : DrawerMenuActivity(),
                                 SelectHoraDialog.SelecaoHora {
 
     private lateinit var regEvtActivityViewModel: RegEvtActivityViewModel
+    private var ID_EXTRA = -1
     lateinit var etRegEvtActTitulo: EditText
     lateinit var tvRegEvtActData: TextView
     lateinit var tvRegEvtActHora: TextView
@@ -30,7 +32,8 @@ class RegistroEventoActivity : DrawerMenuActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro_evento)
 
-        setupDrawerMenu("Novo Registro")
+        ID_EXTRA = intent.getIntExtra("id",-1)
+        setupDrawerMenu(intent.getStringExtra("titulo")?:"")
         setupComponentes()
         setupListeners()
         setupRegistroActivityViewModel()
@@ -44,6 +47,7 @@ class RegistroEventoActivity : DrawerMenuActivity(),
         spnRegEvtActRecorrencia = findViewById(R.id.spnRegEvtActRecorrencia)
         etRegEvtActDescricao = findViewById(R.id.etRegEvtActDescricao)
         btnRegEvtActRegistrar = findViewById(R.id.btnRegEvtActRegistrar)
+        if (ID_EXTRA > -1){btnRegEvtActRegistrar.text = getString(R.string.txt_btnRegAgActEditar)}
     }
 
     private fun setupListeners() {
@@ -58,53 +62,61 @@ class RegistroEventoActivity : DrawerMenuActivity(),
             fragment.show(supportFragmentManager, "dialog")
         }
         btnRegEvtActRegistrar.setOnClickListener{
-            //val fragment = RegistroDetailDialog.newInstance("selectHora")
-            //fragment.show(supportFragmentManager, "dialog")
+
+            regEvtActivityViewModel.registrarEvento(getComposeRegistro(true))
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
-        //val spinner = findViewById<Spinner>(R.id.spnRegAgActTipo)
-        //selectData.text = spinner.selectedItem.toString()
-        //ArrayAdapter.createFromResource(this, R.array.tipos_registro)
     }
 
     private fun setupRegistroActivityViewModel(){
         regEvtActivityViewModel = ViewModelProvider(this).get(RegEvtActivityViewModel::class.java)
-        val teste = EventoVO(
-                0,
-                etRegEvtActTitulo.text.toString(),
-                tvRegEvtActData.text.toString(),
-                tvRegEvtActHora.text.toString(),
-                spnRegEvtActTipo.id.toString(),
-                spnRegEvtActRecorrencia.id.toString(),
-                etRegEvtActDescricao.text.toString()
-        )
-        regEvtActivityViewModel.getSelecaoData(teste)
-        regEvtActivityViewModel.vmComposeReg.value?.id = 0
+
         regEvtActivityViewModel.vmComposeReg.observe(this, { _registro->
             setComposeRegistro(_registro)
         })
+        regEvtActivityViewModel.verificarEdicao(ID_EXTRA)
     }
 
     override fun onPause() {
         super.onPause()
-        regEvtActivityViewModel.vmComposeReg.value?.titulo = etRegEvtActTitulo.text.toString()
-        regEvtActivityViewModel.vmComposeReg.value?.data = tvRegEvtActData.text.toString()
-        regEvtActivityViewModel.vmComposeReg.value?.hora = tvRegEvtActHora.text.toString()
-        regEvtActivityViewModel.vmComposeReg.value?.tipo = spnRegEvtActTipo.id.toString()
-        regEvtActivityViewModel.vmComposeReg.value?.recorrencia = spnRegEvtActRecorrencia.id.toString()
-        regEvtActivityViewModel.vmComposeReg.value?.descricao = etRegEvtActDescricao.text.toString()
+        regEvtActivityViewModel.getComposicaoEventoAtual(getComposeRegistro(false))
     }
 
     fun setComposeRegistro(_evento: EventoVO){
         etRegEvtActTitulo.setText(_evento.titulo)
         tvRegEvtActData.text = _evento.data
         tvRegEvtActHora.text = _evento.hora
-        spnRegEvtActTipo.id = _evento.tipo.toInt()
-        spnRegEvtActRecorrencia.id = _evento.recorrencia.toInt()
+        spnRegEvtActTipo.setSelection(_evento.tipo.toInt())
+        spnRegEvtActRecorrencia.setSelection(_evento.recorrencia.toInt())
         etRegEvtActDescricao.setText(_evento.descricao)
     }
 
+    fun getComposeRegistro(isRegistro: Boolean):EventoVO{
+        val tipo: String
+        val recorrencia: String
+        if (isRegistro){
+            tipo = "${spnRegEvtActTipo.selectedItem}"
+            recorrencia = "${spnRegEvtActRecorrencia.selectedItem}"
+        }
+        else{
+            tipo = "${spnRegEvtActTipo.selectedItemId}"
+            recorrencia = "${spnRegEvtActRecorrencia.selectedItemId}"
+        }
+        val composicaoRegistro = EventoVO(
+                ID_EXTRA,
+                "${etRegEvtActTitulo.text}",
+                "${tvRegEvtActData.text}",
+                "${tvRegEvtActHora.text}",
+                tipo,
+                recorrencia,
+                "${etRegEvtActDescricao.text}"
+        )
+        return composicaoRegistro
+    }
+
     override fun onDataSelecionada(data: DataVO) {
-        val dataSelecionada = "${data.dia}/${data.mes}/${data.ano}"
+        val dataSelecionada = "${data.dia}/${data.mes+1}/${data.ano}"
         tvRegEvtActData.text = dataSelecionada
     }
 

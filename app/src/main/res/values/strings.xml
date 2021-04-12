@@ -25,6 +25,7 @@
     <string name="menu2_2">Período Solar</string>
     <string name="menu3">Localização</string>
     <string name="menu3_1">Meus Locais</string>
+    <string name="txt_btnRegAgActEditar">EDITAR</string>
 
     <string-array name="tipo_registro">
         <item>Tipo</item>
