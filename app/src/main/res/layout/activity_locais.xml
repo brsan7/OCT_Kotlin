@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".LocalizacaoActivity">
+        tools:context=".LocaisActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolBar"
@@ -21,6 +21,15 @@
             app:title="@string/app_name"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ProgressBar
+            android:id="@+id/pbLocais"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <androidx.cardview.widget.CardView
@@ -46,18 +55,7 @@
                     android:background="@color/backgroudSecundario"
                     android:gravity="center"
                     android:textSize="24sp"
-                    android:text="São José dos Campos - SP"
                     tools:text="Local Default"/>
-
-                <TextView
-                    android:id="@+id/tvLocActHoje"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/backgroudSecundario"
-                    android:gravity="center"
-                    android:textSize="24sp"
-                    android:text="Sábado, 3 de Abril de 2021"
-                    tools:text="Hoje - Data Completa"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -70,7 +68,6 @@
                         android:id="@+id/tvLocActNascente"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="05:57"
                         tools:text="Nascer do Sol"/>
                     <ImageView
                         android:layout_width="wrap_content"
@@ -95,7 +92,6 @@
                         android:id="@+id/tvLocActPoente"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="17:57"
                         tools:text="Pôr do Sol"/>
                 </LinearLayout>
             </LinearLayout>

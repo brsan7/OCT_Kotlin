@@ -60,7 +60,7 @@ class EventoDetailDialog : DialogFragment(), DialogInterface.OnClickListener {
         when(which){
             -1 -> {onClickEditar()}//EDITAR
             -2 -> {onClickExcluir()}//EXCLUIR
-            -3 -> {onClickVoltar()}//VOLTAR
+            -3 -> {}//VOLTAR
         }
     }
 
@@ -102,8 +102,5 @@ class EventoDetailDialog : DialogFragment(), DialogInterface.OnClickListener {
         evtDetDiagViewModel.deletarEventoSelecionado(idEvento)
         (activity as(Atualizar)).onDeleteEvento()
         dismiss()
-    }
-    private fun onClickVoltar(){
-        //
     }
 }

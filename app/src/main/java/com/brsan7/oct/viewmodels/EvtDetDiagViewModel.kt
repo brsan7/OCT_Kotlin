@@ -34,6 +34,5 @@ class EvtDetDiagViewModel: ViewModel() {
         Thread {
             OctApplication.instance.helperDB?.deletarEvento(id)
         }.start()
-
     }
 }

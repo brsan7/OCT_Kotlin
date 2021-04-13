@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     android:scrollbarFadeDuration="2000"
-    tools:context=".LocalizacaoActivity">
+    tools:context=".LocaisActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -85,20 +86,6 @@
                 android:background="@color/backgroudSecundario"
                 android:hint="@string/hint_etLocEdDiagDescricao"
                 tools:ignore="Autofill" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/selecao"
-                android:orientation="vertical">
-                <Button
-                    android:id="@+id/btnLocEdDiagDeletar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:text="@string/txt_btnLocEdDiagDeletar"
-                    style="@style/btnStyle"/>
-            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

@@ -1,11 +1,14 @@
 package com.brsan7.oct
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.brsan7.oct.application.OctApplication
+import com.brsan7.oct.model.LocalVO
 
-class RegistroLocalizacaoActivity : DrawerMenuActivity() {
+class RegistroLocalActivity : DrawerMenuActivity() {
 
     private lateinit var etRegLocActLocal: EditText
     private lateinit var etRegLocActLatitude: EditText
@@ -16,7 +19,7 @@ class RegistroLocalizacaoActivity : DrawerMenuActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registro_localizacao)
+        setContentView(R.layout.activity_registro_local)
 
         setupDrawerMenu("Novo Local")
         setupComponentes()
@@ -36,7 +39,21 @@ class RegistroLocalizacaoActivity : DrawerMenuActivity() {
             Toast.makeText(this,"Buscar no Mapa:\nNão Implementado",Toast.LENGTH_SHORT).show()
         }
         btnRegLocActRegistrar.setOnClickListener {
-            Toast.makeText(this,"Registrar:\nNão Implementado",Toast.LENGTH_SHORT).show()
+            Thread{
+                OctApplication.instance.helperDB?.registrarLocal(getComposeRegistro())
+            }.start()
+            val intent = Intent(this, LocaisActivity::class.java)
+            startActivity(intent)
         }
+    }
+    fun getComposeRegistro(): LocalVO {
+        val composicaoRegistro = LocalVO(
+                +1,
+                "${etRegLocActLocal.text}",
+                "${etRegLocActLatitude.text}",
+                "${etRegLocActLongitude.text}",
+                "${etRegLocActDescricao.text}"
+        )
+        return composicaoRegistro
     }
 }

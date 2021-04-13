@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.brsan7.oct">
 
     <application
         android:name=".application.OctApplication"
-        android:allowBackup="true"
         android:icon="@drawable/logo_oct"
         android:label="@string/app_name"
         android:roundIcon="@drawable/logo_oct"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Design.NoActionBar">
-        <activity android:name=".CalendarioSolarActivity"></activity>
-        <activity android:name=".RegistroLocalizacaoActivity" />
-        <activity android:name=".LocalizacaoActivity" />
+        android:theme="@style/Theme.Design.NoActionBar"
+        tools:ignore="AllowBackup">
+        <activity android:name=".CalendarioSolarActivity"/>
+        <activity android:name=".RegistroLocalActivity" />
+        <activity android:name=".LocaisActivity" />
         <activity android:name=".RegistroEventoActivity" />
         <activity android:name=".CalendarioEventoActivity" />
         <activity android:name=".MainActivity">

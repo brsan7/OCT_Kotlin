@@ -8,16 +8,19 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import com.brsan7.oct.R
 import com.brsan7.oct.model.LocalVO
+import com.brsan7.oct.viewmodels.LocEditDialogViewModel
 
 class LocalEditDialog : DialogFragment(), DialogInterface.OnClickListener {
 
+    private lateinit var locEditDialogViewModel: LocEditDialogViewModel
     private var idLocal = 0
-    lateinit var etLocEdDiagLocal: EditText
-    lateinit var tvLocEdDiagLatitude: TextView
-    lateinit var tvLocEdDiagLongitude: TextView
-    lateinit var etLocEdDiagDescricao: EditText
+    private lateinit var etLocEdDiagLocal: EditText
+    private lateinit var tvLocEdDiagLatitude: TextView
+    private lateinit var tvLocEdDiagLongitude: TextView
+    private lateinit var etLocEdDiagDescricao: EditText
 
     companion object{
         private const val EXTRA_ID = "id"
@@ -31,50 +34,71 @@ class LocalEditDialog : DialogFragment(), DialogInterface.OnClickListener {
         }
     }
 
+    interface  Atualizar{
+        fun onModifyLocal()
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = activity!!.layoutInflater.inflate(R.layout.dialog_edit_local, null)
         idLocal = arguments?.getInt(EXTRA_ID) ?: 0
         setupComponentes(view)
-        buscarEvento()
+        setupLocEditDialogViewModel()
 
         return AlertDialog.Builder(activity as Activity)
                 .setView(view)
                 .setNeutralButton("VOLTAR",this)
+                .setNegativeButton("EXCLUIR",this)
                 .setPositiveButton("EDITAR",this)
                 .create()
     }
 
     override fun onClick(dialog: DialogInterface?, which: Int) {
-        if(which==-1){}
+        when(which){
+            -1 -> {onClickEditar()}//EDITAR
+            -2 -> {onClickExcluir()}//EXCLUIR
+            -3 -> {}//VOLTAR
+        }
     }
 
     private fun setupComponentes(view: View){
+
         etLocEdDiagLocal = view.findViewById(R.id.etLocEdDiagLocal)
         tvLocEdDiagLatitude = view.findViewById(R.id.tvLocEdDiagLatitude)
         tvLocEdDiagLongitude = view.findViewById(R.id.tvLocEdDiagLongitude)
         etLocEdDiagDescricao = view.findViewById(R.id.etLocEdDiagDescricao)
     }
-    private fun buscarEvento(){
-        val lista = auxTesteDialog()
-        val evento = lista[idLocal]
+
+    private fun setupLocEditDialogViewModel() {
+        locEditDialogViewModel = ViewModelProvider(this).get(LocEditDialogViewModel::class.java)
+        locEditDialogViewModel.vmLocSelecionado.observe(this, { lista->
+            atualizarRegistroSelecionado(lista)
+        })
+        locEditDialogViewModel.buscarLocalSelecionado(idLocal)
+    }
+
+    private fun atualizarRegistroSelecionado(listaFiltrada: List<LocalVO>){
+        val evento = listaFiltrada.first()
         etLocEdDiagLocal.setText(evento.titulo)
         tvLocEdDiagLatitude.text = evento.latitude
         tvLocEdDiagLongitude.text = evento.longitude
         etLocEdDiagDescricao.setText(evento.descricao)
     }
 
-    private fun auxTesteDialog(): List<LocalVO>{
-        val lista: MutableList<LocalVO> = mutableListOf()
-        for (index in 0..7) {
-            val itemLocal = LocalVO(
-                    id = index,
-                    titulo = "Local $index",
-                    latitude = "-23.123",
-                    longitude = "-45.123",
-                    descricao = "Teste\ntestando\n123\nTestando"
-            )
-            lista.add(itemLocal)
-        }
-        return lista
+    private fun onClickEditar(){
+        val composicaoRegistro = LocalVO(
+                idLocal,
+                "${etLocEdDiagLocal.text}",
+                "${tvLocEdDiagLatitude.text}",
+                "${tvLocEdDiagLongitude.text}",
+                "${etLocEdDiagDescricao.text}"
+        )
+        locEditDialogViewModel.editarLocalSelecionado(composicaoRegistro)
+        (activity as(Atualizar)).onModifyLocal()
+        dismiss()
+    }
+    private fun onClickExcluir(){
+        locEditDialogViewModel.deletarLocalSelecionado(idLocal)
+        (activity as(Atualizar)).onModifyLocal()
+        dismiss()
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.brsan7.oct.model.EventoVO
+import com.brsan7.oct.model.LocalVO
 
 class HelperDB (
         context: Context
@@ -68,6 +69,7 @@ class HelperDB (
         onCreate(db)
     }
 
+//////////////////////OPERAÇÕES NA TABELA EVENTOS//////////////////////////
     fun buscarEventos(busca : String, isBuscaPorData : Boolean = false) : List<EventoVO>{
 
         val db = readableDatabase ?: return mutableListOf()
@@ -85,7 +87,7 @@ class HelperDB (
             return mutableListOf()
         }
         while (cursor.moveToNext()){
-            val itemHist = EventoVO(
+            val itemEvento = EventoVO(
                     cursor.getInt(cursor.getColumnIndex(COLUMNS_ID_EVENTOS)),
                     cursor.getString(cursor.getColumnIndex(COLUMNS_TITULO_EVENTOS)),
                     cursor.getString(cursor.getColumnIndex(COLUMNS_DATA_EVENTOS)),
@@ -94,7 +96,7 @@ class HelperDB (
                     cursor.getString(cursor.getColumnIndex(COLUMNS_RECORRENCIA_EVENTOS)),
                     cursor.getString(cursor.getColumnIndex(COLUMNS_DESCRICAO_EVENTOS))
             )
-            lista.add(itemHist)
+            lista.add(itemEvento)
         }
         cursor.close()
         db.close()
@@ -151,4 +153,82 @@ class HelperDB (
         db.execSQL(sql,argumento)
         db.close()
     }
+//////////////////////OPERAÇÕES NA TABELA EVENTOS//////////////////////////
+
+//////////////////////OPERAÇÕES NA TABELA LOCAIS//////////////////////////
+    fun buscarLocais(busca : String, isBuscaPorId : Boolean = false) : List<LocalVO>{
+
+        val db = readableDatabase ?: return mutableListOf()
+        val lista = mutableListOf<LocalVO>()
+    val sql:String
+    if(isBuscaPorId){
+        sql = "SELECT * FROM $TABLE_LOCAIS WHERE $COLUMNS_ID_LOCAIS LIKE '%$busca%'"
+    }else{
+        sql = "SELECT * FROM $TABLE_LOCAIS"
+    }
+
+    val cursor = db.rawQuery(sql, arrayOf())
+        if (cursor == null){
+            db.close()
+            return mutableListOf()
+        }
+        while (cursor.moveToNext()){
+            val itemLocal = LocalVO(
+                    cursor.getInt(cursor.getColumnIndex(COLUMNS_ID_LOCAIS)),
+                    cursor.getString(cursor.getColumnIndex(COLUMNS_TITULO_LOCAIS)),
+                    cursor.getString(cursor.getColumnIndex(COLUMNS_LATITUDE_LOCAIS)),
+                    cursor.getString(cursor.getColumnIndex(COLUMNS_LONGITUDE_LOCAIS)),
+                    cursor.getString(cursor.getColumnIndex(COLUMNS_DESCRICAO_LOCAIS))
+            )
+            lista.add(itemLocal)
+        }
+        cursor.close()
+        db.close()
+        return lista
+    }
+
+    fun registrarLocal(itemLocal: LocalVO){
+        val db: SQLiteDatabase = writableDatabase ?: return
+        val sql = "INSERT INTO $TABLE_LOCAIS " +
+                "($COLUMNS_TITULO_LOCAIS," +
+                "$COLUMNS_LATITUDE_LOCAIS," +
+                "$COLUMNS_LONGITUDE_LOCAIS," +
+                "$COLUMNS_DESCRICAO_LOCAIS) " +
+                "VALUES(?,?,?,?)"
+        val argumento = arrayOf(
+                itemLocal.titulo,
+                itemLocal.latitude,
+                itemLocal.longitude,
+                itemLocal.descricao)
+        db.execSQL(sql,argumento)
+        db.close()
+    }
+
+    fun deletarLocal(id:Int){
+        val db = writableDatabase ?: return
+        val sql = "DELETE FROM $TABLE_LOCAIS WHERE $COLUMNS_ID_LOCAIS = ?"
+        val argumento = arrayOf("$id")
+        db.execSQL(sql,argumento)
+        db.close()
+    }
+
+    fun modificarLocal(itemLocal: LocalVO){
+        val db = writableDatabase ?: return
+        val sql = "UPDATE $TABLE_LOCAIS " +
+                "SET $COLUMNS_TITULO_LOCAIS = ?, " +
+                "$COLUMNS_LATITUDE_LOCAIS = ?, " +
+                "$COLUMNS_LONGITUDE_LOCAIS = ?, " +
+                "$COLUMNS_DESCRICAO_LOCAIS = ? " +
+                "WHERE $COLUMNS_ID_LOCAIS = ?"
+        val argumento = arrayOf(
+                itemLocal.titulo,
+                itemLocal.latitude,
+                itemLocal.longitude,
+                itemLocal.descricao,
+                itemLocal.id)
+        db.execSQL(sql,argumento)
+        db.close()
+    }
+//////////////////////OPERAÇÕES NA TABELA LOCAIS//////////////////////////
+
 }

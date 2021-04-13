@@ -47,7 +47,7 @@ open class DrawerMenuActivity : AppCompatActivity(), NavigationView.OnNavigation
                 true
             }
             R.id.menuLocalAct ->{
-                val intent = Intent(this, LocalizacaoActivity::class.java)
+                val intent = Intent(this, LocaisActivity::class.java)
                 startActivity(intent)
                 true
             }

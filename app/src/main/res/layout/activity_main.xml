@@ -55,18 +55,7 @@
                     android:background="@color/backgroudSecundario"
                     android:gravity="center"
                     android:textSize="24sp"
-                    android:text="São José dos Campos - SP"
                     tools:text="Local Default"/>
-
-                <TextView
-                    android:id="@+id/tvMainHoje"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/backgroudSecundario"
-                    android:gravity="center"
-                    android:textSize="24sp"
-                    android:text="Sábado, 3 de Abril de 2021"
-                    tools:text="Hoje - Data Completa"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -79,7 +68,7 @@
                         android:id="@+id/tvMainNascente"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="05:57"/>
+                        tools:text="Nascer do Sol"/>
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -103,7 +92,7 @@
                         android:id="@+id/tvMainPoente"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="17:57"/>
+                        tools:text="Pôr do Sol"/>
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
