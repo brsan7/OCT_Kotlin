@@ -13,6 +13,7 @@ class RegistroLocalActivity : DrawerMenuActivity() {
     private lateinit var etRegLocActLocal: EditText
     private lateinit var etRegLocActLatitude: EditText
     private lateinit var etRegLocActLongitude: EditText
+    private lateinit var etRegLocActFusoHorario: EditText
     private lateinit var etRegLocActDescricao: EditText
     private lateinit var btnRegLocActMapa: Button
     private lateinit var btnRegLocActRegistrar: Button
@@ -30,6 +31,7 @@ class RegistroLocalActivity : DrawerMenuActivity() {
         etRegLocActLocal = findViewById(R.id.etRegLocActLocal)
         etRegLocActLatitude = findViewById(R.id.etRegLocActLatitude)
         etRegLocActLongitude = findViewById(R.id.etRegLocActLongitude)
+        etRegLocActFusoHorario = findViewById(R.id.etRegLocActFusoHorario)
         etRegLocActDescricao = findViewById(R.id.etRegLocActDescricao)
         btnRegLocActMapa = findViewById(R.id.btnRegLocActMapa)
         btnRegLocActRegistrar = findViewById(R.id.btnRegLocActRegistrar)
@@ -52,6 +54,7 @@ class RegistroLocalActivity : DrawerMenuActivity() {
                 "${etRegLocActLocal.text}",
                 "${etRegLocActLatitude.text}",
                 "${etRegLocActLongitude.text}",
+                "${etRegLocActFusoHorario.text}",
                 "${etRegLocActDescricao.text}"
         )
         return composicaoRegistro

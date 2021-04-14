@@ -80,6 +80,17 @@
                             android:digits="-0.123456789"
                             android:hint="@string/hint_etRegLocActLongitude"
                             tools:ignore="Autofill" />
+                        <EditText
+                            android:id="@+id/etRegLocActFusoHorario"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="8dp"
+                            android:padding="16dp"
+                            android:textSize="24sp"
+                            android:inputType="number"
+                            android:digits="-0.123456789"
+                            android:hint="Fuso Horário"
+                            tools:ignore="Autofill" />
                     </LinearLayout>
 
                     <LinearLayout

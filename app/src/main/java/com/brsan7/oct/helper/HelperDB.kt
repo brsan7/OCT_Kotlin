@@ -43,6 +43,7 @@ class HelperDB (
     val COLUMNS_TITULO_LOCAIS = "titulo"
     val COLUMNS_LATITUDE_LOCAIS = "latitude"
     val COLUMNS_LONGITUDE_LOCAIS = "longitude"
+    val COLUMNS_FUSOHORARIO_LOCAIS = "fusohorario"
     val COLUMNS_DESCRICAO_LOCAIS = "descricao"
     val DROP_TABLE_LOCAIS = "DROP TABLE IF EXISTS $TABLE_LOCAIS"
     val CREATE_TABLE_LOCAIS = "CREATE TABLE $TABLE_LOCAIS(" +
@@ -50,6 +51,7 @@ class HelperDB (
             "$COLUMNS_TITULO_LOCAIS TEXT NOT NULL," +
             "$COLUMNS_LATITUDE_LOCAIS TEXT NOT NULL," +
             "$COLUMNS_LONGITUDE_LOCAIS TEXT NOT NULL," +
+            "$COLUMNS_FUSOHORARIO_LOCAIS TEXT NOT NULL," +
             "$COLUMNS_DESCRICAO_LOCAIS TEXT NOT NULL," +
             "" +
             "PRIMARY KEY($COLUMNS_ID_LOCAIS AUTOINCREMENT)" +
@@ -178,6 +180,7 @@ class HelperDB (
                     cursor.getString(cursor.getColumnIndex(COLUMNS_TITULO_LOCAIS)),
                     cursor.getString(cursor.getColumnIndex(COLUMNS_LATITUDE_LOCAIS)),
                     cursor.getString(cursor.getColumnIndex(COLUMNS_LONGITUDE_LOCAIS)),
+                    cursor.getString(cursor.getColumnIndex(COLUMNS_FUSOHORARIO_LOCAIS)),
                     cursor.getString(cursor.getColumnIndex(COLUMNS_DESCRICAO_LOCAIS))
             )
             lista.add(itemLocal)
@@ -193,12 +196,14 @@ class HelperDB (
                 "($COLUMNS_TITULO_LOCAIS," +
                 "$COLUMNS_LATITUDE_LOCAIS," +
                 "$COLUMNS_LONGITUDE_LOCAIS," +
+                "$COLUMNS_FUSOHORARIO_LOCAIS," +
                 "$COLUMNS_DESCRICAO_LOCAIS) " +
-                "VALUES(?,?,?,?)"
+                "VALUES(?,?,?,?,?)"
         val argumento = arrayOf(
                 itemLocal.titulo,
                 itemLocal.latitude,
                 itemLocal.longitude,
+                itemLocal.fusoHorario,
                 itemLocal.descricao)
         db.execSQL(sql,argumento)
         db.close()
@@ -218,12 +223,14 @@ class HelperDB (
                 "SET $COLUMNS_TITULO_LOCAIS = ?, " +
                 "$COLUMNS_LATITUDE_LOCAIS = ?, " +
                 "$COLUMNS_LONGITUDE_LOCAIS = ?, " +
+                "$COLUMNS_FUSOHORARIO_LOCAIS = ?, " +
                 "$COLUMNS_DESCRICAO_LOCAIS = ? " +
                 "WHERE $COLUMNS_ID_LOCAIS = ?"
         val argumento = arrayOf(
                 itemLocal.titulo,
                 itemLocal.latitude,
                 itemLocal.longitude,
+                itemLocal.fusoHorario,
                 itemLocal.descricao,
                 itemLocal.id)
         db.execSQL(sql,argumento)

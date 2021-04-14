@@ -74,6 +74,31 @@
                     style="@style/regViewStyle"/>
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    android:textSize="24sp"
+                    android:text="Fuso Horário:"/>
+                <TextView
+                    android:id="@+id/tvLocEdDiagFusoHorario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="-3"
+                    style="@style/regViewStyle"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="UTC"
+                    style="@style/regViewStyle"/>
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/etLocEdDiagDescricao"

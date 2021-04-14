@@ -20,6 +20,7 @@ class LocalEditDialog : DialogFragment(), DialogInterface.OnClickListener {
     private lateinit var etLocEdDiagLocal: EditText
     private lateinit var tvLocEdDiagLatitude: TextView
     private lateinit var tvLocEdDiagLongitude: TextView
+    private lateinit var tvLocEdDiagFusoHorario: TextView
     private lateinit var etLocEdDiagDescricao: EditText
 
     companion object{
@@ -65,6 +66,7 @@ class LocalEditDialog : DialogFragment(), DialogInterface.OnClickListener {
         etLocEdDiagLocal = view.findViewById(R.id.etLocEdDiagLocal)
         tvLocEdDiagLatitude = view.findViewById(R.id.tvLocEdDiagLatitude)
         tvLocEdDiagLongitude = view.findViewById(R.id.tvLocEdDiagLongitude)
+        tvLocEdDiagFusoHorario = view.findViewById(R.id.tvLocEdDiagFusoHorario)
         etLocEdDiagDescricao = view.findViewById(R.id.etLocEdDiagDescricao)
     }
 
@@ -81,6 +83,7 @@ class LocalEditDialog : DialogFragment(), DialogInterface.OnClickListener {
         etLocEdDiagLocal.setText(evento.titulo)
         tvLocEdDiagLatitude.text = evento.latitude
         tvLocEdDiagLongitude.text = evento.longitude
+        tvLocEdDiagFusoHorario.text = evento.fusoHorario
         etLocEdDiagDescricao.setText(evento.descricao)
     }
 
@@ -90,6 +93,7 @@ class LocalEditDialog : DialogFragment(), DialogInterface.OnClickListener {
                 "${etLocEdDiagLocal.text}",
                 "${tvLocEdDiagLatitude.text}",
                 "${tvLocEdDiagLongitude.text}",
+                "${tvLocEdDiagFusoHorario.text}",
                 "${etLocEdDiagDescricao.text}"
         )
         locEditDialogViewModel.editarLocalSelecionado(composicaoRegistro)

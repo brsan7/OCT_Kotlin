@@ -5,5 +5,6 @@ data class LocalVO(
         var titulo: String = "",
         var latitude: String = "",
         var longitude: String = "",
+        var fusoHorario: String = "",
         var descricao: String = ""
 )

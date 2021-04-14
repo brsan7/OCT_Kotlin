@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.brsan7.oct.adapter.LocaisAdapter
 import com.brsan7.oct.dialogs.LocalEditDialog
 import com.brsan7.oct.model.LocalVO
+import com.brsan7.oct.utils.SolarUtils
 import com.brsan7.oct.viewmodels.LocaisViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.util.*
 
 class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
 
@@ -84,8 +86,16 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
 
     private fun atualizarLocalDefault(defLocal: LocalVO){
         tvLocActLocal.text = defLocal.titulo
-        tvLocActNascente.text = defLocal.latitude
-        tvLocActPoente.text = defLocal.longitude
+        if (defLocal.latitude.toDoubleOrNull() != null) {
+            val fotoPeriodo = SolarUtils().fotoPeriodo(
+                    defLocal.latitude.toDouble()+0,
+                    defLocal.longitude.toDouble()+0,
+                    defLocal.fusoHorario.toInt()+0,
+                    Calendar.getInstance()[6]+0,
+                    Calendar.getInstance()[1]+0)
+            tvLocActNascente.text = fotoPeriodo[1]
+            tvLocActPoente.text = fotoPeriodo[2]
+        }
         carregamentoDados(false)
     }
 
@@ -123,6 +133,7 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
         val defLocal = LocalVO(
                 -1,
                 "Selecione sua Localização",
+                "",
                 "",
                 "",
                 ""
