@@ -1,5 +1,6 @@
 package com.brsan7.oct.utils
 
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlin.math.*
 
 const val RAD = 57.295 //conv=1rad=57,3º
@@ -38,37 +39,81 @@ open class SolarUtils {
         return fotoperiodo
     }
 
-    fun estacoesDoAno(diaJuliano: Int, ano: Int): String{
-        var estacao = ""
-        //val declinacaoTerrestre: Double
+    fun estacaoDoAnoAtual(diaJuliano: Int, ano: Int,latitude: Double): String{
+
         val isBissexto: Boolean = (( ano % 4 == 0 && ano % 100 != 0 ) || ano % 400 == 0)
         val diasDoAno: Int = if(isBissexto){ 366 } else{ 365 }
 
-        //declinacaoTerrestre = DECLINACAO_MAX_TERRA * sin(ORBITA_COMPLETA / diasDoAno * (diaJuliano + 284) / RAD)
-        when (diaJuliano) {
-            in 1..79+(diasDoAno-365) -> {estacao="Verão"}
-            in 80+(diasDoAno-365)..171+(diasDoAno-365) -> {estacao="Outono"}
-            in 172+(diasDoAno-365)..264+(diasDoAno-365) -> {estacao="Inverno"}
-            in 265+(diasDoAno-365)..354+(diasDoAno-365) -> {estacao="Primavera"}
-            in 355+(diasDoAno-365)..diasDoAno -> {estacao="Verão"}
+        val estacaoAtual = if (latitude < 0){
+            //Hemisfério Sul
+            when (diaJuliano){
+                in 1..79+(diasDoAno-365) -> "Verão"
+
+                80+(diasDoAno-365) -> "Equinócio de Outono"
+                in 81+(diasDoAno-365)..171+(diasDoAno-365) -> "Outono"
+
+                172+(diasDoAno-365) -> "Solstício de Inverno"
+                in 173+(diasDoAno-365)..264+(diasDoAno-365) -> "Inverno"
+
+                265+(diasDoAno-365) -> "Equinócio de Primavera"
+                in 266+(diasDoAno-365)..354+(diasDoAno-365) -> "Primavera"
+
+                355+(diasDoAno-365) -> "Solstício de Verão"
+                in 356+(diasDoAno-365)..diasDoAno -> "Verão"
+
+                else -> ""
+            }
         }
+        else{
+            //Hemisfério Norte
+            when (diaJuliano){
+                in 1..79+(diasDoAno-365) -> "Inverno"
 
+                80+(diasDoAno-365) -> "Equinócio de Primavera"
+                in 81+(diasDoAno-365)..171+(diasDoAno-365) -> "Primavera"
 
-        return estacao
+                172+(diasDoAno-365) -> "Solstício de Verão"
+                in 173+(diasDoAno-365)..264+(diasDoAno-365) -> "Verão"
+
+                265+(diasDoAno-365) -> "Equinócio de Outono"
+                in 266+(diasDoAno-365)..354+(diasDoAno-365) -> "Outono"
+
+                355+(diasDoAno-365) -> "Solstício de Inverno"
+                in 356+(diasDoAno-365)..diasDoAno -> "Inverno"
+
+                else -> ""
+            }
+        }
+       return estacaoAtual
+    }
+
+    fun datasEstacoesDoAno(ano: Int): MutableList<CalendarDay>{
+
+        val datas: MutableList<CalendarDay> = mutableListOf()
+        val isBissexto: Boolean = (( ano % 4 == 0 && ano % 100 != 0 ) || ano % 400 == 0)
+        val diasDoAno: Int = if(isBissexto){ 366 } else{ 365 }
+
+        datas.add(CalendarDay.from(ano+0,3,21+(diasDoAno - 365)))
+        datas.add(CalendarDay.from(ano+0,6,21+(diasDoAno - 365)))
+        datas.add(CalendarDay.from(ano+0,9,22+(diasDoAno - 365)))
+        datas.add(CalendarDay.from(ano+0,12,21+(diasDoAno - 365)))
+        return datas
     }
 
     fun convHorasHorario(horas: Double):String{
+
         var resto = horas
         var hora = 0
         var minuto = 0
         var segundo = 0
-        var horarioComposto: String
 
         while (resto > 1){
             hora++
             resto--
         }
+
         resto *= 60
+
         while (resto > 1){
             minuto++
             resto--
@@ -77,7 +122,9 @@ open class SolarUtils {
                 minuto=0
             }
         }
+
         resto *= 60
+
         while (resto > 1){
             segundo++
             resto--
@@ -86,14 +133,12 @@ open class SolarUtils {
                 segundo=0
             }
         }
-        if (hora >= 10){horarioComposto = "$hora:"}
-        else{horarioComposto = "0$hora:"}
 
-        if (minuto >= 10){horarioComposto += "$minuto:"}
-        else{horarioComposto += "0$minuto:"}
+        var horarioComposto = if (hora >= 10){ "$hora:" } else { "0$hora:" }
 
-        if (segundo >= 10){horarioComposto += "$segundo"}
-        else{horarioComposto += "0$segundo"}
+        horarioComposto += if (minuto >= 10){ "$minuto:" } else { "0$minuto:" }
+
+        horarioComposto += if (segundo >= 10){ "$segundo" } else { "0$segundo" }
 
         return horarioComposto
     }

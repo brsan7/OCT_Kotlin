@@ -7,10 +7,12 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import com.brsan7.oct.model.LocalVO
 import com.brsan7.oct.utils.CalendarUtils
+import com.brsan7.oct.utils.SolarUtils
 import com.brsan7.oct.viewmodels.CalSolActivityViewModel
-import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
+import java.util.*
 
 class CalendarioSolarActivity : DrawerMenuActivity() {
 
@@ -19,6 +21,7 @@ class CalendarioSolarActivity : DrawerMenuActivity() {
     private lateinit var tvCalSolarActNascente: TextView
     private lateinit var tvCalSolarActPoente: TextView
     private lateinit var mcvCalSolarAct: MaterialCalendarView
+    private lateinit var localSelecionado: LocalVO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +30,7 @@ class CalendarioSolarActivity : DrawerMenuActivity() {
         setupDrawerMenu("Consulta Solar")
         setupComponentes()
         setupCalSolActivityViewModel()
+        setupCalendario()
     }
 
     override fun onDestroy() {
@@ -45,27 +49,29 @@ class CalendarioSolarActivity : DrawerMenuActivity() {
         calSolActivityViewModel = ViewModelProvider(this).get(CalSolActivityViewModel::class.java)
 
         calSolActivityViewModel.getAllLocais()
-        calSolActivityViewModel.getAllEstacoesAno()
+
 
         calSolActivityViewModel.vmSpnCalSolarActLocal.observe(this, { itensSpinner->
             setupSpinner(itensSpinner)
         })
-        calSolActivityViewModel.vmMcvCalSolarAct.observe(this, { estacoes->
+        calSolActivityViewModel.vmCalSolarActDadosLocal.observe(this, { itemLocalVo->
+            atualizarDadosDoLocal(itemLocalVo)
+            localSelecionado = itemLocalVo
+            calSolActivityViewModel.getAllEstacoesAno()
+        })
+        calSolActivityViewModel.vmMcvCalSolarAct.observe(this, { datasEstacoesDoAno->
             mcvCalSolarAct.addDecorators(
-                    CalendarUtils.DayDecorator(this,
-                            CalendarDay.from(CalendarDay.today().year,CalendarDay.today().month,estacoes[0].toInt()),"Estações"))
-
+                    CalendarUtils.DayDecorator(this,datasEstacoesDoAno[0],localSelecionado.latitude)
+            )
             mcvCalSolarAct.addDecorators(
-                    CalendarUtils.DayDecorator(this,
-                            CalendarDay.from(CalendarDay.today().year,CalendarDay.today().month,estacoes[1].toInt()),"Estações"))
-
+                    CalendarUtils.DayDecorator(this,datasEstacoesDoAno[1],localSelecionado.latitude)
+            )
             mcvCalSolarAct.addDecorators(
-                    CalendarUtils.DayDecorator(this,
-                            CalendarDay.from(CalendarDay.today().year,CalendarDay.today().month,estacoes[2].toInt()),"Estações"))
-
+                    CalendarUtils.DayDecorator(this,datasEstacoesDoAno[2],localSelecionado.latitude)
+            )
             mcvCalSolarAct.addDecorators(
-                    CalendarUtils.DayDecorator(this,
-                            CalendarDay.from(CalendarDay.today().year,CalendarDay.today().month,estacoes[3].toInt()),"Estações"))
+                    CalendarUtils.DayDecorator(this,datasEstacoesDoAno[3],localSelecionado.latitude)
+            )
         })
     }
 
@@ -77,8 +83,7 @@ class CalendarioSolarActivity : DrawerMenuActivity() {
                 AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
             override fun onItemSelected(item: AdapterView<*>, view: View?, position: Int, id: Long) {
 
-                tvCalSolarActNascente.text = "IDlocal=${calSolActivityViewModel.getIdRegistro("Local",position)}"
-                tvCalSolarActPoente.text = "IDspn=$position"
+                calSolActivityViewModel.getDadosLocalSelecionado(position)
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
             override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -86,4 +91,36 @@ class CalendarioSolarActivity : DrawerMenuActivity() {
             }
         }
     }
+
+    private fun setupCalendario() {
+
+        mcvCalSolarAct.selectedDate = calSolActivityViewModel.diaSelecionado
+
+        mcvCalSolarAct.setOnDateChangedListener { widget, date, selected ->
+
+            calSolActivityViewModel.reStartActivity=false
+            calSolActivityViewModel.diaSelecionado = date
+            calSolActivityViewModel.idItemSpinners.clear()
+            atualizarDadosDoLocal(calSolActivityViewModel.vmCalSolarActDadosLocal.value ?: LocalVO())
+        }
+    }
+
+    private fun atualizarDadosDoLocal(itemLocalVO: LocalVO){
+        val dataSelecionada = Calendar.getInstance().apply {
+            set(Calendar.DAY_OF_MONTH,calSolActivityViewModel.diaSelecionado.day)
+            set(Calendar.MONTH,calSolActivityViewModel.diaSelecionado.month-1)
+            set(Calendar.YEAR,calSolActivityViewModel.diaSelecionado.year)
+        }
+
+        val fotoPeriodo = SolarUtils().fotoPeriodo(
+                itemLocalVO.latitude.toDouble()+0,
+                itemLocalVO.longitude.toDouble()+0,
+                itemLocalVO.fusoHorario.toInt()+0,
+                dataSelecionada[Calendar.DAY_OF_YEAR]+0,
+                dataSelecionada[Calendar.YEAR]+0)
+
+        tvCalSolarActNascente.text = fotoPeriodo[1]
+        tvCalSolarActPoente.text = fotoPeriodo[2]
+    }
+
 }

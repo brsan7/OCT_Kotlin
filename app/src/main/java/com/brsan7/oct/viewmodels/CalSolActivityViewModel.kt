@@ -3,9 +3,12 @@ package com.brsan7.oct.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.brsan7.oct.application.OctApplication
 import com.brsan7.oct.model.IdItemSpinnersVO
 import com.brsan7.oct.model.LocalVO
+import com.brsan7.oct.utils.SolarUtils
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import java.util.*
 
 class CalSolActivityViewModel: ViewModel() {
 
@@ -21,20 +24,20 @@ class CalSolActivityViewModel: ViewModel() {
     var reStartActivity = false
 ////////////////////////Spinners///////////////////////////////////////
 ////////////////////////TextView///////////////////////////////////////
-    private var _vmCalSolarActNascPoen = MutableLiveData<Array<String>>()
-    val vmCalSolarActNascPoen: LiveData<Array<String>>
-        get() = _vmCalSolarActNascPoen
+    private var _vmCalSolarActDadosLocal = MutableLiveData<LocalVO>()
+    val vmCalSolarActDadosLocal: LiveData<LocalVO>
+        get() = _vmCalSolarActDadosLocal
 ////////////////////////TextView///////////////////////////////////////
 ////////////////////////Calendário///////////////////////////////////////
-    private var _vmMcvCalSolarAct = MutableLiveData<Array<String>>()
-    val vmMcvCalSolarAct: LiveData<Array<String>>
+    private var _vmMcvCalSolarAct = MutableLiveData<MutableList<CalendarDay>>()
+    val vmMcvCalSolarAct: LiveData<MutableList<CalendarDay>>
         get() = _vmMcvCalSolarAct
 ////////////////////////Calendário///////////////////////////////////////
 
     fun getAllEstacoesAno() {
         if (_vmMcvCalSolarAct.value?.size == null) {
 
-            _vmMcvCalSolarAct.postValue(auxTesteDecorateEstacoes())
+            _vmMcvCalSolarAct.postValue(SolarUtils().datasEstacoesDoAno(Calendar.getInstance()[1]+0))
         }
     }
 
@@ -49,14 +52,34 @@ class CalSolActivityViewModel: ViewModel() {
     fun getAllLocais() {
 
         if (!reStartActivity) {
-            val arrayLocais = convListArraySpnLocalVO(auxTesteRecyclerView())
+            var lista: List<LocalVO>
+            Thread {
+                try {
+                    lista = OctApplication.instance.helperDB?.buscarLocais("",false) ?: mutableListOf()
 
-            _vmSpnCalSolarActLocal.postValue(arrayLocais)
+                    _vmSpnCalSolarActLocal.postValue(convListArraySpnLocalVO(lista))
+                }
+                catch (ex: Exception) { ex.printStackTrace() }
+            }.start()
         }
-
-
     }
 
+    fun getDadosLocalSelecionado(idSpinner: Int) {
+
+        if (!reStartActivity) {
+            var lista: List<LocalVO>
+            Thread {
+                try {
+                    lista = OctApplication.instance.helperDB?.buscarLocais(
+                            "${idItemSpinners[idSpinner].idRegistro}",
+                            true) ?: mutableListOf()
+
+                    _vmCalSolarActDadosLocal.postValue(lista.first())
+                }
+                catch (ex: Exception) { ex.printStackTrace() }
+            }.start()
+        }
+    }
 
     fun convListArraySpnLocalVO(lista: List<LocalVO>): Array<String> {
         val itensArray = Array(lista.size) { "" }
@@ -73,40 +96,4 @@ class CalSolActivityViewModel: ViewModel() {
         return itensArray
     }
 
-    /*private fun convArrayColletionDecorateEstacoes(arrayEstacoes: Array<String>): MutableCollection<CalendarDay> {
-        val collectionEstacoes: MutableCollection<CalendarDay> = mutableListOf()
-
-        for (index in arrayEstacoes.indices){
-            collectionEstacoes.add(CalendarDay.from(
-                    arrayEstacoes[index].split("/")[2].toInt(),//ano
-                    arrayEstacoes[index].split("/")[1].toInt(),//mes
-                    arrayEstacoes[index].split("/")[0].toInt()//dia
-            ))
-        }
-        return collectionEstacoes
-    }*/
-
-    private fun auxTesteRecyclerView(): List<LocalVO>{
-        val lista: MutableList<LocalVO> = mutableListOf()
-        for (index in 0..7) {
-            val itemLocal = LocalVO(
-                    id = index,
-                    titulo = "Local $index",
-                    latitude = "-23.123",
-                    longitude = "-45.123",
-                    descricao = "Teste\ntestando\n123\nTestando"
-            )
-            lista.add(itemLocal)
-        }
-        return lista
-    }
-    private fun auxTesteDecorateEstacoes(): Array<String>{
-        val estacoes = Array(4) { "" }
-        var count = 1
-        for (index in estacoes.indices){
-            estacoes[index] = count.toString()//utilizar o mês na implementação
-            count+=3
-        }
-        return estacoes
-    }
 }

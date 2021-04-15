@@ -75,14 +75,16 @@ class CalendarUtils {
                     canvas.drawRoundRect(rect,0f, 0f, paint)
 
                 }
-                "Estações" -> {
-                    rect = RectF(
-                            centroHorizontal - bottom * 0.35F,
-                            centroVertical - bottom * 0.35F,
-                            centroHorizontal + bottom * 0.35F,
-                            centroVertical + bottom * 0.35F)
-                    paint.color = Color.parseColor("#FA0303")
-                    canvas.drawRoundRect(rect,0f, 0f, paint)
+                else -> {
+                    if (tipoDraw != "Hoje"){
+                        rect = RectF(
+                                centroHorizontal - bottom * 0.35F,
+                                centroVertical - bottom * 0.35F,
+                                centroHorizontal + bottom * 0.35F,
+                                centroVertical + bottom * 0.35F)
+                        paint.color = Color.parseColor("#FA0303")
+                        canvas.drawRoundRect(rect, 0f, 0f, paint)
+                    }
                 }
             }
             when (tipoDraw) {
@@ -90,13 +92,15 @@ class CalendarUtils {
                     paint.color = Color.parseColor("#FF018786")
                     canvas.drawText("", 0f, 0f, paint)
                 }
-                "Estações" -> {
-                    paint.color = Color.parseColor("#FDE301")
-                    canvas.drawText("", 0f, 0f, paint)
-                }
                 else -> {
-                    paint.color = Color.parseColor("#FF000000")
-                    canvas.drawText("", 0f, 0f, paint)
+                    if (tipoDraw.toDoubleOrNull() != null){
+                        paint.color = Color.parseColor("#FDE301")
+                        canvas.drawText("", 0f, 0f, paint)
+                    }
+                    else {
+                        paint.color = Color.parseColor("#FF000000")
+                        canvas.drawText("", 0f, 0f, paint)
+                    }
                 }
             }
         }
@@ -111,21 +115,37 @@ class CalendarUtils {
         }
 
         override fun decorate(view: DayViewFacade) {
-            if (tipoDraw == "Estações"){
+            if (tipoDraw.toDoubleOrNull() != null){
                 view.setSelectionDrawable(drawable!!)
             }
             view.addSpan(DrawTipoSpan(tipoDraw))
         }
         init {
-            val img: Int
-            when(dia.day){
-                1 -> {img = R.drawable.ic_baseline_local_florist_24}
-                4 -> {img = R.drawable.ic_baseline_sol}
-                7 -> {img = R.drawable.ic_baseline_eco_24}
-                10 -> {img = R.drawable.ic_baseline_ac_unit_24}
-                else -> {img = R.drawable.ic_launcher_background}
+            if (tipoDraw.toDoubleOrNull() != null) {
+                val img: Int = when (dia.month) {
+                    3 -> {
+                        if (tipoDraw.toDouble() < 0) { R.drawable.ic_baseline_eco_24 } //Equinócio de Outono - Hemisfério Sul
+                        else{ R.drawable.ic_baseline_local_florist_24 } //Equinócio de Primavera - Hemisfério Norte
+                    }
+                    6 -> {
+                        if (tipoDraw.toDouble() < 0) { R.drawable.ic_baseline_ac_unit_24 } //Solstício de Inverno - Hemisfério Sul
+                        else{ R.drawable.ic_baseline_sol } //Solstício de Verão - Hemisfério Norte
+                    }
+                    9 -> {
+                        if (tipoDraw.toDouble() < 0) { R.drawable.ic_baseline_local_florist_24 } //Equinócio de Primavera - Hemisfério Sul
+                        else{ R.drawable.ic_baseline_eco_24 } //Equinócio de Outono - Hemisfério Norte
+                    }
+                    12 -> {
+                        if (tipoDraw.toDouble() < 0) { R.drawable.ic_baseline_sol } //Solstício de Verão - Hemisfério Sul
+                        else{ R.drawable.ic_baseline_ac_unit_24 } //Solstício de Inverno - Hemisfério Norte
+                    }
+                    else -> {
+                        R.drawable.ic_launcher_background
+                    }
+                }
+                drawable = ContextCompat.getDrawable(context!!, img)
             }
-            drawable = ContextCompat.getDrawable(context!!, img)
+            else{ drawable = ContextCompat.getDrawable(context!!, R.drawable.ic_launcher_background) }
         }
     }
 

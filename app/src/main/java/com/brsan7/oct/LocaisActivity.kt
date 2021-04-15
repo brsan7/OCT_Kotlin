@@ -91,8 +91,8 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
                     defLocal.latitude.toDouble()+0,
                     defLocal.longitude.toDouble()+0,
                     defLocal.fusoHorario.toInt()+0,
-                    Calendar.getInstance()[6]+0,
-                    Calendar.getInstance()[1]+0)
+                    Calendar.getInstance()[Calendar.DAY_OF_YEAR]+0,
+                    Calendar.getInstance()[Calendar.YEAR]+0)
             tvLocActNascente.text = fotoPeriodo[1]
             tvLocActPoente.text = fotoPeriodo[2]
         }
