@@ -88,8 +88,8 @@
                             android:padding="16dp"
                             android:textSize="24sp"
                             android:inputType="number"
-                            android:digits="-0.123456789"
-                            android:hint="Fuso Horário"
+                            android:digits="-0123456789"
+                            android:hint="@string/hint_etRegLocActFusoHorario"
                             tools:ignore="Autofill" />
                     </LinearLayout>
 

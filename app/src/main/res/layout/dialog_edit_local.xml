@@ -85,17 +85,12 @@
                     android:layout_margin="8dp"
                     android:padding="8dp"
                     android:textSize="24sp"
-                    android:text="Fuso Horário:"/>
+                    android:text="@string/label_tvLocEdDiagFusoHorario"/>
                 <TextView
                     android:id="@+id/tvLocEdDiagFusoHorario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="-3"
-                    style="@style/regViewStyle"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="UTC"
                     style="@style/regViewStyle"/>
 
             </LinearLayout>

@@ -26,6 +26,12 @@
     <string name="menu3">Localização</string>
     <string name="menu3_1">Meus Locais</string>
     <string name="txt_btnRegAgActEditar">EDITAR</string>
+    <string name="label_tvConSolDiagNascente">Nascente:</string>
+    <string name="label_tvConSolDiagPoente">Poente:</string>
+    <string name="label_tvConSolDiagFotoperiodo">Fotoperíodo:</string>
+    <string name="label_tvConSolDiagEstacao">Estação:</string>
+    <string name="hint_etRegLocActFusoHorario">Fuso Horário</string>
+    <string name="label_tvLocEdDiagFusoHorario">Fuso Horário:</string>
 
     <string-array name="tipo_registro">
         <item>Tipo</item>

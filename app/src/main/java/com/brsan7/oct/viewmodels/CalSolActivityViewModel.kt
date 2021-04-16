@@ -18,40 +18,42 @@ class CalSolActivityViewModel: ViewModel() {
     val vmSpnCalSolarActLocal: LiveData<Array<String>>
         get() = _vmSpnCalSolarActLocal
 
-
-    var idItemSpinners: MutableList<IdItemSpinnersVO> = mutableListOf()
-    var diaSelecionado: CalendarDay = CalendarDay.today()
-    var reStartActivity = false
+    private var idItemSpinners: MutableList<IdItemSpinnersVO> = mutableListOf()
 ////////////////////////Spinners///////////////////////////////////////
-////////////////////////TextView///////////////////////////////////////
+////////////////////////Local Selecionado///////////////////////////////////////
     private var _vmCalSolarActDadosLocal = MutableLiveData<LocalVO>()
     val vmCalSolarActDadosLocal: LiveData<LocalVO>
         get() = _vmCalSolarActDadosLocal
-////////////////////////TextView///////////////////////////////////////
+////////////////////////Local Selecionado///////////////////////////////////////
 ////////////////////////Calendário///////////////////////////////////////
     private var _vmMcvCalSolarAct = MutableLiveData<MutableList<CalendarDay>>()
     val vmMcvCalSolarAct: LiveData<MutableList<CalendarDay>>
         get() = _vmMcvCalSolarAct
 ////////////////////////Calendário///////////////////////////////////////
+    var reStartActivity = false
+
+    private fun getIdRegistro(idSpinner: Int): Int {
+        val idRegistro = idItemSpinners.find { idItemSpinnerVO ->
+            idItemSpinnerVO.idSpinner == idSpinner
+        }
+        return idRegistro?.idRegistro ?: -1
+    }
+
+    fun getIdSpinner(idRegistro: Int): Int {
+        val idSpinner = idItemSpinners.find { idItemSpinnerVO ->
+            idItemSpinnerVO.idRegistro == idRegistro
+        }
+        return idSpinner?.idSpinner ?: -1
+    }
 
     fun getAllEstacoesAno() {
-        if (_vmMcvCalSolarAct.value?.size == null) {
-
-            _vmMcvCalSolarAct.postValue(SolarUtils().datasEstacoesDoAno(Calendar.getInstance()[1]+0))
-        }
+        _vmMcvCalSolarAct.postValue(SolarUtils().datasEstacoesDoAno(Calendar.getInstance()[1]+0))
     }
 
-    fun getIdRegistro(tipo: String, index: Int): Int {
-        val id = idItemSpinners.find { idItemSpinnerVO ->
-            idItemSpinnerVO.tipo == tipo
-                    && idItemSpinnerVO.idSpinner == index
-        }
-        return id?.idRegistro ?: -1
-    }
-
-    fun getAllLocais() {
+    fun getAllLocais(localDefault: LocalVO) {
 
         if (!reStartActivity) {
+            _vmCalSolarActDadosLocal.postValue(localDefault)
             var lista: List<LocalVO>
             Thread {
                 try {
@@ -66,12 +68,12 @@ class CalSolActivityViewModel: ViewModel() {
 
     fun getDadosLocalSelecionado(idSpinner: Int) {
 
-        if (!reStartActivity) {
+        if (!reStartActivity && idSpinner > 0) {
             var lista: List<LocalVO>
             Thread {
                 try {
                     lista = OctApplication.instance.helperDB?.buscarLocais(
-                            "${idItemSpinners[idSpinner].idRegistro}",
+                            "${getIdRegistro(idSpinner)}",
                             true) ?: mutableListOf()
 
                     _vmCalSolarActDadosLocal.postValue(lista.first())
@@ -81,13 +83,15 @@ class CalSolActivityViewModel: ViewModel() {
         }
     }
 
-    fun convListArraySpnLocalVO(lista: List<LocalVO>): Array<String> {
-        val itensArray = Array(lista.size) { "" }
+    private fun convListArraySpnLocalVO(lista: List<LocalVO>): Array<String> {
+        val itensArray = Array(lista.size+1) { "" }
+        itensArray[0] = "Locais"
+
         for (index in lista.indices) {
-            itensArray[index] = lista[index].titulo
+            itensArray[index+1] = lista[index].titulo
             idItemSpinners.add(
                     IdItemSpinnersVO(
-                            idSpinner = index,
+                            idSpinner = index+1,
                             idRegistro = lista[index].id,
                             tipo = "Local"
                     )
@@ -95,5 +99,4 @@ class CalSolActivityViewModel: ViewModel() {
         }
         return itensArray
     }
-
 }

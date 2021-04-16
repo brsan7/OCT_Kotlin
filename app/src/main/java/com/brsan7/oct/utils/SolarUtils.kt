@@ -6,6 +6,7 @@ import kotlin.math.*
 const val RAD = 57.295 //conv=1rad=57,3º
 const val DECLINACAO_MAX_TERRA = 23.45
 const val ORBITA_COMPLETA = 360.0
+const val ALINHAMENTO_ANO_SOLAR = 284
 
 open class SolarUtils {
 
@@ -27,13 +28,16 @@ open class SolarUtils {
         val isBissexto: Boolean = (( ano % 4 == 0 && ano % 100 != 0 ) || ano % 400 == 0)
         val diasDoAno: Int = if(isBissexto){ 366 } else{ 365 }
 
-        declinacaoTerrestre = DECLINACAO_MAX_TERRA * sin(ORBITA_COMPLETA / diasDoAno * (diaJuliano + 284) / RAD)
+        declinacaoTerrestre =
+                DECLINACAO_MAX_TERRA*sin(ORBITA_COMPLETA/diasDoAno*(diaJuliano+ALINHAMENTO_ANO_SOLAR)/RAD)
         horasDeSol=(2.0/15.0)*(acos(-tan(latitude/ RAD)*tan(declinacaoTerrestre/RAD))*RAD)
         correcaoLongitude = (((longitude-fuso)*60)/15)/60 //fração de hora na relação (fuso ~ longitude)
         nascente = (12-((horasDeSol/2)))+correcaoLongitude
         poente = (12+((horasDeSol/2)))+correcaoLongitude
 
-        fotoperiodo[0] = convHorasHorario(horasDeSol) //FotoPeriodo Total
+        fotoperiodo[0] = "${convHorasHorario(horasDeSol).subSequence(0,2)}h" +
+                         "${convHorasHorario(horasDeSol).subSequence(3,5)}m" +
+                         "${convHorasHorario(horasDeSol).subSequence(6,8)}s" //FotoPeriodo Total
         fotoperiodo[1] = convHorasHorario(nascente) //Nascer do Sol
         fotoperiodo[2] = convHorasHorario(poente) //Por do Sol
         return fotoperiodo
@@ -44,7 +48,7 @@ open class SolarUtils {
         val isBissexto: Boolean = (( ano % 4 == 0 && ano % 100 != 0 ) || ano % 400 == 0)
         val diasDoAno: Int = if(isBissexto){ 366 } else{ 365 }
 
-        val estacaoAtual = if (latitude < 0){
+        return if (latitude < 0){
             //Hemisfério Sul
             when (diaJuliano){
                 in 1..79+(diasDoAno-365) -> "Verão"
@@ -84,7 +88,6 @@ open class SolarUtils {
                 else -> ""
             }
         }
-       return estacaoAtual
     }
 
     fun datasEstacoesDoAno(ano: Int): MutableList<CalendarDay>{
@@ -100,7 +103,7 @@ open class SolarUtils {
         return datas
     }
 
-    fun convHorasHorario(horas: Double):String{
+    private fun convHorasHorario(horas: Double):String{
 
         var resto = horas
         var hora = 0
