@@ -39,10 +39,36 @@
         <item>Compromisso</item>
         <item>Lembrete</item>
     </string-array>
-    <string-array name="recorrencia_registro">
+    <string-array name="recorrencia_feriado">
         <item>Recorrência</item>
-        <item tools:ignore="Typos">Anual</item>
-        <item>Mensal</item>
-        <item>Semanal</item>
+        <item tools:ignore="Typos">Anual Fixo</item>
+        <item tools:ignore="Typos">Anual Dinâmico</item>
+    </string-array>
+    <string-array name="recorrencia_compromisso">
+        <item>Recorrência</item>
+        <item>Único</item>
+        <item>Semanal Fixo</item>
+        <item>Semanal Dinâmico</item>
+        <item>Mensal Fixo</item>
+        <item>Mensal Dinâmico</item>
+    </string-array>
+    <string-array name="recorrencia_lembrete">
+        <item>Recorrência</item>
+        <item>Único</item>
+        <item>Semanal Fixo</item>
+        <item>Semanal Dinâmico</item>
+        <item>Mensal Fixo</item>
+        <item>Mensal Dinâmico</item>
+        <item tools:ignore="Typos">Anual Fixo</item>
+        <item tools:ignore="Typos">Anual Dinâmico</item>
+        <item>Periódico</item>
+    </string-array>
+    <string-array name="recorrencia_periodica_modos">
+        <item>Modo</item>
+        <item>Anos</item>
+        <item>Meses</item>
+        <item>Semanas</item>
+        <item>Dias Corridos</item>
+        <item>Dias Úteis</item>
     </string-array>
 </resources>

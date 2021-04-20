@@ -51,20 +51,87 @@
                     android:id="@+id/spnRegEvtActTipo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginHorizontal="8dp"
                     android:layout_marginBottom="8dp"
-                    android:entries="@array/tipo_registro"
                     android:theme="@style/selectInputStyle"/>
                 <Spinner
                     android:id="@+id/spnRegEvtActRecorrencia"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginHorizontal="8dp"
                     android:layout_marginBottom="8dp"
-                    android:entries="@array/recorrencia_registro"
                     android:theme="@style/selectInputStyle"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/etRegEvtActModo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:padding="16dp"
+                        android:textSize="24sp"
+                        android:inputType="number"
+                        tools:ignore="Autofill" />
+                    <Spinner
+                        android:id="@+id/spnRegEvtActModo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:theme="@style/selectInputStyle"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/rbtnRegEvtActDiasSemana"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/rbtnRegEvtActDom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="D"/>
+                    <CheckBox
+                        android:id="@+id/rbtnRegEvtActSeg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="S"/>
+                    <CheckBox
+                        android:id="@+id/rbtnRegEvtActTer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="T"/>
+                    <CheckBox
+                        android:id="@+id/rbtnRegEvtActQua"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Q"/>
+                    <CheckBox
+                        android:id="@+id/rbtnRegEvtActQui"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Q"/>
+                    <CheckBox
+                        android:id="@+id/rbtnRegEvtActSex"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="S"/>
+                    <CheckBox
+                        android:id="@+id/rbtnRegEvtActSab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="S"/>
+                </LinearLayout>
+
+
 
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -11,13 +11,14 @@ class RegEvtActivityViewModel: ViewModel() {
     private var _vmComposeReg = MutableLiveData<EventoVO>()
     val vmComposeReg: LiveData<EventoVO>
         get() = _vmComposeReg
+    var reStartActivity = false
 
     private var ID = -1
 
     fun getComposicaoEventoAtual(evento: EventoVO){
-        if (_vmComposeReg.value?.data == null){
+        //if (_vmComposeReg.value?.data == null){
             _vmComposeReg.postValue(evento)
-        }
+        //}
     }
 
     fun verificarEdicao(ID_EXTRA: Int){
@@ -38,7 +39,7 @@ class RegEvtActivityViewModel: ViewModel() {
         }
     }
 
-    fun buscarEventoSelecionado(id: Int){
+    private fun buscarEventoSelecionado(id: Int){
 
         if (_vmComposeReg.value?.data == null) {
             var listaFiltrada: List<EventoVO>
@@ -56,9 +57,9 @@ class RegEvtActivityViewModel: ViewModel() {
                         else -> {"0"}
                     }
                     val recorrencia = when(listaFiltrada[0].recorrencia){
-                        "Anual" -> {"1"}
-                        "Mensal" -> {"2"}
-                        "Semanal" -> {"3"}
+                        "Único" -> {"1"}
+                        "Semanal Fixo" -> {"2"}
+                        "Semanal Dinâmico" -> {"3"}
                         else -> {"0"}
                     }
                     val evtSelecionado = EventoVO(
