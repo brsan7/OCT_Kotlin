@@ -1,8 +1,10 @@
 package com.brsan7.oct.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.brsan7.oct.R
 import com.brsan7.oct.application.OctApplication
 import com.brsan7.oct.model.EventoVO
 
@@ -49,29 +51,8 @@ class RegEvtActivityViewModel: ViewModel() {
                             "$id",
                             false)
                             ?: mutableListOf()
-                    //_vmEvtSelecionado.postValue(listaFiltrada)
-                    val tipo = when(listaFiltrada[0].tipo){
-                        "Feriado" -> {"1"}
-                        "Compromisso" -> {"2"}
-                        "Lembrete" -> {"3"}
-                        else -> {"0"}
-                    }
-                    val recorrencia = when(listaFiltrada[0].recorrencia){
-                        "Único" -> {"1"}
-                        "Semanal Fixo" -> {"2"}
-                        "Semanal Dinâmico" -> {"3"}
-                        else -> {"0"}
-                    }
-                    val evtSelecionado = EventoVO(
-                            listaFiltrada[0].id,
-                            listaFiltrada[0].titulo,
-                            listaFiltrada[0].data,
-                            listaFiltrada[0].hora,
-                            tipo,
-                            recorrencia,
-                            listaFiltrada[0].descricao
-                    )
-                    _vmComposeReg.postValue(evtSelecionado)
+                    reStartActivity = true
+                    _vmComposeReg.postValue(listaFiltrada.first())
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                 }

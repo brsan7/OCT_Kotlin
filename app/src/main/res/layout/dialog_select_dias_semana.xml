@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:scrollbarFadeDuration="2000"
+    tools:context=".RegistroEventoActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/rbtnDiagSelDiaSemDom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_rbtnDiagSelDiaSemDom"/>
+        <CheckBox
+            android:id="@+id/rbtnDiagSelDiaSemSeg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_rbtnDiagSelDiaSemSeg"/>
+        <CheckBox
+            android:id="@+id/rbtnDiagSelDiaSemTer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_rbtnDiagSelDiaSemTer"/>
+        <CheckBox
+            android:id="@+id/rbtnDiagSelDiaSemQua"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_rbtnDiagSelDiaSemQua"/>
+        <CheckBox
+            android:id="@+id/rbtnDiagSelDiaSemQui"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_rbtnDiagSelDiaSemQui"/>
+        <CheckBox
+            android:id="@+id/rbtnDiagSelDiaSemSex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_rbtnDiagSelDiaSemSex"/>
+        <CheckBox
+            android:id="@+id/rbtnDiagSelDiaSemSab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_rbtnDiagSelDiaSemSab"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -76,7 +76,7 @@
                         android:padding="16dp"
                         android:textSize="24sp"
                         android:inputType="number"
-                        tools:ignore="Autofill" />
+                        tools:ignore="Autofill,LabelFor" />
                     <Spinner
                         android:id="@+id/spnRegEvtActModo"
                         android:layout_width="match_parent"
@@ -87,51 +87,27 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/rbtnRegEvtActDiasSemana"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
                     android:gravity="center"
+                    android:layout_marginBottom="8dp"
                     android:orientation="horizontal">
-
-                    <CheckBox
-                        android:id="@+id/rbtnRegEvtActDom"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="D"/>
-                    <CheckBox
-                        android:id="@+id/rbtnRegEvtActSeg"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="S"/>
-                    <CheckBox
-                        android:id="@+id/rbtnRegEvtActTer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="T"/>
-                    <CheckBox
-                        android:id="@+id/rbtnRegEvtActQua"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Q"/>
-                    <CheckBox
-                        android:id="@+id/rbtnRegEvtActQui"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Q"/>
-                    <CheckBox
-                        android:id="@+id/rbtnRegEvtActSex"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="S"/>
-                    <CheckBox
-                        android:id="@+id/rbtnRegEvtActSab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="S"/>
+                        android:background="@color/selecao"
+                        android:orientation="vertical"
+                        tools:ignore="UselessParent">
+                        <TextView
+                            android:id="@+id/tvRegEvtActDiasSemana"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="1dp"
+                            android:padding="8dp"
+                            android:text="@string/txt_tvRegAgActDiasSemana"
+                            style="@style/selectInputStyle"/>
+                    </LinearLayout>
                 </LinearLayout>
-
-
 
                 <LinearLayout
                     android:layout_width="match_parent"

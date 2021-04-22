@@ -9,8 +9,8 @@ import android.widget.*
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.brsan7.oct.R
+import com.brsan7.oct.model.EventoVO
 import com.brsan7.oct.viewmodels.SelectsDataHoraDialogViewModel
-import com.brsan7.oct.model.HoraVO
 
 class SelectHoraDialog : DialogFragment(), DialogInterface.OnClickListener {
 
@@ -24,7 +24,7 @@ class SelectHoraDialog : DialogFragment(), DialogInterface.OnClickListener {
     }
 
     interface  SelecaoHora{
-        fun onHoraSelecionada(hora : HoraVO)
+        fun onHoraSelecionada(horaSelecionada : EventoVO)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -35,8 +35,8 @@ class SelectHoraDialog : DialogFragment(), DialogInterface.OnClickListener {
 
         return AlertDialog.Builder(activity as Activity)
             .setView(view)
-            .setNeutralButton("VOLTAR",this)
-            .setPositiveButton("SELECIONAR",this)
+            .setNeutralButton(getString(R.string.txt_btnDialogsVoltar),this)
+            .setPositiveButton(getString(R.string.txt_btnDialogsSelecionar),this)
             .create()
     }
 
@@ -47,7 +47,7 @@ class SelectHoraDialog : DialogFragment(), DialogInterface.OnClickListener {
 
     private fun setupSelectDialogViewModel(){
         selectsDataHoraDiagViewModel = ViewModelProvider(this).get(SelectsDataHoraDialogViewModel::class.java)
-        val hora = HoraVO(timePicker.hour,timePicker.minute)
+        val hora = EventoVO( hora = "${timePicker.hour}:${timePicker.minute}" )
         selectsDataHoraDiagViewModel.getSelecaoHora(hora)
         selectsDataHoraDiagViewModel.vmRegDlgHora.observe(this, { _hora->
             setupHora(_hora)
@@ -56,21 +56,19 @@ class SelectHoraDialog : DialogFragment(), DialogInterface.OnClickListener {
 
     override fun onPause() {
         super.onPause()
-        selectsDataHoraDiagViewModel.vmRegDlgHora.value?.hora = timePicker.hour
-        selectsDataHoraDiagViewModel.vmRegDlgHora.value?.minuto = timePicker.minute
+        selectsDataHoraDiagViewModel.vmRegDlgHora.value?.hora = "${timePicker.hour}:${timePicker.minute}"
     }
 
-    private fun setupHora(hora: HoraVO){
-        timePicker.hour = hora.hora
-        timePicker.minute = hora.minuto
+    private fun setupHora(hora: EventoVO){
+        timePicker.hour = hora.hora.split(":")[0].toInt()
+        timePicker.minute = hora.hora.split(":")[0].toInt()
     }
 
     private fun onClickSelecionar(){
-        val hora = HoraVO(
-            timePicker.hour,
-            timePicker.minute
+        val horaSelecionada = EventoVO(
+                hora = "${timePicker.hour}:${timePicker.minute}"
         )
-        (activity as(SelecaoHora)).onHoraSelecionada(hora)
+        (activity as(SelecaoHora)).onHoraSelecionada(horaSelecionada)
         dismiss()
     }
 }

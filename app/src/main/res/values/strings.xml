@@ -3,6 +3,7 @@
     <string name="open_drawer">Abrir</string>
     <string name="close_drawer">Fechar</string>
     <string name="hint_etRegAgActTitulo">Título</string>
+    <string name="txt_tvRegAgActDiasSemana">Selecionar\nDias Da\nSemana</string>
     <string name="txt_tvRegAgActData">Selecionar\nData</string>
     <string name="txt_tvRegAgActHora">Selecionar\nHora</string>
     <string name="hint_etRegAgActDescricao">Descrição</string>
@@ -17,7 +18,6 @@
     <string name="label_tvLocEdDiagLatitude">Latitude:</string>
     <string name="label_tvLocEdDiagLongitude">Longitude:</string>
     <string name="hint_etLocEdDiagDescricao">Descrição</string>
-    <string name="txt_btnLocEdDiagDeletar">Deletar</string>
     <string name="menu1">Home</string>
     <string name="menu1_1">Eventos do Dia</string>
     <string name="menu2">Consulta</string>
@@ -25,13 +25,23 @@
     <string name="menu2_2">Período Solar</string>
     <string name="menu3">Localização</string>
     <string name="menu3_1">Meus Locais</string>
-    <string name="txt_btnRegAgActEditar">EDITAR</string>
     <string name="label_tvConSolDiagNascente">Nascente:</string>
     <string name="label_tvConSolDiagPoente">Poente:</string>
     <string name="label_tvConSolDiagFotoperiodo">Fotoperíodo:</string>
     <string name="label_tvConSolDiagEstacao">Estação:</string>
     <string name="hint_etRegLocActFusoHorario">Fuso Horário</string>
     <string name="label_tvLocEdDiagFusoHorario">Fuso Horário:</string>
+    <string name="label_rbtnDiagSelDiaSemDom">Domingo</string>
+    <string name="label_rbtnDiagSelDiaSemSeg">Segunda</string>
+    <string name="label_rbtnDiagSelDiaSemTer">Terça</string>
+    <string name="label_rbtnDiagSelDiaSemQua">Quarta</string>
+    <string name="label_rbtnDiagSelDiaSemQui">Quinta</string>
+    <string name="label_rbtnDiagSelDiaSemSex">Sexta</string>
+    <string name="label_rbtnDiagSelDiaSemSab">Sábado</string>
+    <string name="txt_btnDialogsVoltar">VOLTAR</string>
+    <string name="txt_btnDialogsSelecionar">SELECIONAR</string>
+    <string name="txt_btnDialogsExcluir">EXCLUIR</string>
+    <string name="txt_btnDialogsEditar">EDITAR</string>
 
     <string-array name="tipo_registro">
         <item>Tipo</item>

@@ -52,7 +52,7 @@ class ConsultaSolarDetailDialog : DialogFragment(), DialogInterface.OnClickListe
 
         return AlertDialog.Builder(activity as Activity)
                 .setView(view)
-                .setNeutralButton("VOLTAR",this)
+                .setNeutralButton(getString(R.string.txt_btnDialogsVoltar),this)
                 .create()
     }
 
