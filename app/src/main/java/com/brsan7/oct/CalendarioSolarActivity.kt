@@ -29,7 +29,7 @@ class CalendarioSolarActivity : DrawerMenuActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendario_solar)
 
-        setupDrawerMenu("Consulta Solar")
+        setupDrawerMenu(getString(R.string.titulo_ConsSol))
         setupComponentes()
         setupCalSolActivityViewModel()
         setupCalendario()
@@ -119,11 +119,11 @@ class CalendarioSolarActivity : DrawerMenuActivity() {
 
     private fun getShareLocalDefault() : LocalVO {
         val defLocal = LocalVO(
-                -1,
-                "Selecione sua Localização",
-                "",
-                "",
-                ""
+                id = -1,
+                titulo = getString(R.string.txt_sem_local),
+                latitude = "",
+                longitude = "",
+                fusoHorario = ""
         )
         val ultimoItemRegGson = getInstanceSharedPreferences().getString("localDef", Gson().toJson(defLocal))
         val convTipo = object : TypeToken<LocalVO>(){}.type

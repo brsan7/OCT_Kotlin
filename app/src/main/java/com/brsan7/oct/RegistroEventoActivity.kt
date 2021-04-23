@@ -10,6 +10,7 @@ import com.brsan7.oct.dialogs.SelectDiasSemanaDialog
 import com.brsan7.oct.dialogs.SelectHoraDialog
 import com.brsan7.oct.model.EventoVO
 import com.brsan7.oct.viewmodels.RegEvtActivityViewModel
+import java.util.*
 
 class RegistroEventoActivity : DrawerMenuActivity(),
         SelectDiasSemanaDialog.SelecaoDiasSemana,
@@ -137,6 +138,7 @@ class RegistroEventoActivity : DrawerMenuActivity(),
     private fun setComposeRegistro(_evento: EventoVO){
         var evtSelecionado = _evento
         if (_evento.id >= 0) {
+            var data = ""
             val tipo = when (_evento.tipo) {
                 resources.getStringArray(R.array.tipo_registro)[1] -> { "1" }//Feriado
                 resources.getStringArray(R.array.tipo_registro)[2] -> { "2" }//Compromisso
@@ -146,7 +148,9 @@ class RegistroEventoActivity : DrawerMenuActivity(),
             val recorrencia = when (_evento.recorrencia.split("_")[0]) {
                 resources.getStringArray(R.array.recorrencia_lembrete)[1] -> { "1_0" }//Único
                 resources.getStringArray(R.array.recorrencia_lembrete)[2] -> { "2_0" }//Semanal Fixo
-                resources.getStringArray(R.array.recorrencia_lembrete)[3] -> { "3_0" }//Semanal Dinâmico
+                resources.getStringArray(R.array.recorrencia_lembrete)[3] -> { //"3_0" }//Semanal Dinâmico
+                    "3_0*${_evento.recorrencia.split("_")[1]}"
+                }
                 resources.getStringArray(R.array.recorrencia_lembrete)[4] -> { "4_0" }//Mensal Fixo
                 resources.getStringArray(R.array.recorrencia_lembrete)[5] -> { "5_0" }//Mensal Dinâmico
                 resources.getStringArray(R.array.recorrencia_lembrete)[6] -> { //Anual Fixo
@@ -183,10 +187,15 @@ class RegistroEventoActivity : DrawerMenuActivity(),
                 }
                 else -> { "0_0" }
             }
+
+            if ( recorrencia == "2_0" || recorrencia == "5_0" || recorrencia == "7_0" ){ //Evento Dinâmico
+                data = "${_evento.recorrencia.split("_")[1].split("*")[0]}*" //Regra de recorrência
+            }
+            data += "${getStringDiaSemana(_evento.data)}, ${_evento.data}" //Dia da Semana
             evtSelecionado = EventoVO(
-                    id = _evento.id,
+                    id = -1,
                     titulo = _evento.titulo,
-                    data = _evento.data,
+                    data = data,
                     hora = _evento.hora,
                     tipo = tipo,
                     recorrencia = recorrencia,
@@ -198,18 +207,28 @@ class RegistroEventoActivity : DrawerMenuActivity(),
         tvRegEvtActHora.text = evtSelecionado.hora
         spnRegEvtActTipo.setSelection(evtSelecionado.tipo.toInt())
         setAdapterSpnRegEvtActRecorrencia()
-        spnRegEvtActRecorrencia.setSelection(evtSelecionado.recorrencia.split("_")[0].toInt())
 
-        if (evtSelecionado.recorrencia.split("_")[1].split("*")[0].toInt() > 0) { //Periódico
+        if (evtSelecionado.recorrencia.split("_")[0].toIntOrNull() != null) {
 
-            etRegEvtActModo.setText(evtSelecionado.recorrencia.split("_")[1].split("*")[1])
-            spnRegEvtActModo.setSelection(
-                    evtSelecionado.recorrencia.split("_")[1].split("*")[0].toInt())
+            spnRegEvtActRecorrencia.setSelection(evtSelecionado.recorrencia.split("_")[0].toInt())
+
+            if (evtSelecionado.recorrencia.split("_")[0].toInt() == 3) {// Semanal Dinâmico
+
+                tvRegEvtActDiasSemana.text = evtSelecionado.recorrencia.split("_")[1].split("*")[1]
+            }
+
+            if (evtSelecionado.recorrencia.split("_")[1].split("*")[0].toInt() > 0) { //Periódico
+
+                etRegEvtActModo.setText(evtSelecionado.recorrencia.split("_")[1].split("*")[1])
+                spnRegEvtActModo.setSelection(
+                        evtSelecionado.recorrencia.split("_")[1].split("*")[0].toInt())
+            }
         }
         etRegEvtActDescricao.setText(evtSelecionado.descricao)
     }
 
     private fun getComposeRegistro(isRegistro: Boolean):EventoVO{
+        var id = ID_EXTRA
         val tipo: String
         var recorrencia: String
         val data: String
@@ -233,16 +252,18 @@ class RegistroEventoActivity : DrawerMenuActivity(),
             if (spnRegEvtActTipo.selectedItem != resources.getStringArray(R.array.tipo_registro)[2]){//Compromisso
                 tvRegEvtActHora.text = ""
             }
-            if (tvRegEvtActData.text.length > 14){ data = tvRegEvtActData.text.substring(7,tvRegEvtActData.text.length) }
-            else{ data = tvRegEvtActData.text.substring(5,tvRegEvtActData.text.length) }
+            data = if (tvRegEvtActData.text.length > 14){ tvRegEvtActData.text.substring(7,tvRegEvtActData.text.length) }
+            else{ tvRegEvtActData.text.substring(5,tvRegEvtActData.text.length) }
         }
         else{
+            id = -1
             tipo = "${spnRegEvtActTipo.selectedItemId}"
-            recorrencia = "${spnRegEvtActRecorrencia.selectedItemId}_${spnRegEvtActModo.selectedItemId}*${etRegEvtActModo.text}"
+            val complemento = if (spnRegEvtActModo.selectedItemId == 0L){tvRegEvtActDiasSemana.text}else{etRegEvtActModo.text}
+            recorrencia = "${spnRegEvtActRecorrencia.selectedItemId}_${spnRegEvtActModo.selectedItemId}*$complemento"
             data = "${tvRegEvtActData.text}"
         }
         return EventoVO(
-                id = ID_EXTRA,
+                id = id,
                 titulo = "${etRegEvtActTitulo.text}",
                 data = data,
                 hora = "${tvRegEvtActHora.text}",
@@ -335,6 +356,24 @@ class RegistroEventoActivity : DrawerMenuActivity(),
         else {
             etRegEvtActModo.visibility = View.VISIBLE
             tvRegEvtActData.visibility = View.VISIBLE
+        }
+    }
+
+    private fun getStringDiaSemana(data: String) : String{
+        val calendardata = Calendar.getInstance().apply {
+            set(Calendar.DAY_OF_MONTH, data.split("/")[0].toInt())
+            set(Calendar.MONTH, data.split("/")[1].toInt()-1)
+            set(Calendar.YEAR, data.split("/")[2].toInt())
+        }
+        return when(calendardata[Calendar.DAY_OF_WEEK]){
+            1 -> { getString(R.string.label_rbtnDiagSelDiaSemDom).substring(0..2) }
+            2 -> { getString(R.string.label_rbtnDiagSelDiaSemSeg).substring(0..2) }
+            3 -> { getString(R.string.label_rbtnDiagSelDiaSemTer).substring(0..2) }
+            4 -> { getString(R.string.label_rbtnDiagSelDiaSemQua).substring(0..2) }
+            5 -> { getString(R.string.label_rbtnDiagSelDiaSemQui).substring(0..2) }
+            6 -> { getString(R.string.label_rbtnDiagSelDiaSemSex).substring(0..2) }
+            7 -> { getString(R.string.label_rbtnDiagSelDiaSemSab).substring(0..2) }
+            else -> { "" }
         }
     }
 }

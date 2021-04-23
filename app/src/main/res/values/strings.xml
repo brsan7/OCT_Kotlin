@@ -1,5 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Ocarina do Tempo</string>
+    <string name="titulo_Main">Eventos do Dia</string>
+    <string name="titulo_RegEvt">Novo Registro</string>
+    <string name="titulo_EdtEvt">Editar Registro</string>
+    <string name="titulo_ConsEvt">Consulta Eventos</string>
+    <string name="titulo_ConsSol">Consulta Solar</string>
+    <string name="titulo_Locais">Meus Locais</string>
+    <string name="titulo_RegLocal">Novo Local</string>
+    <string name="txt_sem_local">Selecione sua Localização</string>
     <string name="open_drawer">Abrir</string>
     <string name="close_drawer">Fechar</string>
     <string name="hint_etRegAgActTitulo">Título</string>
@@ -42,6 +50,7 @@
     <string name="txt_btnDialogsSelecionar">SELECIONAR</string>
     <string name="txt_btnDialogsExcluir">EXCLUIR</string>
     <string name="txt_btnDialogsEditar">EDITAR</string>
+    <string name="aviso_EvtDetDialog">Sem Descrição</string>
 
     <string-array name="tipo_registro">
         <item>Tipo</item>

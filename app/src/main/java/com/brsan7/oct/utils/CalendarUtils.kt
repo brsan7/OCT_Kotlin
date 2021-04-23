@@ -12,7 +12,7 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade
 
 class CalendarUtils {
 
-    class MultipleEventDecorator(private val txt: String, dates: Collection<CalendarDay?>?) :
+    class MultipleEventDecorator(private val tipo: String, dates: Collection<CalendarDay?>?) :
             DayViewDecorator {
 
         private val dates: HashSet<CalendarDay?> = HashSet(dates)
@@ -21,7 +21,7 @@ class CalendarUtils {
         }
 
         override fun decorate(view: DayViewFacade) {
-            view.addSpan(DrawTipoSpan(txt))
+            view.addSpan(DrawTipoSpan(tipo))
         }
     }
 

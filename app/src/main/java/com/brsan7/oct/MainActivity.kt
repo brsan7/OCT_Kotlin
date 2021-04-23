@@ -37,7 +37,7 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setupDrawerMenu("Eventos do Dia")
+        setupDrawerMenu(getString(R.string.titulo_Main))
         setupComponentes()
         setupLocalDefault(getShareLocalDefault())
         setupRecyclerView()
@@ -54,7 +54,7 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
         fabMain = findViewById(R.id.fabMain)
         fabMain.setOnClickListener {
             val intent = Intent(this, RegistroEventoActivity::class.java)
-            intent.putExtra("titulo","Novo Registro")
+            intent.putExtra("titulo",getString(R.string.titulo_RegEvt))
             startActivity(intent)
         }
     }
@@ -113,11 +113,11 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
 
     private fun getShareLocalDefault() : LocalVO {
         val defLocal = LocalVO(
-            -1,
-            "Selecione sua Localização",
-            "",
-            "",
-            ""
+            id = -1,
+            titulo = getString(R.string.txt_sem_local),
+            latitude = "",
+            longitude = "",
+            fusoHorario = ""
         )
         val ultimoItemRegGson = getInstanceSharedPreferences().getString("localDef", Gson().toJson(defLocal))
         val convTipo = object : TypeToken<LocalVO>(){}.type

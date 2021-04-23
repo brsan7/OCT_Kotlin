@@ -22,7 +22,7 @@ class CalendarioEventoActivity : DrawerMenuActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendario_evento)
         
-        setupDrawerMenu("Consulta Eventos")
+        setupDrawerMenu(getString(R.string.titulo_ConsEvt))
         setupComponentes()
         setupCalEvtActivityViewModel()
         setupCalendario()
@@ -45,26 +45,30 @@ class CalendarioEventoActivity : DrawerMenuActivity() {
         
         calEvtActivityViewModel = ViewModelProvider(this).get(CalEvtActivityViewModel::class.java)
 
-        calEvtActivityViewModel.getAllDecorateDates()
+        calEvtActivityViewModel.getAllDecorateDates(
+                resources.getStringArray(R.array.tipo_registro)[1], //Feriado
+                resources.getStringArray(R.array.tipo_registro)[2], //Compromisso
+                resources.getStringArray(R.array.tipo_registro)[3] //Lembrete
+        )
 
         calEvtActivityViewModel.getRegistrosDiaSelecionado(calEvtActivityViewModel.diaSelecionado)
 
         calEvtActivityViewModel.vmMcvCalActFeriado.observe(this, { allFeriados->
-            mcvCalEvtAct.addDecorators(CalendarUtils.MultipleEventDecorator("Feriado",allFeriados))
-            mcvCalEvtAct.addDecorators(CalendarUtils.DayDecorator(this,CalendarDay.today(),"Hoje"))
+            mcvCalEvtAct.addDecorators(CalendarUtils.MultipleEventDecorator(tipo = "Feriado",dates = allFeriados))
+            mcvCalEvtAct.addDecorators(CalendarUtils.DayDecorator(this,CalendarDay.today(),tipo = "Hoje"))
         })
-        calEvtActivityViewModel.vmMcvCalActEvento.observe(this, { allEventos->
-            mcvCalEvtAct.addDecorators(CalendarUtils.MultipleEventDecorator("Compromisso",allEventos))
-            mcvCalEvtAct.addDecorators(CalendarUtils.DayDecorator(this,CalendarDay.today(),"Hoje"))
+        calEvtActivityViewModel.vmMcvCalActCompromisso.observe(this, { allEventos->
+            mcvCalEvtAct.addDecorators(CalendarUtils.MultipleEventDecorator(tipo = "Compromisso",dates = allEventos))
+            mcvCalEvtAct.addDecorators(CalendarUtils.DayDecorator(this,CalendarDay.today(),tipo = "Hoje"))
         })
         calEvtActivityViewModel.vmMcvCalActLembrete.observe(this, { allLembretes->
-            mcvCalEvtAct.addDecorators(CalendarUtils.MultipleEventDecorator("Lembrete",allLembretes))
-            mcvCalEvtAct.addDecorators(CalendarUtils.DayDecorator(this,CalendarDay.today(),"Hoje"))
+            mcvCalEvtAct.addDecorators(CalendarUtils.MultipleEventDecorator(tipo = "Lembrete",dates = allLembretes))
+            mcvCalEvtAct.addDecorators(CalendarUtils.DayDecorator(this,CalendarDay.today(),tipo = "Hoje"))
         })
         calEvtActivityViewModel.vmSpnCalActFeriado.observe(this, { itensSpinner->
             atualizarSpinnerFeriado(itensSpinner)
         })
-        calEvtActivityViewModel.vmSpnCalActEvento.observe(this, { itensSpinner->
+        calEvtActivityViewModel.vmSpnCalActCompromisso.observe(this, { itensSpinner->
             atualizarSpinnerEvento(itensSpinner)
         })
         calEvtActivityViewModel.vmSpnCalActLembrete.observe(this, { itensSpinner->
@@ -78,7 +82,7 @@ class CalendarioEventoActivity : DrawerMenuActivity() {
 
         mcvCalEvtAct.setOnDateChangedListener { widget, date, selected ->
 
-            calEvtActivityViewModel.reStartActivity=false
+            calEvtActivityViewModel.reStartActivity = false
             calEvtActivityViewModel.diaSelecionado = date
             calEvtActivityViewModel.idItemSpinners.clear()
             calEvtActivityViewModel.getRegistrosDiaSelecionado(date)
@@ -99,7 +103,10 @@ class CalendarioEventoActivity : DrawerMenuActivity() {
                 if(position > 0 && !calEvtActivityViewModel.reStartActivity) {
 
                     val fragment = EventoDetailDialog.newInstance(
-                            calEvtActivityViewModel.getIdRegistro("Feriado",position)
+                            calEvtActivityViewModel.getIdRegistro(
+                                    tipo = resources.getStringArray(R.array.tipo_registro)[1], //Feriado
+                                    index = position
+                            )
                     )
                     fragment.show(supportFragmentManager, "dialog")
                 }
@@ -124,7 +131,10 @@ class CalendarioEventoActivity : DrawerMenuActivity() {
                 if(position != 0 && !calEvtActivityViewModel.reStartActivity) {
 
                     val fragment = EventoDetailDialog.newInstance(
-                            calEvtActivityViewModel.getIdRegistro("Compromisso",position)
+                            calEvtActivityViewModel.getIdRegistro(
+                                    tipo = resources.getStringArray(R.array.tipo_registro)[2], //Compromisso
+                                    index = position
+                            )
                     )
                     fragment.show(supportFragmentManager, "dialog")
                 }
@@ -149,7 +159,10 @@ class CalendarioEventoActivity : DrawerMenuActivity() {
                 if(position != 0 && !calEvtActivityViewModel.reStartActivity) {
 
                     val fragment = EventoDetailDialog.newInstance(
-                            calEvtActivityViewModel.getIdRegistro("Lembrete",position)
+                            calEvtActivityViewModel.getIdRegistro(
+                                    tipo = resources.getStringArray(R.array.tipo_registro)[3], //Lembrete
+                                    index = position
+                            )
                     )
                     fragment.show(supportFragmentManager, "dialog")
                 }

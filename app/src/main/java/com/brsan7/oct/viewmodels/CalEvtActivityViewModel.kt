@@ -3,6 +3,7 @@ package com.brsan7.oct.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.brsan7.oct.application.OctApplication
 import com.brsan7.oct.model.IdItemSpinnersVO
 import com.brsan7.oct.model.EventoVO
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -14,9 +15,9 @@ class CalEvtActivityViewModel: ViewModel() {
     val vmMcvCalActFeriado: LiveData<MutableCollection<CalendarDay>>
         get() = _vmMcvCalActFeriado
 
-    private var _vmMcvCalActEvento = MutableLiveData<MutableCollection<CalendarDay>>()
-    val vmMcvCalActEvento: LiveData<MutableCollection<CalendarDay>>
-        get() = _vmMcvCalActEvento
+    private var _vmMcvCalActCompromisso = MutableLiveData<MutableCollection<CalendarDay>>()
+    val vmMcvCalActCompromisso: LiveData<MutableCollection<CalendarDay>>
+        get() = _vmMcvCalActCompromisso
 
     private var _vmMcvCalActLembrete = MutableLiveData<MutableCollection<CalendarDay>>()
     val vmMcvCalActLembrete: LiveData<MutableCollection<CalendarDay>>
@@ -28,27 +29,44 @@ class CalEvtActivityViewModel: ViewModel() {
     val vmSpnCalActFeriado: LiveData<Array<String>>
         get() = _vmSpnCalActFeriado
 
-    private var _vmSpnCalActEvento = MutableLiveData<Array<String>>()
-    val vmSpnCalActEvento: LiveData<Array<String>>
-        get() = _vmSpnCalActEvento
+    private var _vmSpnCalActCompromisso = MutableLiveData<Array<String>>()
+    val vmSpnCalActCompromisso: LiveData<Array<String>>
+        get() = _vmSpnCalActCompromisso
 
     private var _vmSpnCalActLembrete = MutableLiveData<Array<String>>()
     val vmSpnCalActLembrete: LiveData<Array<String>>
         get() = _vmSpnCalActLembrete
 
+    private var arrayTipos = Array(3) {""}
     var idItemSpinners: MutableList<IdItemSpinnersVO> = mutableListOf()
     var diaSelecionado: CalendarDay = CalendarDay.today()
     var reStartActivity = false
 ////////////////////////Spinners///////////////////////////////////////
 
-    fun getAllDecorateDates() {
+    fun getAllDecorateDates(txtSpnFeriado: String,txtSpnCompromisso: String,txtSpnLembrete: String) {
         if (_vmMcvCalActFeriado.value?.toMutableList()?.size == null) {
 
-            _vmMcvCalActFeriado.postValue(auxTesteDecorator("Feriado"))
+            arrayTipos[0] = txtSpnFeriado
+            arrayTipos[1] = txtSpnCompromisso
+            arrayTipos[2] = txtSpnLembrete
+            var listaCompleta: List<EventoVO>
+            Thread {
+                try {
+                    listaCompleta = OctApplication.instance.helperDB?.buscarEventos(
+                            busca = "",
+                            isBuscaPorData = false)
+                            ?: mutableListOf()
 
-            _vmMcvCalActEvento.postValue(auxTesteDecorator("Compromisso"))
+                    _vmMcvCalActFeriado.postValue(convEvtToCalDayList(arrayTipos[0],listaCompleta))
 
-            _vmMcvCalActLembrete.postValue(auxTesteDecorator("Lembrete"))
+                    _vmMcvCalActCompromisso.postValue(convEvtToCalDayList(arrayTipos[1],listaCompleta))
+
+                    _vmMcvCalActLembrete.postValue(convEvtToCalDayList(arrayTipos[2],listaCompleta))
+
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                }
+            }.start()
         }
     }
 
@@ -89,69 +107,40 @@ class CalEvtActivityViewModel: ViewModel() {
     fun getRegistrosDiaSelecionado(data: CalendarDay?) {
 
         if (!reStartActivity) {
-            val lista = auxTesteSpinner(data, true)
+            var listaFiltrada: List<EventoVO>
+            Thread {
+                try {
+                    listaFiltrada = OctApplication.instance.helperDB?.buscarEventos(
+                            busca = "${data?.day}/${data?.month}/${data?.year}",
+                            isBuscaPorData = true)
+                            ?: mutableListOf()
 
-            _vmSpnCalActFeriado.postValue(convListArraySpinner("Feriado", lista))
+                    _vmSpnCalActFeriado.postValue(convListArraySpinner(tipo = arrayTipos[0], lista = listaFiltrada))
 
-            _vmSpnCalActEvento.postValue(convListArraySpinner("Compromisso", lista))
+                    _vmSpnCalActCompromisso.postValue(convListArraySpinner(tipo = arrayTipos[1], lista = listaFiltrada))
 
-            _vmSpnCalActLembrete.postValue(convListArraySpinner("Lembrete", lista))
+                    _vmSpnCalActLembrete.postValue(convListArraySpinner(tipo = arrayTipos[2], lista = listaFiltrada))
+
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                }
+            }.start()
         }
-
-
     }
 
-    private fun auxTesteDecorator(tipo: String): MutableCollection<CalendarDay> {
+    private fun convEvtToCalDayList(tipo: String, listaFiltrada: List<EventoVO>): MutableCollection<CalendarDay> {
         val allTipoEvento: MutableCollection<CalendarDay> = mutableListOf()
-        val lista = auxTesteSpinner(CalendarDay.today(), false)
-        lista.forEach {
+        listaFiltrada.forEach {
             if (it.tipo == tipo) {
                 allTipoEvento.add(
                         CalendarDay.from(
-                                it.data.substring(4, 8).toInt(),
-                                it.data.substring(2, 3).toInt(),
-                                it.data.substring(0, 1).toInt()
+                                it.data.split("/")[2].toInt(),
+                                it.data.split("/")[1].toInt(),
+                                it.data.split("/")[0].toInt()
                         )
                 )
             }
-
         }
         return allTipoEvento
-    }
-
-    fun auxTesteSpinner(data: CalendarDay?, filtro: Boolean): List<EventoVO> {
-        var lista: MutableList<EventoVO> = mutableListOf()
-        var tipo = ""
-        var count: Int
-        for (index in 1..7) {
-            if (index == 1 || index == 4) { tipo = "Feriado" }
-            if (index == 2 || index == 5) { tipo = "Compromisso" }
-            if (index == 3 || index == 6) { tipo = "Lembrete" }
-            count = if (index == 7) { 3 } else { 1 }
-            while (count > 0) {
-                val itemEvento = EventoVO(
-                        id = index + count,
-                        titulo = "Teste $index - $tipo",
-                        data = "$index/4/2021",
-                        hora = "20:30",
-                        tipo = tipo,
-                        recorrencia = "Anual",
-                        descricao = "Teste\ntestando\n123\nTestando"
-                )
-                if (count == 3) { tipo = "Compromisso" }
-                if (count == 2) { tipo = "Feriado" }
-                count--
-                lista.add(itemEvento)
-            }
-        }
-        val listaFiltrada: MutableList<EventoVO> = mutableListOf()
-
-        lista.forEach {
-            if (it.data == "${data?.day}/${data?.month}/${data?.year}") {
-                listaFiltrada.add(it)
-            }
-        }
-        if (filtro) { lista = listaFiltrada }
-        return lista
     }
 }

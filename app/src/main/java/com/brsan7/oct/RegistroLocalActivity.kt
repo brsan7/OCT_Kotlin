@@ -22,7 +22,7 @@ class RegistroLocalActivity : DrawerMenuActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro_local)
 
-        setupDrawerMenu("Novo Local")
+        setupDrawerMenu(getString(R.string.titulo_RegLocal))
         setupComponentes()
         setupListeners()
     }
@@ -48,8 +48,8 @@ class RegistroLocalActivity : DrawerMenuActivity() {
             startActivity(intent)
         }
     }
-    fun getComposeRegistro(): LocalVO {
-        val composicaoRegistro = LocalVO(
+    private fun getComposeRegistro(): LocalVO {
+        return LocalVO(
                 +1,
                 "${etRegLocActLocal.text}",
                 "${etRegLocActLatitude.text}",
@@ -57,6 +57,5 @@ class RegistroLocalActivity : DrawerMenuActivity() {
                 "${etRegLocActFusoHorario.text}",
                 "${etRegLocActDescricao.text}"
         )
-        return composicaoRegistro
     }
 }

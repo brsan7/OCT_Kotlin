@@ -90,11 +90,17 @@ class EventoDetailDialog : DialogFragment(), DialogInterface.OnClickListener {
         tvEvtDetDiagTipo.text = evtSelecionado[0].tipo
         tvEvtDetDiagRecorrencia.text = evtSelecionado[0].recorrencia
         tvEvtDetDiagDescricao.text = evtSelecionado[0].descricao
+        if (evtSelecionado[0].hora.isEmpty()){
+            tvEvtDetDiagHora.visibility = View.GONE
+        }
+        if (evtSelecionado[0].descricao.isEmpty()){
+            tvEvtDetDiagDescricao.text = getString(R.string.aviso_EvtDetDialog)
+        }
     }
 
     private fun onClickEditar(){
         val intent = Intent(context, RegistroEventoActivity::class.java)
-        intent.putExtra("titulo","Editar Registro")
+        intent.putExtra("titulo",getString(R.string.titulo_EdtEvt))
         intent.putExtra("id",idEvento)
         startActivity(intent)
     }

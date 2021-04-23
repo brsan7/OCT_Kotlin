@@ -37,7 +37,7 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_locais)
 
-        setupDrawerMenu("Meus Locais")
+        setupDrawerMenu(getString(R.string.titulo_Locais))
         setupComponentes()
         setupRecyclerView()
         setupLocaisViewModel()
@@ -71,7 +71,7 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
             atualizarLocais(lista)
         })
         carregamentoDados(true)
-        locaisViewModel.buscarLocais("",false,false)
+        locaisViewModel.buscarLocais(busca = "",isBuscaPorId = false,isDeleted = false)
     }
 
     private fun onClickItemRecyclerView(index: Int){
@@ -81,18 +81,18 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
 
     private fun onClickItemButtonRecyclerView(index: Int){
         carregamentoDados(true)
-        locaisViewModel.buscarLocais("$index",true,false)
+        locaisViewModel.buscarLocais(busca = "$index",isBuscaPorId = true,isDeleted = false)
     }
 
     private fun atualizarLocalDefault(defLocal: LocalVO){
         tvLocActLocal.text = defLocal.titulo
         if (defLocal.latitude.toDoubleOrNull() != null) {
             val fotoPeriodo = SolarUtils().fotoPeriodo(
-                    defLocal.latitude.toDouble()+0,
-                    defLocal.longitude.toDouble()+0,
-                    defLocal.fusoHorario.toInt()+0,
-                    Calendar.getInstance()[Calendar.DAY_OF_YEAR]+0,
-                    Calendar.getInstance()[Calendar.YEAR]+0)
+                    latitude = defLocal.latitude.toDouble(),
+                    longitude = defLocal.longitude.toDouble(),
+                    fusoHorario = defLocal.fusoHorario.toInt(),
+                    diaJuliano = Calendar.getInstance()[Calendar.DAY_OF_YEAR],
+                    ano = Calendar.getInstance()[Calendar.YEAR])
             tvLocActNascente.text = fotoPeriodo[1]
             tvLocActPoente.text = fotoPeriodo[2]
         }
@@ -110,7 +110,7 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
 
     override fun onModifyLocal() {
         carregamentoDados(true)
-        locaisViewModel.buscarLocais("",false,true)
+        locaisViewModel.buscarLocais(busca = "",isBuscaPorId = false,isDeleted = true)
     }
     
     private fun carregamentoDados(isLoading: Boolean){
@@ -131,12 +131,11 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
 
     private fun getShareLocalDefault() : LocalVO{
         val defLocal = LocalVO(
-                -1,
-                "Selecione sua Localização",
-                "",
-                "",
-                "",
-                ""
+                id = -1,
+                titulo = getString(R.string.txt_sem_local),
+                latitude = "",
+                longitude = "",
+                fusoHorario = ""
         )
         val ultimoItemRegGson = getInstanceSharedPreferences().getString("localDef", Gson().toJson(defLocal))
         val convTipo = object : TypeToken<LocalVO>(){}.type

@@ -47,9 +47,9 @@ class LocalEditDialog : DialogFragment(), DialogInterface.OnClickListener {
 
         return AlertDialog.Builder(activity as Activity)
                 .setView(view)
-                .setNeutralButton("VOLTAR",this)
-                .setNegativeButton("EXCLUIR",this)
-                .setPositiveButton("EDITAR",this)
+                .setNeutralButton(getString(R.string.txt_btnDialogsVoltar),this)
+                .setNegativeButton(getString(R.string.txt_btnDialogsExcluir),this)
+                .setPositiveButton(getString(R.string.txt_btnDialogsEditar),this)
                 .create()
     }
 
