@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.brsan7.oct.application.OctApplication
 import com.brsan7.oct.model.EventoVO
+import com.brsan7.oct.utils.TempoUtils
 import com.prolificinteractive.materialcalendarview.CalendarDay
 
 class MainViewModel: ViewModel() {
@@ -12,6 +13,32 @@ class MainViewModel: ViewModel() {
     private var _vmRcvMain = MutableLiveData<List<EventoVO>>()
     val vmRcvMain: LiveData<List<EventoVO>>
         get() = _vmRcvMain
+
+    fun verificarAtualizarTodosEventos(){
+        var listaCompleta: List<EventoVO>
+        Thread {
+            try {
+                listaCompleta = OctApplication.instance.helperDB?.buscarEventos(
+                        busca = "",
+                        isBuscaPorData = false)
+                        ?: mutableListOf()
+
+                val evtsAtualizados = TempoUtils().atualizarEventos(listaCompleta)
+                for (index in evtsAtualizados.indices){
+                    if (evtsAtualizados[index].recorrencia == "Finalizado"){
+                        OctApplication.instance.helperDB?.deletarEvento(evtsAtualizados[index].id)
+                    }
+                    else{
+                        OctApplication.instance.helperDB?.modificarEvento(evtsAtualizados[index])
+                    }
+                }
+                buscarEventosDoDia(isDeleted = false)
+
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+            }
+        }.start()
+    }
 
     fun buscarEventosDoDia(isDeleted: Boolean){
 

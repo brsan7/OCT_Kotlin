@@ -84,7 +84,7 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
             atualizarEventosDoDia(lista)
         })
         carregamentoDados(true)
-        mainViewModel.buscarEventosDoDia(false)
+        mainViewModel.verificarAtualizarTodosEventos()
     }
 
     private fun onClickItemRecyclerView(id: Int){

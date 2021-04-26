@@ -188,7 +188,8 @@ class RegistroEventoActivity : DrawerMenuActivity(),
                 else -> { "0_0" }
             }
 
-            if ( recorrencia == "2_0" || recorrencia == "5_0" || recorrencia == "7_0" ){ //Evento Dinâmico
+            if ( tipo == "1" && recorrencia == "2_0" || recorrencia == "5_0" || recorrencia == "7_0" ){ //Evento Dinâmico
+
                 data = "${_evento.recorrencia.split("_")[1].split("*")[0]}*" //Regra de recorrência
             }
             data += "${getStringDiaSemana(_evento.data)}, ${_evento.data}" //Dia da Semana
