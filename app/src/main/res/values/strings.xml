@@ -21,7 +21,7 @@
     <string name="hint_etRegLocActDescricao">Descrição (Opcional)</string>
     <string name="txt_btnRegLocActRegistrar">Registrar</string>
     <string name="hint_etRegLocActLatitude">Latitude (-23.123)</string>
-    <string name="hint_etRegLocActLongitude">Longitude (-45.123)</string>
+    <string name="hint_etRegLocActLongitude">Longitude (45.123)</string>
     <string name="hint_etLocEdDiagLocal">Local</string>
     <string name="label_tvLocEdDiagLatitude">Latitude:</string>
     <string name="label_tvLocEdDiagLongitude">Longitude:</string>

@@ -39,8 +39,8 @@ open class TempoUtils {
                             dia>hoje[Calendar.DAY_OF_MONTH] -> false
                             else -> {
                                 when{
-                                    hora<hoje[Calendar.HOUR] -> true
-                                    hora>hoje[Calendar.HOUR] -> false
+                                    hora<hoje[Calendar.HOUR_OF_DAY] -> true
+                                    hora>hoje[Calendar.HOUR_OF_DAY] -> false
                                     else -> {
                                         when{
                                             minuto<hoje[Calendar.MINUTE] -> true
@@ -67,6 +67,24 @@ open class TempoUtils {
             OctApplication.instance.getString(R.string.label_rbtnDiagSelDiaSemSex).substring(0..2) -> {6}
             OctApplication.instance.getString(R.string.label_rbtnDiagSelDiaSemSab).substring(0..2) -> {7}
             else -> {0}
+        }
+    }
+
+    fun getStringDiaSemana(data: String) : String{
+        val calendardata = Calendar.getInstance().apply {
+            set(Calendar.DAY_OF_MONTH, data.split("/")[0].toInt())
+            set(Calendar.MONTH, data.split("/")[1].toInt()-1)
+            set(Calendar.YEAR, data.split("/")[2].toInt())
+        }
+        return when(calendardata[Calendar.DAY_OF_WEEK]){
+            1 -> { OctApplication.instance.getString(R.string.label_rbtnDiagSelDiaSemDom).substring(0..2) }
+            2 -> { OctApplication.instance.getString(R.string.label_rbtnDiagSelDiaSemSeg).substring(0..2) }
+            3 -> { OctApplication.instance.getString(R.string.label_rbtnDiagSelDiaSemTer).substring(0..2) }
+            4 -> { OctApplication.instance.getString(R.string.label_rbtnDiagSelDiaSemQua).substring(0..2) }
+            5 -> { OctApplication.instance.getString(R.string.label_rbtnDiagSelDiaSemQui).substring(0..2) }
+            6 -> { OctApplication.instance.getString(R.string.label_rbtnDiagSelDiaSemSex).substring(0..2) }
+            7 -> { OctApplication.instance.getString(R.string.label_rbtnDiagSelDiaSemSab).substring(0..2) }
+            else -> { "" }
         }
     }
 
@@ -194,7 +212,7 @@ open class TempoUtils {
                 && evtObsoleto.data.split("/")[1].toInt() == 2
                 && !isBissexto(ano)) { -1 } else { 0 }
 
-        while (isObsoleto(EventoVO(data="${dia+correcaoFev}/$mes/$ano"))) {
+        while (isObsoleto(EventoVO(data="${dia+correcaoFev}/$mes/$ano",hora = evtObsoleto.hora))) {
 
             mes++
             if (mes > 12){
@@ -299,8 +317,7 @@ open class TempoUtils {
                     semanasAlvo == dataProjetada[Calendar.DAY_OF_WEEK_IN_MONTH] &&
                     evtAtualizado == EventoVO() &&
                     !isObsoleto(EventoVO(
-                            data="${dataProjetada[Calendar.DAY_OF_MONTH]}/${dataProjetada[Calendar.MONTH]+1}/${dataProjetada[Calendar.YEAR]}",
-                            hora = evtObsoleto.hora)))
+                            data="${dataProjetada[Calendar.DAY_OF_MONTH]}/${dataProjetada[Calendar.MONTH]+1}/${dataProjetada[Calendar.YEAR]}")))
             {
                 evtAtualizado = EventoVO(
                         id = evtObsoleto.id,

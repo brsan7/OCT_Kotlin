@@ -78,7 +78,7 @@ class HelperDB (
         val lista = mutableListOf<EventoVO>()
         val sql:String
         if(isBuscaPorData){
-            sql = "SELECT * FROM $TABLE_EVENTOS WHERE $COLUMNS_DATA_EVENTOS LIKE '%$busca%'"
+            sql = "SELECT * FROM $TABLE_EVENTOS WHERE $COLUMNS_DATA_EVENTOS LIKE '$busca'"
         }else{
             //sql = "SELECT * FROM $TABLE_EVENTOS"
             sql = "SELECT * FROM $TABLE_EVENTOS WHERE $COLUMNS_ID_EVENTOS LIKE '%$busca%'"

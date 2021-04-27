@@ -10,7 +10,6 @@ import com.brsan7.oct.dialogs.SelectDiasSemanaDialog
 import com.brsan7.oct.dialogs.SelectHoraDialog
 import com.brsan7.oct.model.EventoVO
 import com.brsan7.oct.viewmodels.RegEvtActivityViewModel
-import java.util.*
 
 class RegistroEventoActivity : DrawerMenuActivity(),
         SelectDiasSemanaDialog.SelecaoDiasSemana,
@@ -56,6 +55,7 @@ class RegistroEventoActivity : DrawerMenuActivity(),
         btnRegEvtActRegistrar = findViewById(R.id.btnRegEvtActRegistrar)
 
         if (ID_EXTRA > -1){btnRegEvtActRegistrar.text = getString(R.string.txt_btnDialogsEditar) }
+
         spnRegEvtActTipo.adapter = ArrayAdapter(
                 this,
                 R.layout.item_spinner,
@@ -71,6 +71,10 @@ class RegistroEventoActivity : DrawerMenuActivity(),
         spnRegEvtActTipo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(item: AdapterView<*>, view: View?, position: Int, id: Long) {
 
+                if (regEvtActivityViewModel.vmComposeReg.value?.tipo?.toIntOrNull() ?: 0 == 0){
+                    startupActivity = false
+                    regEvtActivityViewModel.reStartActivity = false
+                }
                 if (!regEvtActivityViewModel.reStartActivity) {
                     atualizarSpnRegEvtActTipo(position)
                 }
@@ -135,74 +139,7 @@ class RegistroEventoActivity : DrawerMenuActivity(),
         regEvtActivityViewModel.reStartActivity = true
     }
 
-    private fun setComposeRegistro(_evento: EventoVO){
-        var evtSelecionado = _evento
-        if (_evento.id >= 0) {
-            var data = ""
-            val tipo = when (_evento.tipo) {
-                resources.getStringArray(R.array.tipo_registro)[1] -> { "1" }//Feriado
-                resources.getStringArray(R.array.tipo_registro)[2] -> { "2" }//Compromisso
-                resources.getStringArray(R.array.tipo_registro)[3] -> { "3" }//Lembrete
-                else -> { "0" }
-            }
-            val recorrencia = when (_evento.recorrencia.split("_")[0]) {
-                resources.getStringArray(R.array.recorrencia_lembrete)[1] -> { "1_0" }//Único
-                resources.getStringArray(R.array.recorrencia_lembrete)[2] -> { "2_0" }//Semanal Fixo
-                resources.getStringArray(R.array.recorrencia_lembrete)[3] -> { //"3_0" }//Semanal Dinâmico
-                    "3_0*${_evento.recorrencia.split("_")[1]}"
-                }
-                resources.getStringArray(R.array.recorrencia_lembrete)[4] -> { "4_0" }//Mensal Fixo
-                resources.getStringArray(R.array.recorrencia_lembrete)[5] -> { "5_0" }//Mensal Dinâmico
-                resources.getStringArray(R.array.recorrencia_lembrete)[6] -> { //Anual Fixo
-
-                    if (tipo == "1") { "1_0" } //Feriado
-                    else { "6_0" } //Lembrete
-                }
-                resources.getStringArray(R.array.recorrencia_lembrete)[7] -> { //Anual Dinâmico
-
-                    if (tipo == "1") { "2_0" } //Feriado
-                    else { "7_0" } //Lembrete
-                }
-                resources.getStringArray(R.array.recorrencia_lembrete)[8] -> { //"8" }//Periódico
-
-                    when (_evento.recorrencia.split("_")[1].split("*")[1]){ //Modos
-
-                        resources.getStringArray(R.array.recorrencia_periodica_modos)[1] -> { //Anos
-                            "8_1*${_evento.recorrencia.split("_")[1].split("*")[0]}"
-                        }
-                        resources.getStringArray(R.array.recorrencia_periodica_modos)[2] -> { //Meses
-                            "8_2*${_evento.recorrencia.split("_")[1].split("*")[0]}"
-                        }
-                        resources.getStringArray(R.array.recorrencia_periodica_modos)[3] -> { //Semanas
-                            "8_3*${_evento.recorrencia.split("_")[1].split("*")[0]}"
-                        }
-                        resources.getStringArray(R.array.recorrencia_periodica_modos)[4] -> { //Dias Corridos
-                            "8_4*${_evento.recorrencia.split("_")[1].split("*")[0]}"
-                        }
-                        resources.getStringArray(R.array.recorrencia_periodica_modos)[5] -> { //Dias Úteis
-                            "8_5*${_evento.recorrencia.split("_")[1].split("*")[0]}"
-                        }
-                        else -> {"8_0"}
-                    }
-                }
-                else -> { "0_0" }
-            }
-
-            if ( tipo == "1" && recorrencia == "2_0" || recorrencia == "5_0" || recorrencia == "7_0" ){ //Evento Dinâmico
-
-                data = "${_evento.recorrencia.split("_")[1].split("*")[0]}*" //Regra de recorrência
-            }
-            data += "${getStringDiaSemana(_evento.data)}, ${_evento.data}" //Dia da Semana
-            evtSelecionado = EventoVO(
-                    id = -1,
-                    titulo = _evento.titulo,
-                    data = data,
-                    hora = _evento.hora,
-                    tipo = tipo,
-                    recorrencia = recorrencia,
-                    descricao = _evento.descricao
-            )
-        }
+    private fun setComposeRegistro(evtSelecionado: EventoVO){
         etRegEvtActTitulo.setText(evtSelecionado.titulo)
         tvRegEvtActData.text = evtSelecionado.data
         tvRegEvtActHora.text = evtSelecionado.hora
@@ -278,11 +215,16 @@ class RegistroEventoActivity : DrawerMenuActivity(),
         tvRegEvtActData.text = diasSemanaSelecionado.data
         tvRegEvtActDiasSemana.text = diasSemanaSelecionado.recorrencia
         tvRegEvtActData.visibility = View.VISIBLE
-        tvRegEvtActHora.visibility = View.VISIBLE
+        if (spnRegEvtActTipo.selectedItemId == 2L){ //Compromisso
+            tvRegEvtActHora.visibility = View.VISIBLE
+        }
     }
 
     override fun onDataSelecionada(dataSelecionada : EventoVO) {
         tvRegEvtActData.text = dataSelecionada.data
+        if (spnRegEvtActTipo.selectedItemId == 2L){ //Compromisso
+            tvRegEvtActHora.visibility = View.VISIBLE
+        }
     }
 
     override fun onHoraSelecionada(horaSelecionada : EventoVO) {
@@ -313,68 +255,54 @@ class RegistroEventoActivity : DrawerMenuActivity(),
     }
 
     private fun atualizarSpnRegEvtActTipo(position: Int){
-        tvRegEvtActDiasSemana.visibility = View.GONE
+
+        spnRegEvtActRecorrencia.visibility = View.GONE
+        spnRegEvtActModo.visibility = View.GONE
         etRegEvtActModo.visibility = View.GONE
+        tvRegEvtActDiasSemana.visibility = View.GONE
         tvRegEvtActData.visibility = View.GONE
         tvRegEvtActHora.visibility = View.GONE
-        if (position == 0){
-            spnRegEvtActRecorrencia.visibility = View.GONE
-            spnRegEvtActModo.visibility = View.GONE
-        }
-        else {
+
+        if (position > 0){
             spnRegEvtActRecorrencia.visibility = View.VISIBLE
-            spnRegEvtActModo.visibility = View.VISIBLE
             setAdapterSpnRegEvtActRecorrencia()
         }
+
     }
     private fun atualizarSpnRegEvtActRecorrencia(position: Int){
 
+        spnRegEvtActModo.visibility = View.GONE
         etRegEvtActModo.visibility = View.GONE
-        if (position == 8){//Periódico
-            spnRegEvtActModo.visibility = View.VISIBLE
-        }
-        else {
-            spnRegEvtActModo.visibility = View.GONE
-            if (position != 0 && position != 3) {//Recorrência && Semanal Dinâmico
-                tvRegEvtActData.visibility = View.VISIBLE
-                tvRegEvtActHora.visibility = View.VISIBLE
+        tvRegEvtActDiasSemana.visibility = View.GONE
+        tvRegEvtActData.visibility = View.GONE
+        tvRegEvtActHora.visibility = View.GONE
+
+        if (position > 0 ) {
+            when (position) {
+                3 -> { //Semanal Dinamico
+                    tvRegEvtActDiasSemana.visibility = View.VISIBLE
+                    if (tvRegEvtActDiasSemana.text != getString(R.string.txt_tvRegAgActDiasSemana)){
+                        tvRegEvtActData.visibility = View.VISIBLE
+                        if (spnRegEvtActTipo.selectedItemId == 2L) {
+                            tvRegEvtActHora.visibility = View.VISIBLE
+                        }
+                    }
+                }
+                8 -> { spnRegEvtActModo.visibility = View.VISIBLE }
+                else -> { tvRegEvtActData.visibility = View.VISIBLE }
             }
-        }
-
-        if (spnRegEvtActRecorrencia.selectedItem == resources.getStringArray(R.array.recorrencia_compromisso)[3]){//Semanal Dinâmico
-            tvRegEvtActDiasSemana.visibility = View.VISIBLE
-        }else{tvRegEvtActDiasSemana.visibility = View.GONE}
-
-        if (spnRegEvtActTipo.selectedItem != resources.getStringArray(R.array.tipo_registro)[2]){//Compromisso
-            tvRegEvtActHora.visibility = View.GONE
         }
     }
     private fun atualizarSpnRegEvtActModo(position: Int){
-        if (position == 0){
-            etRegEvtActModo.visibility = View.GONE
 
-        }
-        else {
+        etRegEvtActModo.visibility = View.GONE
+        tvRegEvtActDiasSemana.visibility = View.GONE
+        tvRegEvtActData.visibility = View.GONE
+        tvRegEvtActHora.visibility = View.GONE
+
+        if (position > 0 ) {
             etRegEvtActModo.visibility = View.VISIBLE
             tvRegEvtActData.visibility = View.VISIBLE
-        }
-    }
-
-    private fun getStringDiaSemana(data: String) : String{
-        val calendardata = Calendar.getInstance().apply {
-            set(Calendar.DAY_OF_MONTH, data.split("/")[0].toInt())
-            set(Calendar.MONTH, data.split("/")[1].toInt()-1)
-            set(Calendar.YEAR, data.split("/")[2].toInt())
-        }
-        return when(calendardata[Calendar.DAY_OF_WEEK]){
-            1 -> { getString(R.string.label_rbtnDiagSelDiaSemDom).substring(0..2) }
-            2 -> { getString(R.string.label_rbtnDiagSelDiaSemSeg).substring(0..2) }
-            3 -> { getString(R.string.label_rbtnDiagSelDiaSemTer).substring(0..2) }
-            4 -> { getString(R.string.label_rbtnDiagSelDiaSemQua).substring(0..2) }
-            5 -> { getString(R.string.label_rbtnDiagSelDiaSemQui).substring(0..2) }
-            6 -> { getString(R.string.label_rbtnDiagSelDiaSemSex).substring(0..2) }
-            7 -> { getString(R.string.label_rbtnDiagSelDiaSemSab).substring(0..2) }
-            else -> { "" }
         }
     }
 }
