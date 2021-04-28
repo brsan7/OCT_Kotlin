@@ -76,12 +76,10 @@ class HelperDB (
 
         val db = readableDatabase ?: return mutableListOf()
         val lista = mutableListOf<EventoVO>()
-        val sql:String
-        if(isBuscaPorData){
-            sql = "SELECT * FROM $TABLE_EVENTOS WHERE $COLUMNS_DATA_EVENTOS LIKE '$busca'"
+        val sql = if(isBuscaPorData){
+            "SELECT * FROM $TABLE_EVENTOS WHERE $COLUMNS_DATA_EVENTOS LIKE '$busca'"
         }else{
-            //sql = "SELECT * FROM $TABLE_EVENTOS"
-            sql = "SELECT * FROM $TABLE_EVENTOS WHERE $COLUMNS_ID_EVENTOS LIKE '%$busca%'"
+            "SELECT * FROM $TABLE_EVENTOS WHERE $COLUMNS_ID_EVENTOS LIKE '%$busca%'"
         }
         val cursor = db.rawQuery(sql, arrayOf())
         if (cursor == null){
@@ -162,11 +160,11 @@ class HelperDB (
 
         val db = readableDatabase ?: return mutableListOf()
         val lista = mutableListOf<LocalVO>()
-    val sql:String
-    if(isBuscaPorId){
-        sql = "SELECT * FROM $TABLE_LOCAIS WHERE $COLUMNS_ID_LOCAIS LIKE '%$busca%'"
+    //val sql:String
+    val sql = if(isBuscaPorId){
+        "SELECT * FROM $TABLE_LOCAIS WHERE $COLUMNS_ID_LOCAIS LIKE '%$busca%'"
     }else{
-        sql = "SELECT * FROM $TABLE_LOCAIS"
+        "SELECT * FROM $TABLE_LOCAIS"
     }
 
     val cursor = db.rawQuery(sql, arrayOf())

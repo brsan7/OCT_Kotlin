@@ -1,14 +1,19 @@
 package com.brsan7.oct.utils
 
+import com.brsan7.oct.R
+import com.brsan7.oct.application.OctApplication
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlin.math.*
 
-const val RAD = 57.295 //conv=1rad=57,3º
-const val DECLINACAO_MAX_TERRA = 23.45
-const val ORBITA_COMPLETA = 360.0
-const val ALINHAMENTO_ANO_SOLAR = 284
+
 
 open class SolarUtils {
+
+    private val RAD = 57.295 //conv=1rad=57,3º
+    private val DECLINACAO_MAX_TERRA = 23.45
+    private val ORBITA_COMPLETA = 360.0
+    private val ALINHAMENTO_ANO_SOLAR = 284
+    private fun isBissexto(ano: Int): Boolean = (( ano % 4 == 0 && ano % 100 != 0 ) || ano % 400 == 0)
 
     fun fotoPeriodo(
             latitude: Double,
@@ -25,8 +30,7 @@ open class SolarUtils {
         val correcaoLongitude: Double
 
         val fuso = if (fusoHorario<0){fusoHorario*-15} else{fusoHorario*15}
-        val isBissexto: Boolean = (( ano % 4 == 0 && ano % 100 != 0 ) || ano % 400 == 0)
-        val diasDoAno: Int = if(isBissexto){ 366 } else{ 365 }
+        val diasDoAno = if(isBissexto(ano)){ 366 } else{ 365 }
 
         declinacaoTerrestre =
                 DECLINACAO_MAX_TERRA*sin(ORBITA_COMPLETA/diasDoAno*(diaJuliano+ALINHAMENTO_ANO_SOLAR)/RAD)
@@ -51,19 +55,19 @@ open class SolarUtils {
         return if (latitude < 0){
             //Hemisfério Sul
             when (diaJuliano){
-                in 1..79+(diasDoAno-365) -> "Verão"
+                in 1..79+(diasDoAno-365) -> OctApplication.instance.getString(R.string.txt_EstacaoVerao)
 
-                80+(diasDoAno-365) -> "Equinócio de Outono"
-                in 81+(diasDoAno-365)..171+(diasDoAno-365) -> "Outono"
+                80+(diasDoAno-365) -> OctApplication.instance.getString(R.string.txt_EstacaoEqnOutono)
+                in 81+(diasDoAno-365)..171+(diasDoAno-365) -> OctApplication.instance.getString(R.string.txt_EstacaoOutono)
 
-                172+(diasDoAno-365) -> "Solstício de Inverno"
-                in 173+(diasDoAno-365)..264+(diasDoAno-365) -> "Inverno"
+                172+(diasDoAno-365) -> OctApplication.instance.getString(R.string.txt_EstacaoSltInverno)
+                in 173+(diasDoAno-365)..264+(diasDoAno-365) -> OctApplication.instance.getString(R.string.txt_EstacaoInverno)
 
-                265+(diasDoAno-365) -> "Equinócio de Primavera"
-                in 266+(diasDoAno-365)..354+(diasDoAno-365) -> "Primavera"
+                265+(diasDoAno-365) -> OctApplication.instance.getString(R.string.txt_EstacaoEqnPrimavera)
+                in 266+(diasDoAno-365)..354+(diasDoAno-365) -> OctApplication.instance.getString(R.string.txt_EstacaoPrimavera)
 
-                355+(diasDoAno-365) -> "Solstício de Verão"
-                in 356+(diasDoAno-365)..diasDoAno -> "Verão"
+                355+(diasDoAno-365) -> OctApplication.instance.getString(R.string.txt_EstacaoSltVerao)
+                in 356+(diasDoAno-365)..diasDoAno -> OctApplication.instance.getString(R.string.txt_EstacaoVerao)
 
                 else -> ""
             }
@@ -71,19 +75,19 @@ open class SolarUtils {
         else{
             //Hemisfério Norte
             when (diaJuliano){
-                in 1..79+(diasDoAno-365) -> "Inverno"
+                in 1..79+(diasDoAno-365) -> OctApplication.instance.getString(R.string.txt_EstacaoInverno)
 
-                80+(diasDoAno-365) -> "Equinócio de Primavera"
-                in 81+(diasDoAno-365)..171+(diasDoAno-365) -> "Primavera"
+                80+(diasDoAno-365) -> OctApplication.instance.getString(R.string.txt_EstacaoEqnPrimavera)
+                in 81+(diasDoAno-365)..171+(diasDoAno-365) -> OctApplication.instance.getString(R.string.txt_EstacaoPrimavera)
 
-                172+(diasDoAno-365) -> "Solstício de Verão"
-                in 173+(diasDoAno-365)..264+(diasDoAno-365) -> "Verão"
+                172+(diasDoAno-365) -> OctApplication.instance.getString(R.string.txt_EstacaoSltVerao)
+                in 173+(diasDoAno-365)..264+(diasDoAno-365) -> OctApplication.instance.getString(R.string.txt_EstacaoVerao)
 
-                265+(diasDoAno-365) -> "Equinócio de Outono"
-                in 266+(diasDoAno-365)..354+(diasDoAno-365) -> "Outono"
+                265+(diasDoAno-365) -> OctApplication.instance.getString(R.string.txt_EstacaoEqnOutono)
+                in 266+(diasDoAno-365)..354+(diasDoAno-365) -> OctApplication.instance.getString(R.string.txt_EstacaoOutono)
 
-                355+(diasDoAno-365) -> "Solstício de Inverno"
-                in 356+(diasDoAno-365)..diasDoAno -> "Inverno"
+                355+(diasDoAno-365) -> OctApplication.instance.getString(R.string.txt_EstacaoSltInverno)
+                in 356+(diasDoAno-365)..diasDoAno -> OctApplication.instance.getString(R.string.txt_EstacaoInverno)
 
                 else -> ""
             }
@@ -93,8 +97,7 @@ open class SolarUtils {
     fun datasEstacoesDoAno(ano: Int): MutableList<CalendarDay>{
 
         val datas: MutableList<CalendarDay> = mutableListOf()
-        val isBissexto: Boolean = (( ano % 4 == 0 && ano % 100 != 0 ) || ano % 400 == 0)
-        val diasDoAno: Int = if(isBissexto){ 366 } else{ 365 }
+        val diasDoAno = if(isBissexto(ano)){ 366 } else{ 365 }
 
         datas.add(CalendarDay.from(ano+0,3,21+(diasDoAno - 365)))
         datas.add(CalendarDay.from(ano+0,6,21+(diasDoAno - 365)))

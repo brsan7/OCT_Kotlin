@@ -18,8 +18,13 @@ class LocEditDialogViewModel: ViewModel() {
             var listaFiltrada: List<LocalVO>
             Thread {
                 try {
-                    listaFiltrada = OctApplication.instance.helperDB?.buscarLocais("$id",true) ?: mutableListOf()
+                    listaFiltrada = OctApplication.instance.helperDB?.buscarLocais(
+                            busca = "$id",
+                            isBuscaPorId = true
+                    ) ?: mutableListOf()
+
                     _vmLocSelecionado.postValue(listaFiltrada)
+
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                 }

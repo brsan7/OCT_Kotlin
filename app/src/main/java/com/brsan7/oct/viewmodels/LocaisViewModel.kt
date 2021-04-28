@@ -22,7 +22,10 @@ class LocaisViewModel: ViewModel() {
             Thread {
                 if (isDeleted){Thread.sleep(1000)}
                 try {
-                    lista = OctApplication.instance.helperDB?.buscarLocais(busca,isBuscaPorId) ?: mutableListOf()
+                    lista = OctApplication.instance.helperDB?.buscarLocais(
+                            busca = busca,
+                            isBuscaPorId = isBuscaPorId
+                    ) ?: mutableListOf()
 
                     if (isBuscaPorId){ _vmDefLocal.postValue(lista.first()) }
                     else{ _vmRcvLocais.postValue(lista) }

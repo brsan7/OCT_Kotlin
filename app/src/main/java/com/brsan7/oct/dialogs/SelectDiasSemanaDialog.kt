@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.brsan7.oct.R
 import com.brsan7.oct.model.EventoVO
+import com.brsan7.oct.utils.TempoUtils
 import java.util.*
 
 class SelectDiasSemanaDialog : DialogFragment(), DialogInterface.OnClickListener {
@@ -20,8 +21,6 @@ class SelectDiasSemanaDialog : DialogFragment(), DialogInterface.OnClickListener
     private lateinit var rbtnDiagSelDiaSemQui: CheckBox
     private lateinit var rbtnDiagSelDiaSemSex: CheckBox
     private lateinit var rbtnDiagSelDiaSemSab: CheckBox
-    private lateinit var selectionDiasSemana: String
-    private lateinit var proxDiaValido: String
 
     companion object{
         fun newInstance(): SelectDiasSemanaDialog {
@@ -69,57 +68,21 @@ class SelectDiasSemanaDialog : DialogFragment(), DialogInterface.OnClickListener
         return diasSemana
     }
 
-    private fun composeProxDiaValido() : String{
+    private fun composeProxDiaValido(selectionDiasSemana: String) : String{
 
-        proxDiaValido = ""
-
-        var diaJuliano = Calendar.getInstance()[Calendar.DAY_OF_YEAR]
-        var ano = Calendar.getInstance()[Calendar.YEAR]
-        val isBissexto: Boolean = (( ano % 4 == 0 && ano % 100 != 0 ) || ano % 400 == 0)
-
-        while (proxDiaValido.isEmpty()){
-            val data = Calendar.getInstance().apply {
-                set(Calendar.YEAR,ano)
-                set(Calendar.DAY_OF_YEAR,diaJuliano)
-            }
-            for (index in selectionDiasSemana.split(",").indices){
-                val diaSemana = when(selectionDiasSemana.split(",")[index]){
-                    rbtnDiagSelDiaSemDom.text.substring(0..2) -> {1}
-                    rbtnDiagSelDiaSemSeg.text.substring(0..2) -> {2}
-                    rbtnDiagSelDiaSemTer.text.substring(0..2) -> {3}
-                    rbtnDiagSelDiaSemQua.text.substring(0..2) -> {4}
-                    rbtnDiagSelDiaSemQui.text.substring(0..2) -> {5}
-                    rbtnDiagSelDiaSemSex.text.substring(0..2) -> {6}
-                    rbtnDiagSelDiaSemSab.text.substring(0..2) -> {7}
-                    else -> {0}
-                }
-                if (diaSemana == data[Calendar.DAY_OF_WEEK]){
-                    val txtDiaSemana = when(data[Calendar.DAY_OF_WEEK]){
-                        1 -> { getString(R.string.label_rbtnDiagSelDiaSemDom).substring(0..2) }
-                        2 -> { getString(R.string.label_rbtnDiagSelDiaSemSeg).substring(0..2) }
-                        3 -> { getString(R.string.label_rbtnDiagSelDiaSemTer).substring(0..2) }
-                        4 -> { getString(R.string.label_rbtnDiagSelDiaSemQua).substring(0..2) }
-                        5 -> { getString(R.string.label_rbtnDiagSelDiaSemQui).substring(0..2) }
-                        6 -> { getString(R.string.label_rbtnDiagSelDiaSemSex).substring(0..2) }
-                        7 -> { getString(R.string.label_rbtnDiagSelDiaSemSab).substring(0..2) }
-                        else -> { "" }
-                    }
-                    proxDiaValido = "$txtDiaSemana, ${data[Calendar.DAY_OF_MONTH]}/${data[Calendar.MONTH]+1}/${data[Calendar.YEAR]}"
-                }
-            }
-            diaJuliano++
-            if (diaJuliano == 366 && !isBissexto || diaJuliano == 367 && isBissexto){
-                diaJuliano = 1
-                ano++
-            }
-        }
-        return proxDiaValido
+        val data = Calendar.getInstance()
+        val hoje = EventoVO(
+                data= "${data[Calendar.DAY_OF_MONTH]}/${data[Calendar.MONTH]+1}/${data[Calendar.YEAR]}",
+                recorrencia = "projecao_$selectionDiasSemana"
+        )
+        val dataProjetada = TempoUtils().projecaoSemanalDinamico(hoje)
+        return "${TempoUtils().getStringDiaSemana(dataProjetada.data)}, ${dataProjetada.data}"
     }
 
     private fun onClickSelecionar(){
-        selectionDiasSemana = composeSelectionDiasSemana()
+        val selectionDiasSemana = composeSelectionDiasSemana()
         if (selectionDiasSemana.isNotEmpty()) {
-            proxDiaValido = composeProxDiaValido()
+            val proxDiaValido = composeProxDiaValido(selectionDiasSemana)
             val diasSemanaSelecionado = EventoVO(
                     data = proxDiaValido,
                     recorrencia = selectionDiasSemana

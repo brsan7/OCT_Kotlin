@@ -3,6 +3,7 @@ package com.brsan7.oct.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.brsan7.oct.R
 import com.brsan7.oct.application.OctApplication
 import com.brsan7.oct.model.IdItemSpinnersVO
 import com.brsan7.oct.model.EventoVO
@@ -37,18 +38,14 @@ class CalEvtActivityViewModel: ViewModel() {
     val vmSpnCalActLembrete: LiveData<Array<String>>
         get() = _vmSpnCalActLembrete
 
-    private var arrayTipos = Array(3) {""}
     var idItemSpinners: MutableList<IdItemSpinnersVO> = mutableListOf()
     var diaSelecionado: CalendarDay = CalendarDay.today()
     var reStartActivity = false
 ////////////////////////Spinners///////////////////////////////////////
 
-    fun getAllDecorateDates(txtSpnFeriado: String,txtSpnCompromisso: String,txtSpnLembrete: String) {
+    fun getAllDecorateDates() {
         if (_vmMcvCalActFeriado.value?.toMutableList()?.size == null) {
 
-            arrayTipos[0] = txtSpnFeriado
-            arrayTipos[1] = txtSpnCompromisso
-            arrayTipos[2] = txtSpnLembrete
             var listaCompleta: List<EventoVO>
             Thread {
                 try {
@@ -57,11 +54,11 @@ class CalEvtActivityViewModel: ViewModel() {
                             isBuscaPorData = false)
                             ?: mutableListOf()
 
-                    _vmMcvCalActFeriado.postValue(convEvtToCalDayList(arrayTipos[0],listaCompleta))
+                    _vmMcvCalActFeriado.postValue(convEvtToCalDayList(OctApplication.instance.getString(R.string.txt_spnRegEvtActTipoFeriado),listaCompleta))
 
-                    _vmMcvCalActCompromisso.postValue(convEvtToCalDayList(arrayTipos[1],listaCompleta))
+                    _vmMcvCalActCompromisso.postValue(convEvtToCalDayList(OctApplication.instance.getString(R.string.txt_spnRegEvtActTipoCompromisso),listaCompleta))
 
-                    _vmMcvCalActLembrete.postValue(convEvtToCalDayList(arrayTipos[2],listaCompleta))
+                    _vmMcvCalActLembrete.postValue(convEvtToCalDayList(OctApplication.instance.getString(R.string.txt_spnRegEvtActTipoLembrete),listaCompleta))
 
                 } catch (ex: Exception) {
                     ex.printStackTrace()
@@ -115,11 +112,11 @@ class CalEvtActivityViewModel: ViewModel() {
                             isBuscaPorData = true)
                             ?: mutableListOf()
 
-                    _vmSpnCalActFeriado.postValue(convListArraySpinner(tipo = arrayTipos[0], lista = listaFiltrada))
+                    _vmSpnCalActFeriado.postValue(convListArraySpinner(tipo = OctApplication.instance.getString(R.string.txt_spnRegEvtActTipoFeriado), lista = listaFiltrada))
 
-                    _vmSpnCalActCompromisso.postValue(convListArraySpinner(tipo = arrayTipos[1], lista = listaFiltrada))
+                    _vmSpnCalActCompromisso.postValue(convListArraySpinner(tipo = OctApplication.instance.getString(R.string.txt_spnRegEvtActTipoCompromisso), lista = listaFiltrada))
 
-                    _vmSpnCalActLembrete.postValue(convListArraySpinner(tipo = arrayTipos[2], lista = listaFiltrada))
+                    _vmSpnCalActLembrete.postValue(convListArraySpinner(tipo = OctApplication.instance.getString(R.string.txt_spnRegEvtActTipoLembrete), lista = listaFiltrada))
 
                 } catch (ex: Exception) {
                     ex.printStackTrace()

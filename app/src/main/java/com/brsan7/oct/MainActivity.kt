@@ -1,8 +1,6 @@
 package com.brsan7.oct
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -13,12 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.brsan7.oct.adapter.EventosAdapter
 import com.brsan7.oct.dialogs.EventoDetailDialog
 import com.brsan7.oct.model.EventoVO
-import com.brsan7.oct.model.LocalVO
+import com.brsan7.oct.utils.SharedPreferencesUtils
 import com.brsan7.oct.utils.SolarUtils
 import com.brsan7.oct.viewmodels.MainViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import java.util.*
 
 
@@ -39,7 +35,7 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
 
         setupDrawerMenu(getString(R.string.titulo_Main))
         setupComponentes()
-        setupLocalDefault(getShareLocalDefault())
+        setupLocalDefault()
         setupRecyclerView()
         setupMainViewModel()
     }
@@ -59,15 +55,16 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
         }
     }
 
-    private fun setupLocalDefault(defLocal: LocalVO){
+    private fun setupLocalDefault(){
+        val defLocal = SharedPreferencesUtils().getShareLocalDefault()
         tvMainLocal.text = defLocal.titulo
         if (defLocal.latitude.toDoubleOrNull() != null) {
             val fotoPeriodo = SolarUtils().fotoPeriodo(
-                    defLocal.latitude.toDouble()+0,
-                    defLocal.longitude.toDouble()+0,
-                    defLocal.fusoHorario.toInt()+0,
-                    Calendar.getInstance()[Calendar.DAY_OF_YEAR]+0,
-                    Calendar.getInstance()[Calendar.YEAR]+0)
+                    latitude = defLocal.latitude.toDouble(),
+                    longitude = defLocal.longitude.toDouble(),
+                    fusoHorario = defLocal.fusoHorario.toInt(),
+                    diaJuliano = Calendar.getInstance()[Calendar.DAY_OF_YEAR],
+                    ano = Calendar.getInstance()[Calendar.YEAR])
             tvMainNascente.text = fotoPeriodo[1]
             tvMainPoente.text = fotoPeriodo[2]
         }
@@ -105,22 +102,5 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
 
     private fun carregamentoDados(isLoading: Boolean){
         pbMain.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-
-    private fun getInstanceSharedPreferences() : SharedPreferences {
-        return getSharedPreferences("com.brsan7.oct.LOCAL_DEFAULT", Context.MODE_PRIVATE)
-    }
-
-    private fun getShareLocalDefault() : LocalVO {
-        val defLocal = LocalVO(
-            id = -1,
-            titulo = getString(R.string.txt_sem_local),
-            latitude = "",
-            longitude = "",
-            fusoHorario = ""
-        )
-        val ultimoItemRegGson = getInstanceSharedPreferences().getString("localDef", Gson().toJson(defLocal))
-        val convTipo = object : TypeToken<LocalVO>(){}.type
-        return Gson().fromJson(ultimoItemRegGson,convTipo)
     }
 }

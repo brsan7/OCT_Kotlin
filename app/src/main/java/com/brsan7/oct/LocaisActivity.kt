@@ -1,24 +1,20 @@
 package com.brsan7.oct
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.content.edit
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brsan7.oct.adapter.LocaisAdapter
 import com.brsan7.oct.dialogs.LocalEditDialog
 import com.brsan7.oct.model.LocalVO
+import com.brsan7.oct.utils.SharedPreferencesUtils
 import com.brsan7.oct.utils.SolarUtils
 import com.brsan7.oct.viewmodels.LocaisViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import java.util.*
 
 class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
@@ -41,7 +37,7 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
         setupComponentes()
         setupRecyclerView()
         setupLocaisViewModel()
-        atualizarLocalDefault(getShareLocalDefault())
+        atualizarLocalDefault()
     }
 
     private fun setupComponentes() {
@@ -65,7 +61,8 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
     private fun setupLocaisViewModel() {
         locaisViewModel = ViewModelProvider(this).get(LocaisViewModel::class.java)
         locaisViewModel.vmDefLocal.observe(this, { lista->
-            setShareLocalDefault(lista)
+            SharedPreferencesUtils().setShareLocalDefault(lista)
+            atualizarLocalDefault()
         })
         locaisViewModel.vmRcvLocais.observe(this, { lista->
             atualizarLocais(lista)
@@ -84,7 +81,8 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
         locaisViewModel.buscarLocais(busca = "$index",isBuscaPorId = true,isDeleted = false)
     }
 
-    private fun atualizarLocalDefault(defLocal: LocalVO){
+    private fun atualizarLocalDefault(){
+        val defLocal = SharedPreferencesUtils().getShareLocalDefault()
         tvLocActLocal.text = defLocal.titulo
         if (defLocal.latitude.toDoubleOrNull() != null) {
             val fotoPeriodo = SolarUtils().fotoPeriodo(
@@ -115,30 +113,5 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
     
     private fun carregamentoDados(isLoading: Boolean){
         pbLocais.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-
-    private fun getInstanceSharedPreferences() : SharedPreferences {
-        return getSharedPreferences("com.brsan7.oct.LOCAL_DEFAULT", Context.MODE_PRIVATE)
-    }
-
-    private fun setShareLocalDefault(meuLocal: LocalVO){
-        getInstanceSharedPreferences().edit{
-            putString("localDef", Gson().toJson(meuLocal))
-            commit()
-        }
-        atualizarLocalDefault(meuLocal)
-    }
-
-    private fun getShareLocalDefault() : LocalVO{
-        val defLocal = LocalVO(
-                id = -1,
-                titulo = getString(R.string.txt_sem_local),
-                latitude = "",
-                longitude = "",
-                fusoHorario = ""
-        )
-        val ultimoItemRegGson = getInstanceSharedPreferences().getString("localDef", Gson().toJson(defLocal))
-        val convTipo = object : TypeToken<LocalVO>(){}.type
-        return Gson().fromJson(ultimoItemRegGson,convTipo)
     }
 }

@@ -8,10 +8,15 @@
     android:scrollbarFadeDuration="2000"
     tools:context=".RegistroEventoActivity">
 
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <CheckBox
             android:id="@+id/rbtnDiagSelDiaSemDom"
@@ -49,4 +54,5 @@
             android:layout_height="wrap_content"
             android:text="@string/label_rbtnDiagSelDiaSemSab"/>
     </LinearLayout>
+    </FrameLayout>
 </androidx.core.widget.NestedScrollView>

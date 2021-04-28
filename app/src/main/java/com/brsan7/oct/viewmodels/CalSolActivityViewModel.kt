@@ -47,7 +47,7 @@ class CalSolActivityViewModel: ViewModel() {
     }
 
     fun getAllEstacoesAno() {
-        _vmMcvCalSolarAct.postValue(SolarUtils().datasEstacoesDoAno(Calendar.getInstance()[1]+0))
+        _vmMcvCalSolarAct.postValue(SolarUtils().datasEstacoesDoAno(ano = Calendar.getInstance()[Calendar.YEAR]))
     }
 
     fun getAllLocais(localDefault: LocalVO) {
@@ -57,7 +57,10 @@ class CalSolActivityViewModel: ViewModel() {
             var lista: List<LocalVO>
             Thread {
                 try {
-                    lista = OctApplication.instance.helperDB?.buscarLocais("",false) ?: mutableListOf()
+                    lista = OctApplication.instance.helperDB?.buscarLocais(
+                            busca = "",
+                            isBuscaPorId = false
+                    ) ?: mutableListOf()
 
                     _vmSpnCalSolarActLocal.postValue(convListArraySpnLocalVO(lista))
                 }
@@ -73,8 +76,9 @@ class CalSolActivityViewModel: ViewModel() {
             Thread {
                 try {
                     lista = OctApplication.instance.helperDB?.buscarLocais(
-                            "${getIdRegistro(idSpinner)}",
-                            true) ?: mutableListOf()
+                            busca = "${getIdRegistro(idSpinner)}",
+                            isBuscaPorId = true
+                    ) ?: mutableListOf()
 
                     _vmCalSolarActDadosLocal.postValue(lista.first())
                 }

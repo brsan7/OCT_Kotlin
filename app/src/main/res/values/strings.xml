@@ -1,31 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- DrawerMenuActivity -->
     <string name="app_name">Ocarina do Tempo</string>
-    <string name="titulo_Main">Eventos do Dia</string>
-    <string name="titulo_RegEvt">Novo Registro</string>
-    <string name="titulo_EdtEvt">Editar Registro</string>
-    <string name="titulo_ConsEvt">Consulta Eventos</string>
-    <string name="titulo_ConsSol">Consulta Solar</string>
-    <string name="titulo_Locais">Meus Locais</string>
-    <string name="titulo_RegLocal">Novo Local</string>
-    <string name="txt_sem_local">Selecione sua Localização</string>
     <string name="open_drawer">Abrir</string>
     <string name="close_drawer">Fechar</string>
-    <string name="hint_etRegAgActTitulo">Título</string>
-    <string name="txt_tvRegAgActDiasSemana">Selecionar\nDias Da\nSemana</string>
-    <string name="txt_tvRegAgActData">Selecionar\nData</string>
-    <string name="txt_tvRegAgActHora">Selecionar\nHora</string>
-    <string name="hint_etRegAgActDescricao">Descrição</string>
-    <string name="txt_btnRegAgActRegistrar">Registrar</string>
-    <string name="hint_etRegLocActLocal">Local</string>
-    <string name="txt_btnRegLocActMapa">Mapa</string>
-    <string name="hint_etRegLocActDescricao">Descrição (Opcional)</string>
-    <string name="txt_btnRegLocActRegistrar">Registrar</string>
-    <string name="hint_etRegLocActLatitude">Latitude (-23.123)</string>
-    <string name="hint_etRegLocActLongitude">Longitude (45.123)</string>
-    <string name="hint_etLocEdDiagLocal">Local</string>
-    <string name="label_tvLocEdDiagLatitude">Latitude:</string>
-    <string name="label_tvLocEdDiagLongitude">Longitude:</string>
-    <string name="hint_etLocEdDiagDescricao">Descrição</string>
     <string name="menu1">Home</string>
     <string name="menu1_1">Eventos do Dia</string>
     <string name="menu2">Consulta</string>
@@ -33,12 +10,77 @@
     <string name="menu2_2">Período Solar</string>
     <string name="menu3">Localização</string>
     <string name="menu3_1">Meus Locais</string>
-    <string name="label_tvConSolDiagNascente">Nascente:</string>
-    <string name="label_tvConSolDiagPoente">Poente:</string>
-    <string name="label_tvConSolDiagFotoperiodo">Fotoperíodo:</string>
-    <string name="label_tvConSolDiagEstacao">Estação:</string>
+    <string name="titulo_Main">Eventos do Dia</string>
+    <string name="titulo_RegEvt">Novo Registro</string>
+    <string name="titulo_EdtEvt">Editar Registro</string>
+    <string name="titulo_ConsEvt">Consulta Eventos</string>
+    <string name="titulo_ConsSol">Consulta Solar</string>
+    <string name="titulo_Locais">Meus Locais</string>
+    <string name="titulo_RegLocal">Novo Local</string>
+    <string name="aviso_semLocalDeg">Selecione sua Localização</string>
+    <!-- DrawerMenuActivity -->
+
+    <!-- RegistroEventoActivity -->
+    <string name="hint_etRegAgActTitulo">Título</string>
+    <string name="txt_tvRegAgActDiasSemana">Selecionar\nDias Da\nSemana</string>
+    <string name="txt_tvRegAgActData">Selecionar\nData</string>
+    <string name="txt_tvRegAgActHora">Selecionar\nHora</string>
+    <string name="hint_etRegAgActDescricao">Descrição</string>
+    <string name="txt_btnRegAgActRegistrar">Registrar</string>
+    <!-- Tipos Eventos -->
+    <string name="txt_spnRegEvtActTipo">Tipo</string>
+    <string name="txt_spnRegEvtActTipoFeriado">Feriado</string>
+    <string name="txt_spnRegEvtActTipoCompromisso">Compromisso</string>
+    <string name="txt_spnRegEvtActTipoLembrete">Lembrete</string>
+    <!-- Tipos Eventos -->
+    <!-- Recorrencia Eventos -->
+    <string name="txt_spnRegEvtActRecorrencia">Recorrência</string>
+    <string name="txt_spnRegEvtActRecorrenciaUnico">Único</string>
+    <string name="txt_spnRegEvtActRecorrenciaSmnFixo">Semanal Fixo</string>
+    <string name="txt_spnRegEvtActRecorrenciaSmnDin">Semanal Dinâmico</string>
+    <string name="txt_spnRegEvtActRecorrenciaMnsFixo">Mensal Fixo</string>
+    <string name="txt_spnRegEvtActRecorrenciaMnsDin">Mensal Dinâmico</string>
+    <string name="txt_spnRegEvtActRecorrenciaAnualFixo" tools:ignore="Typos">Anual Fixo</string>
+    <string name="txt_spnRegEvtActRecorrenciaAnualDin" tools:ignore="Typos">Anual Dinâmico</string>
+    <string name="txt_spnRegEvtActRecorrenciaPeriodico">Periódico</string>
+    <!-- Recorrencia Eventos -->
+    <!-- Recorrencia Periódica Modos -->
+    <string name="txt_spnRegEvtActModo">Modo</string>
+    <string name="txt_spnRegEvtActModoAnos">Anos</string>
+    <string name="txt_spnRegEvtActModoMeses">Meses</string>
+    <string name="txt_spnRegEvtActModoSemanas">Semanas</string>
+    <string name="txt_spnRegEvtActModoDiasCorridos">Dias Corridos</string>
+    <string name="txt_spnRegEvtActModoDiasUteis">Dias Úteis</string>
+    <!-- Recorrencia Periódica Modos -->
+    <!-- RegistroEventoActivity -->
+
+    <!-- RegistroLocalActivity -->
+    <string name="hint_etRegLocActLocal">Local</string>
+    <string name="hint_etRegLocActDescricao">Descrição (Opcional)</string>
+    <string name="hint_etRegLocActLatitude">Latitude (-23.123)</string>
+    <string name="hint_etRegLocActLongitude">Longitude (45.123)</string>
     <string name="hint_etRegLocActFusoHorario">Fuso Horário</string>
+    <string name="txt_btnRegLocActMapa">Mapa</string>
+    <string name="txt_btnRegLocActRegistrar">Registrar</string>
+    <!-- RegistroLocalActivity -->
+
+    <!-- Geral Dialogs -->
+    <string name="txt_btnDialogsVoltar">VOLTAR</string>
+    <string name="txt_btnDialogsSelecionar">SELECIONAR</string>
+    <string name="txt_btnDialogsExcluir">EXCLUIR</string>
+    <string name="txt_btnDialogsEditar">EDITAR</string>
+    <string name="aviso_SemDescricaoDialogs">Sem Descrição</string>
+    <!-- Geral Dialogs -->
+
+    <!-- LocalEditDialog -->
+    <string name="hint_etLocEdDiagLocal">Local</string>
+    <string name="label_tvLocEdDiagLatitude">Latitude:</string>
+    <string name="label_tvLocEdDiagLongitude">Longitude:</string>
     <string name="label_tvLocEdDiagFusoHorario">Fuso Horário:</string>
+    <string name="hint_etLocEdDiagDescricao">Descrição</string>
+    <!-- LocalEditDialog -->
+
+    <!-- SelectDiasSemanaDialog -->
     <string name="label_rbtnDiagSelDiaSemDom">Domingo</string>
     <string name="label_rbtnDiagSelDiaSemSeg">Segunda</string>
     <string name="label_rbtnDiagSelDiaSemTer">Terça</string>
@@ -46,48 +88,20 @@
     <string name="label_rbtnDiagSelDiaSemQui">Quinta</string>
     <string name="label_rbtnDiagSelDiaSemSex">Sexta</string>
     <string name="label_rbtnDiagSelDiaSemSab">Sábado</string>
-    <string name="txt_btnDialogsVoltar">VOLTAR</string>
-    <string name="txt_btnDialogsSelecionar">SELECIONAR</string>
-    <string name="txt_btnDialogsExcluir">EXCLUIR</string>
-    <string name="txt_btnDialogsEditar">EDITAR</string>
-    <string name="aviso_EvtDetDialog">Sem Descrição</string>
+    <!-- SelectDiasSemanaDialog -->
 
-    <string-array name="tipo_registro">
-        <item>Tipo</item>
-        <item>Feriado</item>
-        <item>Compromisso</item>
-        <item>Lembrete</item>
-    </string-array>
-    <string-array name="recorrencia_feriado">
-        <item>Recorrência</item>
-        <item tools:ignore="Typos">Anual Fixo</item>
-        <item tools:ignore="Typos">Anual Dinâmico</item>
-    </string-array>
-    <string-array name="recorrencia_compromisso">
-        <item>Recorrência</item>
-        <item>Único</item>
-        <item>Semanal Fixo</item>
-        <item>Semanal Dinâmico</item>
-        <item>Mensal Fixo</item>
-        <item>Mensal Dinâmico</item>
-    </string-array>
-    <string-array name="recorrencia_lembrete">
-        <item>Recorrência</item>
-        <item>Único</item>
-        <item>Semanal Fixo</item>
-        <item>Semanal Dinâmico</item>
-        <item>Mensal Fixo</item>
-        <item>Mensal Dinâmico</item>
-        <item tools:ignore="Typos">Anual Fixo</item>
-        <item tools:ignore="Typos">Anual Dinâmico</item>
-        <item>Periódico</item>
-    </string-array>
-    <string-array name="recorrencia_periodica_modos">
-        <item>Modo</item>
-        <item>Anos</item>
-        <item>Meses</item>
-        <item>Semanas</item>
-        <item>Dias Corridos</item>
-        <item>Dias Úteis</item>
-    </string-array>
+    <!-- ConsultaSolarDetailDialog -->
+    <string name="label_tvConSolDiagNascente">Nascente:</string>
+    <string name="label_tvConSolDiagPoente">Poente:</string>
+    <string name="label_tvConSolDiagFotoperiodo">Fotoperíodo:</string>
+    <string name="label_tvConSolDiagEstacao">Estação:</string>
+    <string name="txt_EstacaoOutono">Outono</string>
+    <string name="txt_EstacaoInverno">Inverno</string>
+    <string name="txt_EstacaoPrimavera">Primavera</string>
+    <string name="txt_EstacaoVerao">Verão</string>
+    <string name="txt_EstacaoEqnOutono">Equinócio de Outono</string>
+    <string name="txt_EstacaoEqnPrimavera">Equinócio de Primavera</string>
+    <string name="txt_EstacaoSltInverno">Solstício de Inverno</string>
+    <string name="txt_EstacaoSltVerao">Solstício de Verão</string>
+    <!-- ConsultaSolarDetailDialog -->
 </resources>

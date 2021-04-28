@@ -115,8 +115,8 @@ class SelectDataDialog : DialogFragment(), DialogInterface.OnClickListener {
     }
 
     private fun identificarTipo(getString: String){
-        tipo = if (getString == resources.getStringArray(R.array.recorrencia_lembrete)[5] || //Mensal Dinâmico
-                getString == resources.getStringArray(R.array.recorrencia_lembrete)[7]){ //Anual Dinâmico
+        tipo = if (getString == resources.getStringArray(R.array.array_recorrencias_lembrete)[5] || //Mensal Dinâmico
+                getString == resources.getStringArray(R.array.array_recorrencias_lembrete)[7]){ //Anual Dinâmico
 
             "Dinâmico"
         }

@@ -90,11 +90,11 @@ class LocalEditDialog : DialogFragment(), DialogInterface.OnClickListener {
     private fun onClickEditar(){
         val composicaoRegistro = LocalVO(
                 idLocal,
-                "${etLocEdDiagLocal.text}",
-                "${tvLocEdDiagLatitude.text}",
-                "${tvLocEdDiagLongitude.text}",
-                "${tvLocEdDiagFusoHorario.text}",
-                "${etLocEdDiagDescricao.text}"
+                titulo = "${etLocEdDiagLocal.text}",
+                latitude = "${tvLocEdDiagLatitude.text}",
+                longitude = "${tvLocEdDiagLongitude.text}",
+                fusoHorario = "${tvLocEdDiagFusoHorario.text}",
+                descricao = "${etLocEdDiagDescricao.text}"
         )
         locEditDialogViewModel.editarLocalSelecionado(composicaoRegistro)
         (activity as(Atualizar)).onModifyLocal()

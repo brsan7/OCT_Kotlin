@@ -59,11 +59,11 @@ class RegistroEventoActivity : DrawerMenuActivity(),
         spnRegEvtActTipo.adapter = ArrayAdapter(
                 this,
                 R.layout.item_spinner,
-                resources.getStringArray(R.array.tipo_registro))
+                resources.getStringArray(R.array.array_tipos_registro))
         spnRegEvtActModo.adapter = ArrayAdapter(
                 this,
                 R.layout.item_spinner,
-                resources.getStringArray(R.array.recorrencia_periodica_modos))
+                resources.getStringArray(R.array.array_recorrencia_periodica_modos))
     }
 
     private fun setupListeners() {
@@ -106,7 +106,7 @@ class RegistroEventoActivity : DrawerMenuActivity(),
         }
 
         tvRegEvtActData.setOnClickListener{
-            if (spnRegEvtActRecorrencia.selectedItem != resources.getStringArray(R.array.recorrencia_compromisso)[3]) {//Semanal Dinâmico
+            if (spnRegEvtActRecorrencia.selectedItem != getString(R.string.txt_spnRegEvtActRecorrenciaSmnDin)) {
                 val fragment = SelectDataDialog.newInstance("${spnRegEvtActRecorrencia.selectedItem}")
                 fragment.show(supportFragmentManager, "dialog")
             }
@@ -174,20 +174,20 @@ class RegistroEventoActivity : DrawerMenuActivity(),
             tipo = "${spnRegEvtActTipo.selectedItem}"
             recorrencia = "${spnRegEvtActRecorrencia.selectedItem}"
             when (spnRegEvtActRecorrencia.selectedItem){
-                resources.getStringArray(R.array.recorrencia_lembrete)[3] -> {//Semanal Dinâmico
+                getString(R.string.txt_spnRegEvtActRecorrenciaSmnDin) -> {
                     recorrencia += "_${tvRegEvtActDiasSemana.text}"
                 }
-                resources.getStringArray(R.array.recorrencia_lembrete)[5] -> {//Mensal Dinâmico
+                getString(R.string.txt_spnRegEvtActRecorrenciaMnsDin) -> {
                     recorrencia += "_${tvRegEvtActData.text.substring(0..4)}"
                 }
-                resources.getStringArray(R.array.recorrencia_lembrete)[7] -> {//Anual Dinâmico
+                getString(R.string.txt_spnRegEvtActRecorrenciaAnualDin) -> {
                     recorrencia += "_${tvRegEvtActData.text.substring(0..4)}"
                 }
-                resources.getStringArray(R.array.recorrencia_lembrete)[8] -> {//Periódico
+                getString(R.string.txt_spnRegEvtActRecorrenciaPeriodico) -> {
                     recorrencia += "_${etRegEvtActModo.text}*${spnRegEvtActModo.selectedItem}"
                 }
             }
-            if (spnRegEvtActTipo.selectedItem != resources.getStringArray(R.array.tipo_registro)[2]){//Compromisso
+            if (spnRegEvtActTipo.selectedItem != getString(R.string.txt_spnRegEvtActTipoCompromisso)){
                 tvRegEvtActHora.text = ""
             }
             data = if (tvRegEvtActData.text.length > 14){ tvRegEvtActData.text.substring(7,tvRegEvtActData.text.length) }
@@ -233,23 +233,23 @@ class RegistroEventoActivity : DrawerMenuActivity(),
 
     private fun setAdapterSpnRegEvtActRecorrencia(){
         when (spnRegEvtActTipo.selectedItem) {
-            resources.getStringArray(R.array.tipo_registro)[1] -> {//Feriado
+            getString(R.string.txt_spnRegEvtActTipoFeriado) -> {
                 spnRegEvtActRecorrencia.adapter = ArrayAdapter(
                         this,
                         R.layout.item_spinner,
-                        resources.getStringArray(R.array.recorrencia_feriado))
+                        resources.getStringArray(R.array.array_recorrencias_feriado))
             }
-            resources.getStringArray(R.array.tipo_registro)[2] -> {//Compromisso
+            getString(R.string.txt_spnRegEvtActTipoCompromisso) -> {
                 spnRegEvtActRecorrencia.adapter = ArrayAdapter(
                         this,
                         R.layout.item_spinner,
-                        resources.getStringArray(R.array.recorrencia_compromisso))
+                        resources.getStringArray(R.array.array_recorrencias_compromisso))
             }
-            resources.getStringArray(R.array.tipo_registro)[3] -> {//Lembrete
+            getString(R.string.txt_spnRegEvtActTipoLembrete) -> {
                 spnRegEvtActRecorrencia.adapter = ArrayAdapter(
                         this,
                         R.layout.item_spinner,
-                        resources.getStringArray(R.array.recorrencia_lembrete))
+                        resources.getStringArray(R.array.array_recorrencias_lembrete))
             }
         }
     }
@@ -288,8 +288,8 @@ class RegistroEventoActivity : DrawerMenuActivity(),
                         }
                     }
                 }
-                8 -> { spnRegEvtActModo.visibility = View.VISIBLE }
-                else -> { tvRegEvtActData.visibility = View.VISIBLE }
+                8 -> { spnRegEvtActModo.visibility = View.VISIBLE } //Periódico
+                else -> { tvRegEvtActData.visibility = View.VISIBLE } //Demais Recorrências
             }
         }
     }

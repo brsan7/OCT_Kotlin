@@ -8,21 +8,23 @@ import com.brsan7.oct.model.EventoVO
 
 class EvtDetDiagViewModel: ViewModel() {
 
-    private var _vmEvtSelecionado = MutableLiveData<List<EventoVO>>()
-    val vmEvtSelecionado: LiveData<List<EventoVO>>
+    private var _vmEvtSelecionado = MutableLiveData<EventoVO>()
+    val vmEvtSelecionado: LiveData<EventoVO>
         get() = _vmEvtSelecionado
 
     fun buscarEventoSelecionado(id: Int){
 
-        if (_vmEvtSelecionado.value?.toList()?.size == null) {
+        if (_vmEvtSelecionado.value == null) {
             var listaFiltrada: List<EventoVO>
             Thread {
                 try {
                     listaFiltrada = OctApplication.instance.helperDB?.buscarEventos(
-                            "$id",
-                            false)
-                            ?: mutableListOf()
-                    _vmEvtSelecionado.postValue(listaFiltrada)
+                            busca = "$id",
+                            isBuscaPorData = false
+                    ) ?: mutableListOf()
+
+                    _vmEvtSelecionado.postValue(listaFiltrada.first())
+
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                 }

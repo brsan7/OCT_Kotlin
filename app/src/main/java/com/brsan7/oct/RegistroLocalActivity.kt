@@ -50,12 +50,12 @@ class RegistroLocalActivity : DrawerMenuActivity() {
     }
     private fun getComposeRegistro(): LocalVO {
         return LocalVO(
-                +1,
-                "${etRegLocActLocal.text}",
-                "${etRegLocActLatitude.text}",
-                "${etRegLocActLongitude.text}",
-                "${etRegLocActFusoHorario.text}",
-                "${etRegLocActDescricao.text}"
+                id = +1,
+                titulo = "${etRegLocActLocal.text}",
+                latitude = "${etRegLocActLatitude.text}",
+                longitude = "${etRegLocActLongitude.text}",
+                fusoHorario = "${etRegLocActFusoHorario.text}",
+                descricao = "${etRegLocActDescricao.text}"
         )
     }
 }

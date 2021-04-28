@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:entries="@array/tipo_registro"
+                android:entries="@array/array_tipos_registro"
                 android:popupTheme="@style/selectInputStyle"
                 android:theme="@style/selectInputStyle"/>
 

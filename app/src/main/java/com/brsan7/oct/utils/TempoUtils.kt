@@ -8,10 +8,7 @@ import java.util.*
 
 open class TempoUtils {
 
-    private val arrayRecorrencias = OctApplication.instance.resources.getStringArray(R.array.recorrencia_lembrete)
-    private val arrayModosPeriodico = OctApplication.instance.resources.getStringArray(R.array.recorrencia_periodica_modos)
-
-    fun isBissexto(ano: Int): Boolean = (( ano % 4 == 0 && ano % 100 != 0 ) || ano % 400 == 0)
+    private fun isBissexto(ano: Int): Boolean = (( ano % 4 == 0 && ano % 100 != 0 ) || ano % 400 == 0)
 
     private fun isObsoleto(evento: EventoVO): Boolean{
 
@@ -57,7 +54,7 @@ open class TempoUtils {
         }
     }
 
-    fun diaSemanaToInt(diaSemana: String): Int{
+    private fun diaSemanaToInt(diaSemana: String): Int{
         return when(diaSemana){
             OctApplication.instance.getString(R.string.label_rbtnDiagSelDiaSemDom).substring(0..2) -> {1}
             OctApplication.instance.getString(R.string.label_rbtnDiagSelDiaSemSeg).substring(0..2) -> {2}
@@ -105,24 +102,24 @@ open class TempoUtils {
     private fun projecaoEventos(evtObsoleto: EventoVO): EventoVO {
 
         return when(evtObsoleto.recorrencia.split("_")[0]){
-            arrayRecorrencias[1] -> { //Único
+            OctApplication.instance.getString(R.string.txt_spnRegEvtActRecorrenciaUnico) -> {
 
                 EventoVO(id=evtObsoleto.id,recorrencia = "Finalizado")
             }
-            arrayRecorrencias[2] -> { projecaoSemanalFixo(evtObsoleto) }//Semanal Fixo
-            arrayRecorrencias[3] -> { projecaoSemanalDinamico(evtObsoleto) }//Semanal Dinâmico
-            arrayRecorrencias[4] -> { projecaoMensalFixo(evtObsoleto) }//Mensal Fixo
-            arrayRecorrencias[5] -> { projecaoMensalDinamico(evtObsoleto) }//Mensal Dinâmico
-            arrayRecorrencias[6] -> { projecaoAnualFixo(evtObsoleto) }//Anual Fixo
-            arrayRecorrencias[7] -> { projecaoAnualDinamico(evtObsoleto) }//Anual Dinâmico
-            arrayRecorrencias[8] -> { //Periódico
+            OctApplication.instance.getString(R.string.txt_spnRegEvtActRecorrenciaSmnFixo) -> { projecaoSemanalFixo(evtObsoleto) }
+            OctApplication.instance.getString(R.string.txt_spnRegEvtActRecorrenciaSmnDin) -> { projecaoSemanalDinamico(evtObsoleto) }
+            OctApplication.instance.getString(R.string.txt_spnRegEvtActRecorrenciaMnsFixo) -> { projecaoMensalFixo(evtObsoleto) }
+            OctApplication.instance.getString(R.string.txt_spnRegEvtActRecorrenciaMnsDin) -> { projecaoMensalDinamico(evtObsoleto) }
+            OctApplication.instance.getString(R.string.txt_spnRegEvtActRecorrenciaAnualFixo) -> { projecaoAnualFixo(evtObsoleto) }
+            OctApplication.instance.getString(R.string.txt_spnRegEvtActRecorrenciaAnualDin) -> { projecaoAnualDinamico(evtObsoleto) }
+            OctApplication.instance.getString(R.string.txt_spnRegEvtActRecorrenciaPeriodico) -> { //Periódico
 
-                return when (evtObsoleto.recorrencia.split("_")[1].split("*")[1]){//Modo
-                    arrayModosPeriodico[1] -> { projecaoAnosPeriodico(evtObsoleto) }//Anos
-                    arrayModosPeriodico[2] -> { projecaoMesesPeriodico(evtObsoleto) }//Meses
-                    arrayModosPeriodico[3] -> { projecaoSemanasPeriodico(evtObsoleto) }//Semanas
-                    arrayModosPeriodico[4] -> { projecaoDiasCorridoPeriodico(evtObsoleto) }//Dias Corridos
-                    arrayModosPeriodico[5] -> { projecaoDiasUteisPeriodico(evtObsoleto) }//Dias Uteis
+                return when (evtObsoleto.recorrencia.split("_")[1].split("*")[1]){
+                    OctApplication.instance.getString(R.string.txt_spnRegEvtActModoAnos) -> { projecaoAnosPeriodico(evtObsoleto) }
+                    OctApplication.instance.getString(R.string.txt_spnRegEvtActModoMeses) -> { projecaoMesesPeriodico(evtObsoleto) }
+                    OctApplication.instance.getString(R.string.txt_spnRegEvtActModoSemanas) -> { projecaoSemanasPeriodico(evtObsoleto) }
+                    OctApplication.instance.getString(R.string.txt_spnRegEvtActModoDiasCorridos) -> { projecaoDiasCorridoPeriodico(evtObsoleto) }
+                    OctApplication.instance.getString(R.string.txt_spnRegEvtActModoDiasUteis) -> { projecaoDiasUteisPeriodico(evtObsoleto) }
                     else -> { EventoVO() }
                 }
             }
@@ -167,7 +164,7 @@ open class TempoUtils {
         return evtAtualizado
     }
 
-    private fun projecaoSemanalDinamico(evtObsoleto: EventoVO): EventoVO{
+    fun projecaoSemanalDinamico(evtObsoleto: EventoVO): EventoVO{
         var evtAtualizado = EventoVO()
         var diaJuliano = Calendar.getInstance()[Calendar.DAY_OF_YEAR]
         var ano = Calendar.getInstance()[Calendar.YEAR]

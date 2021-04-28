@@ -1,7 +1,5 @@
 package com.brsan7.oct
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -11,9 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.brsan7.oct.dialogs.ConsultaSolarDetailDialog
 import com.brsan7.oct.model.LocalVO
 import com.brsan7.oct.utils.CalendarUtils
+import com.brsan7.oct.utils.SharedPreferencesUtils
 import com.brsan7.oct.viewmodels.CalSolActivityViewModel
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import java.util.*
@@ -48,7 +45,7 @@ class CalendarioSolarActivity : DrawerMenuActivity() {
     private fun setupCalSolActivityViewModel() {
         calSolActivityViewModel = ViewModelProvider(this).get(CalSolActivityViewModel::class.java)
 
-        localSelecionado = getShareLocalDefault()
+        localSelecionado = SharedPreferencesUtils().getShareLocalDefault()
         calSolActivityViewModel.getAllLocais(localSelecionado)
 
         calSolActivityViewModel.vmSpnCalSolarActLocal.observe(this, { itensSpinner->
@@ -97,9 +94,9 @@ class CalendarioSolarActivity : DrawerMenuActivity() {
         mcvCalSolarAct.setOnDateChangedListener { widget, date, selected ->
 
             val fragment = ConsultaSolarDetailDialog.newInstance(
-                    localSelecionado.id+0,
-                    convCalendarDay(date)[Calendar.DAY_OF_YEAR]+0,
-                    convCalendarDay(date)[Calendar.YEAR]+0
+                    id = localSelecionado.id,
+                    diaJuliano = convCalendarDay(date)[Calendar.DAY_OF_YEAR],
+                    ano = convCalendarDay(date)[Calendar.YEAR]
             )
             fragment.show(supportFragmentManager, "dialog")
         }
@@ -112,22 +109,4 @@ class CalendarioSolarActivity : DrawerMenuActivity() {
             set(Calendar.YEAR,dataSelecionada.year)
         }
     }
-
-    private fun getInstanceSharedPreferences() : SharedPreferences {
-        return getSharedPreferences("com.brsan7.oct.LOCAL_DEFAULT", Context.MODE_PRIVATE)
-    }
-
-    private fun getShareLocalDefault() : LocalVO {
-        val defLocal = LocalVO(
-                id = -1,
-                titulo = getString(R.string.txt_sem_local),
-                latitude = "",
-                longitude = "",
-                fusoHorario = ""
-        )
-        val ultimoItemRegGson = getInstanceSharedPreferences().getString("localDef", Gson().toJson(defLocal))
-        val convTipo = object : TypeToken<LocalVO>(){}.type
-        return Gson().fromJson(ultimoItemRegGson,convTipo)
-    }
-
 }

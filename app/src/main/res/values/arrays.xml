@@ -1,0 +1,46 @@
+<resources>
+
+    <string-array name="array_tipos_registro">
+        <item>@string/txt_spnRegEvtActTipo</item>
+        <item>@string/txt_spnRegEvtActTipoFeriado</item>
+        <item>@string/txt_spnRegEvtActTipoCompromisso</item>
+        <item>@string/txt_spnRegEvtActTipoLembrete</item>
+    </string-array>
+
+    <string-array name="array_recorrencias_feriado">
+        <item>@string/txt_spnRegEvtActRecorrencia</item>
+        <item>@string/txt_spnRegEvtActRecorrenciaAnualFixo</item>
+        <item>@string/txt_spnRegEvtActRecorrenciaAnualDin</item>
+    </string-array>
+
+    <string-array name="array_recorrencias_compromisso">
+        <item>@string/txt_spnRegEvtActRecorrencia</item>
+        <item>@string/txt_spnRegEvtActRecorrenciaUnico</item>
+        <item>@string/txt_spnRegEvtActRecorrenciaSmnFixo</item>
+        <item>@string/txt_spnRegEvtActRecorrenciaSmnDin</item>
+        <item>@string/txt_spnRegEvtActRecorrenciaMnsFixo</item>
+        <item>@string/txt_spnRegEvtActRecorrenciaMnsDin</item>
+    </string-array>
+
+    <string-array name="array_recorrencias_lembrete">
+        <item>@string/txt_spnRegEvtActRecorrencia</item>
+        <item>@string/txt_spnRegEvtActRecorrenciaUnico</item>
+        <item>@string/txt_spnRegEvtActRecorrenciaSmnFixo</item>
+        <item>@string/txt_spnRegEvtActRecorrenciaSmnDin</item>
+        <item>@string/txt_spnRegEvtActRecorrenciaMnsFixo</item>
+        <item>@string/txt_spnRegEvtActRecorrenciaMnsDin</item>
+        <item>@string/txt_spnRegEvtActRecorrenciaAnualFixo</item>
+        <item>@string/txt_spnRegEvtActRecorrenciaAnualDin</item>
+        <item>@string/txt_spnRegEvtActRecorrenciaPeriodico</item>
+    </string-array>
+
+    <string-array name="array_recorrencia_periodica_modos">
+        <item>@string/txt_spnRegEvtActModo</item>
+        <item>@string/txt_spnRegEvtActModoAnos</item>
+        <item>@string/txt_spnRegEvtActModoMeses</item>
+        <item>@string/txt_spnRegEvtActModoSemanas</item>
+        <item>@string/txt_spnRegEvtActModoDiasCorridos</item>
+        <item>@string/txt_spnRegEvtActModoDiasUteis</item>
+    </string-array>
+
+</resources>

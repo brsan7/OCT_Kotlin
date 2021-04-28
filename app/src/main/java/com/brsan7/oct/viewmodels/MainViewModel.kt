@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.brsan7.oct.application.OctApplication
 import com.brsan7.oct.model.EventoVO
 import com.brsan7.oct.utils.TempoUtils
-import com.prolificinteractive.materialcalendarview.CalendarDay
+import java.util.*
 
 class MainViewModel: ViewModel() {
 
@@ -47,11 +47,14 @@ class MainViewModel: ViewModel() {
             Thread {
                 if (isDeleted){Thread.sleep(1000)}
                 try {
+                    val hoje = Calendar.getInstance()
                     listaFiltrada = OctApplication.instance.helperDB?.buscarEventos(
-                            "${CalendarDay.today().day}/${CalendarDay.today().month}/${CalendarDay.today().year}",
-                            true)
-                            ?: mutableListOf()
+                            busca = "${hoje[Calendar.DAY_OF_MONTH]}/${hoje[Calendar.MONTH]}/${hoje[Calendar.YEAR]}",
+                            isBuscaPorData = true
+                    ) ?: mutableListOf()
+
                     _vmRcvMain.postValue(listaFiltrada)
+
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                 }

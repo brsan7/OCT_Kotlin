@@ -19,10 +19,12 @@ class ConSolDetDiagViewModel: ViewModel() {
             Thread {
                 try {
                     listaFiltrada = OctApplication.instance.helperDB?.buscarLocais(
-                            "$id",
-                            true)
-                            ?: mutableListOf()
+                            busca = "$id",
+                            isBuscaPorId = true
+                    ) ?: mutableListOf()
+
                     _vmLocalSelecionado.postValue(listaFiltrada.first())
+
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                 }

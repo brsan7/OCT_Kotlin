@@ -45,11 +45,7 @@ class CalendarioEventoActivity : DrawerMenuActivity() {
         
         calEvtActivityViewModel = ViewModelProvider(this).get(CalEvtActivityViewModel::class.java)
 
-        calEvtActivityViewModel.getAllDecorateDates(
-                resources.getStringArray(R.array.tipo_registro)[1], //Feriado
-                resources.getStringArray(R.array.tipo_registro)[2], //Compromisso
-                resources.getStringArray(R.array.tipo_registro)[3] //Lembrete
-        )
+        calEvtActivityViewModel.getAllDecorateDates()
 
         calEvtActivityViewModel.getRegistrosDiaSelecionado(calEvtActivityViewModel.diaSelecionado)
 
@@ -103,10 +99,7 @@ class CalendarioEventoActivity : DrawerMenuActivity() {
                 if(position > 0 && !calEvtActivityViewModel.reStartActivity) {
 
                     val fragment = EventoDetailDialog.newInstance(
-                            calEvtActivityViewModel.getIdRegistro(
-                                    tipo = resources.getStringArray(R.array.tipo_registro)[1], //Feriado
-                                    index = position
-                            )
+                            calEvtActivityViewModel.getIdRegistro(tipo = getString(R.string.txt_spnRegEvtActTipoFeriado), index = position)
                     )
                     fragment.show(supportFragmentManager, "dialog")
                 }
@@ -131,10 +124,7 @@ class CalendarioEventoActivity : DrawerMenuActivity() {
                 if(position != 0 && !calEvtActivityViewModel.reStartActivity) {
 
                     val fragment = EventoDetailDialog.newInstance(
-                            calEvtActivityViewModel.getIdRegistro(
-                                    tipo = resources.getStringArray(R.array.tipo_registro)[2], //Compromisso
-                                    index = position
-                            )
+                            calEvtActivityViewModel.getIdRegistro(tipo = getString(R.string.txt_spnRegEvtActTipoCompromisso), index = position)
                     )
                     fragment.show(supportFragmentManager, "dialog")
                 }
@@ -159,10 +149,7 @@ class CalendarioEventoActivity : DrawerMenuActivity() {
                 if(position != 0 && !calEvtActivityViewModel.reStartActivity) {
 
                     val fragment = EventoDetailDialog.newInstance(
-                            calEvtActivityViewModel.getIdRegistro(
-                                    tipo = resources.getStringArray(R.array.tipo_registro)[3], //Lembrete
-                                    index = position
-                            )
+                            calEvtActivityViewModel.getIdRegistro(tipo = getString(R.string.txt_spnRegEvtActTipoLembrete), index = position)
                     )
                     fragment.show(supportFragmentManager, "dialog")
                 }

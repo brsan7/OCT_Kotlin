@@ -78,11 +78,11 @@ class ConsultaSolarDetailDialog : DialogFragment(), DialogInterface.OnClickListe
     private fun atualizarEventoSelecionado(itemLocalVO: LocalVO){
 
         val fotoPeriodo = SolarUtils().fotoPeriodo(
-                itemLocalVO.latitude.toDouble()+0,
-                itemLocalVO.longitude.toDouble()+0,
-                itemLocalVO.fusoHorario.toInt()+0,
-                diaJuliano+0,
-                ano+0)
+                latitude = itemLocalVO.latitude.toDouble(),
+                longitude = itemLocalVO.longitude.toDouble(),
+                fusoHorario = itemLocalVO.fusoHorario.toInt(),
+                diaJuliano = diaJuliano,
+                ano = ano)
 
         tvConSolDetDiagTitulo.text = itemLocalVO.titulo
         tvConSolDetDiagNascente.text = fotoPeriodo[1]

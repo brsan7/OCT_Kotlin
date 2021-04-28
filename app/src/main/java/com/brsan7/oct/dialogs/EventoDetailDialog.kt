@@ -76,25 +76,25 @@ class EventoDetailDialog : DialogFragment(), DialogInterface.OnClickListener {
 
     private fun setupEvtDetDiagViewModel() {
         evtDetDiagViewModel = ViewModelProvider(this).get(EvtDetDiagViewModel::class.java)
-        evtDetDiagViewModel.vmEvtSelecionado.observe(this, { lista->
-            atualizarEventoSelecionado(lista)
+        evtDetDiagViewModel.vmEvtSelecionado.observe(this, { evtSelecionado->
+            atualizarEventoSelecionado(evtSelecionado)
         })
         evtDetDiagViewModel.buscarEventoSelecionado(idEvento)
     }
 
-    private fun atualizarEventoSelecionado(evtSelecionado: List<EventoVO>){
+    private fun atualizarEventoSelecionado(evtSelecionado: EventoVO){
 
-        tvEvtDetDiagTitulo.text = evtSelecionado[0].titulo
-        tvEvtDetDiagData.text = evtSelecionado[0].data
-        tvEvtDetDiagHora.text = evtSelecionado[0].hora
-        tvEvtDetDiagTipo.text = evtSelecionado[0].tipo
-        tvEvtDetDiagRecorrencia.text = evtSelecionado[0].recorrencia
-        tvEvtDetDiagDescricao.text = evtSelecionado[0].descricao
-        if (evtSelecionado[0].hora.isEmpty()){
+        tvEvtDetDiagTitulo.text = evtSelecionado.titulo
+        tvEvtDetDiagData.text = evtSelecionado.data
+        tvEvtDetDiagHora.text = evtSelecionado.hora
+        tvEvtDetDiagTipo.text = evtSelecionado.tipo
+        tvEvtDetDiagRecorrencia.text = evtSelecionado.recorrencia
+        tvEvtDetDiagDescricao.text = evtSelecionado.descricao
+        if (evtSelecionado.hora.isEmpty()){
             tvEvtDetDiagHora.visibility = View.GONE
         }
-        if (evtSelecionado[0].descricao.isEmpty()){
-            tvEvtDetDiagDescricao.text = getString(R.string.aviso_EvtDetDialog)
+        if (evtSelecionado.descricao.isEmpty()){
+            tvEvtDetDiagDescricao.text = getString(R.string.aviso_SemDescricaoDialogs)
         }
     }
 
