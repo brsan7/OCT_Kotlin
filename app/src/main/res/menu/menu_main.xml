@@ -7,7 +7,11 @@
                 <item
                     android:id="@+id/menuMainAct"
                     android:icon="@android:drawable/ic_menu_day"
-                    android:title="@string/menu1_1" />
+                    android:title="@string/menu1_1_Main" />
+                <item
+                    android:id="@+id/menuRegistroEventoAct"
+                    android:icon="@android:drawable/ic_menu_agenda"
+                    android:title="@string/menu1_2_RegEvt" />
             </menu>
         </item>
     </group>
@@ -18,11 +22,11 @@
                 <item
                     android:id="@+id/menuCalAct_calendario"
                     android:icon="@android:drawable/ic_menu_my_calendar"
-                    android:title="@string/menu2_1" />
+                    android:title="@string/menu2_1_ConsEvt" />
                 <item
                     android:id="@+id/menuCalAct_solar"
                     android:icon="@android:drawable/ic_menu_compass"
-                    android:title="@string/menu2_2" />
+                    android:title="@string/menu2_2_ConsSol" />
             </menu>
         </item>
     </group>
@@ -32,8 +36,12 @@
             <menu>
                 <item
                     android:id="@+id/menuLocalAct"
-                    android:icon="@android:drawable/ic_menu_compass"
-                    android:title="@string/menu3_1" />
+                    android:icon="@android:drawable/ic_menu_mapmode"
+                    android:title="@string/menu3_1_Locais" />
+                <item
+                    android:id="@+id/menuRegistroLocalAct"
+                    android:icon="@android:drawable/ic_dialog_map"
+                    android:title="@string/menu3_2_RegLocal" />
             </menu>
         </item>
     </group>

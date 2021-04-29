@@ -4,20 +4,16 @@
     <string name="open_drawer">Abrir</string>
     <string name="close_drawer">Fechar</string>
     <string name="menu1">Home</string>
-    <string name="menu1_1">Eventos do Dia</string>
+    <string name="menu1_1_Main">Eventos do Dia</string>
+    <string name="menu1_2_RegEvt">Registro de Evento</string>
+    <string name="menu1_2_EdtEvt">Edição de Evento</string>
     <string name="menu2">Consulta</string>
-    <string name="menu2_1">Eventos</string>
-    <string name="menu2_2">Período Solar</string>
+    <string name="menu2_1_ConsEvt">Eventos</string>
+    <string name="menu2_2_ConsSol">Período Solar</string>
     <string name="menu3">Localização</string>
-    <string name="menu3_1">Meus Locais</string>
-    <string name="titulo_Main">Eventos do Dia</string>
-    <string name="titulo_RegEvt">Novo Registro</string>
-    <string name="titulo_EdtEvt">Editar Registro</string>
-    <string name="titulo_ConsEvt">Consulta Eventos</string>
-    <string name="titulo_ConsSol">Consulta Solar</string>
-    <string name="titulo_Locais">Meus Locais</string>
-    <string name="titulo_RegLocal">Novo Local</string>
-    <string name="aviso_semLocalDeg">Selecione sua Localização</string>
+    <string name="menu3_1_Locais">Meus Locais</string>
+    <string name="menu3_2_RegLocal">Registro de Local</string>
+    <string name="aviso_semLocalDef">Selecione sua Localização</string>
     <!-- DrawerMenuActivity -->
 
     <!-- RegistroEventoActivity -->
@@ -70,6 +66,7 @@
     <string name="txt_btnDialogsExcluir">EXCLUIR</string>
     <string name="txt_btnDialogsEditar">EDITAR</string>
     <string name="aviso_SemDescricaoDialogs">Sem Descrição</string>
+    <string name="aviso_SemEventosHoje">Nenhum Evento\nRegistrado para Hoje</string>
     <!-- Geral Dialogs -->
 
     <!-- LocalEditDialog -->

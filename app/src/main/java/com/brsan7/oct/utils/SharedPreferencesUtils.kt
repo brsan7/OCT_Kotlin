@@ -25,7 +25,7 @@ open class SharedPreferencesUtils {
     fun getShareLocalDefault() : LocalVO {
         val defLocal = LocalVO(
                 id = -1,
-                titulo = OctApplication.instance.getString(R.string.aviso_semLocalDeg),
+                titulo = OctApplication.instance.getString(R.string.aviso_semLocalDef),
                 latitude = "",
                 longitude = "",
                 fusoHorario = ""

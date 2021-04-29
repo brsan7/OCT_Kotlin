@@ -100,7 +100,7 @@ class EventoDetailDialog : DialogFragment(), DialogInterface.OnClickListener {
 
     private fun onClickEditar(){
         val intent = Intent(context, RegistroEventoActivity::class.java)
-        intent.putExtra("titulo",getString(R.string.titulo_EdtEvt))
+        intent.putExtra("titulo",getString(R.string.menu1_2_EdtEvt))
         intent.putExtra("id",idEvento)
         startActivity(intent)
     }

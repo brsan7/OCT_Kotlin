@@ -22,7 +22,7 @@ class RegistroLocalActivity : DrawerMenuActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro_local)
 
-        setupDrawerMenu(getString(R.string.titulo_RegLocal))
+        setupDrawerMenu(getString(R.string.menu3_2_RegLocal))
         setupComponentes()
         setupListeners()
     }

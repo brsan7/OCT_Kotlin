@@ -22,7 +22,7 @@ class CalendarioEventoActivity : DrawerMenuActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendario_evento)
         
-        setupDrawerMenu(getString(R.string.titulo_ConsEvt))
+        setupDrawerMenu(getString(R.string.menu2_1_ConsEvt))
         setupComponentes()
         setupCalEvtActivityViewModel()
         setupCalendario()

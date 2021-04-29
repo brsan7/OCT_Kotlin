@@ -36,6 +36,12 @@ open class DrawerMenuActivity : AppCompatActivity(), NavigationView.OnNavigation
                 startActivity(intent)
                 true
             }
+            R.id.menuRegistroEventoAct ->{
+                val intent = Intent(this, RegistroEventoActivity::class.java)
+                intent.putExtra("titulo",getString(R.string.menu1_2_RegEvt))
+                startActivity(intent)
+                true
+            }
             R.id.menuCalAct_calendario ->{
                 val intent = Intent(this, CalendarioEventoActivity::class.java)
                 startActivity(intent)
@@ -48,6 +54,11 @@ open class DrawerMenuActivity : AppCompatActivity(), NavigationView.OnNavigation
             }
             R.id.menuLocalAct ->{
                 val intent = Intent(this, LocaisActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.menuRegistroLocalAct ->{
+                val intent = Intent(this, RegistroLocalActivity::class.java)
                 startActivity(intent)
                 true
             }

@@ -15,8 +15,8 @@ open class TempoUtils {
         val dia = evento.data.split("/")[0].toInt()
         val mes = evento.data.split("/")[1].toInt()
         val ano = evento.data.split("/")[2].toInt()
-        var hora = 0
-        var minuto = 0
+        var hora = 24
+        var minuto = 60
         if (evento.hora.isNotEmpty()) {
             hora = evento.hora.split(":")[0].toInt()
             minuto = evento.hora.split(":")[1].toInt()

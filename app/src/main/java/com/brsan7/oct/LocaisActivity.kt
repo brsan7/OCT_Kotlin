@@ -1,6 +1,5 @@
 package com.brsan7.oct
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -14,7 +13,6 @@ import com.brsan7.oct.model.LocalVO
 import com.brsan7.oct.utils.SharedPreferencesUtils
 import com.brsan7.oct.utils.SolarUtils
 import com.brsan7.oct.viewmodels.LocaisViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
 
 class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
@@ -26,14 +24,12 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
     private lateinit var tvLocActNascente: TextView
     private lateinit var tvLocActPoente: TextView
     private lateinit var rcvLocAct: RecyclerView
-    private lateinit var fabLocAct: FloatingActionButton
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_locais)
 
-        setupDrawerMenu(getString(R.string.titulo_Locais))
+        setupDrawerMenu(getString(R.string.menu3_1_Locais))
         setupComponentes()
         setupRecyclerView()
         setupLocaisViewModel()
@@ -47,11 +43,6 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
         tvLocActNascente = findViewById(R.id.tvLocActNascente)
         tvLocActPoente = findViewById(R.id.tvLocActPoente)
         rcvLocAct = findViewById(R.id.rcvLocAct)
-        fabLocAct = findViewById(R.id.fabLocAct)
-        fabLocAct.setOnClickListener {
-            val intent = Intent(this, RegistroLocalActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     private fun setupRecyclerView(){

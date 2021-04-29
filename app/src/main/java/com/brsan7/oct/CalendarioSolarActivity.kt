@@ -26,7 +26,7 @@ class CalendarioSolarActivity : DrawerMenuActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendario_solar)
 
-        setupDrawerMenu(getString(R.string.titulo_ConsSol))
+        setupDrawerMenu(getString(R.string.menu2_2_ConsSol))
         setupComponentes()
         setupCalSolActivityViewModel()
         setupCalendario()

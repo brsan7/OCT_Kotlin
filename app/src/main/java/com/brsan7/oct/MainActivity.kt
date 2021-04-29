@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +34,7 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setupDrawerMenu(getString(R.string.titulo_Main))
+        setupDrawerMenu(getString(R.string.menu1_1_Main))
         setupComponentes()
         setupLocalDefault()
         setupRecyclerView()
@@ -50,7 +51,7 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
         fabMain = findViewById(R.id.fabMain)
         fabMain.setOnClickListener {
             val intent = Intent(this, RegistroEventoActivity::class.java)
-            intent.putExtra("titulo",getString(R.string.titulo_RegEvt))
+            intent.putExtra("titulo",getString(R.string.menu1_2_RegEvt))
             startActivity(intent)
         }
     }
@@ -90,6 +91,11 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
     }
 
     private fun atualizarEventosDoDia(lista: List<EventoVO>){
+        if (lista.isEmpty()){
+            Toast.makeText(this,getString(R.string.aviso_SemEventosHoje), Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, CalendarioEventoActivity::class.java)
+            startActivity(intent)
+        }
         adapter = EventosAdapter(this,lista) {onClickItemRecyclerView(it)}
         rcvMain.adapter = adapter
         carregamentoDados(false)

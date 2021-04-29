@@ -49,7 +49,7 @@ class MainViewModel: ViewModel() {
                 try {
                     val hoje = Calendar.getInstance()
                     listaFiltrada = OctApplication.instance.helperDB?.buscarEventos(
-                            busca = "${hoje[Calendar.DAY_OF_MONTH]}/${hoje[Calendar.MONTH]}/${hoje[Calendar.YEAR]}",
+                            busca = "${hoje[Calendar.DAY_OF_MONTH]}/${hoje[Calendar.MONTH]+1}/${hoje[Calendar.YEAR]}",
                             isBuscaPorData = true
                     ) ?: mutableListOf()
 

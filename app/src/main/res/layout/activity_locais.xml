@@ -68,30 +68,18 @@
                         android:id="@+id/tvLocActNascente"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="24sp"
                         tools:text="Nascer do Sol"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_sol"
-                        tools:ignore="ContentDescription" />
-
                     <ImageView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/logo_oct"
-                        tools:ignore="ContentDescription" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_lua"
+                        android:src="@drawable/horizonte"
                         tools:ignore="ContentDescription" />
                     <TextView
                         android:id="@+id/tvLocActPoente"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="24sp"
                         tools:text="Pôr do Sol"/>
                 </LinearLayout>
             </LinearLayout>
@@ -105,16 +93,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabLocAct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="24dp"
-            android:src="@drawable/ic_baseline_add_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="ContentDescription" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
