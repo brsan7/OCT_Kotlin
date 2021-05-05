@@ -67,7 +67,7 @@ open class TempoUtils {
         }
     }
 
-    fun getStringDiaSemana(data: String) : String{
+    fun diaSemanaToString(data: String) : String{
         val calendardata = Calendar.getInstance().apply {
             set(Calendar.DAY_OF_MONTH, data.split("/")[0].toInt())
             set(Calendar.MONTH, data.split("/")[1].toInt()-1)
@@ -85,14 +85,14 @@ open class TempoUtils {
         }
     }
 
-    fun atualizarEventos(evtsSelecionado: List<EventoVO>): List<EventoVO>{
+    fun atualizarEventos(allEventos: List<EventoVO>): List<EventoVO>{
 
         val eventosAtualizado: MutableList<EventoVO>  = mutableListOf()
 
-        for(index in evtsSelecionado.indices){
-            if(isObsoleto(evtsSelecionado[index])){
+        for(index in allEventos.indices){
+            if(isObsoleto(allEventos[index])){
                 eventosAtualizado.add(
-                        projecaoEventos(evtsSelecionado[index])
+                        projecaoEventos(allEventos[index])
                 )
             }
         }
@@ -517,5 +517,59 @@ open class TempoUtils {
                 recorrencia = evtObsoleto.recorrencia,
                 descricao = evtObsoleto.descricao,
         )
+    }
+
+    fun proxEvento(allEventos: List<EventoVO>): EventoVO{
+        var proxEvt = EventoVO(data = "100/100/10000",hora = "24:60")
+        allEventos.forEach{evtIndexado ->
+
+            val diaEvtIndexado = evtIndexado.data.split("/")[0].toInt()
+            val mesEvtIndexado = evtIndexado.data.split("/")[1].toInt()
+            val anoEvtIndexado = evtIndexado.data.split("/")[2].toInt()
+            var horaEvtIndexado = 24
+            var minutoEvtIndexado = 60
+            if (evtIndexado.hora.split(":")[0].toIntOrNull() != null) {
+                horaEvtIndexado = evtIndexado.hora.split(":")[0].toInt()
+                minutoEvtIndexado = evtIndexado.hora.split(":")[1].toInt()
+            }
+            val diaProxEvt = proxEvt.data.split("/")[0].toInt()
+            val mesProxEvt = proxEvt.data.split("/")[1].toInt()
+            val anoProxEvt = proxEvt.data.split("/")[2].toInt()
+            var horaProxEvt = 24
+            var minutoProxEvt = 60
+            if (proxEvt.hora.split(":")[0].toIntOrNull() != null) {
+                horaProxEvt = proxEvt.hora.split(":")[0].toInt()
+                minutoProxEvt = proxEvt.hora.split(":")[1].toInt()
+            }
+
+            when {
+                //Ano
+                anoEvtIndexado < anoProxEvt -> proxEvt = evtIndexado
+                anoEvtIndexado == anoProxEvt -> {
+                    when {
+                        //Mes
+                        mesEvtIndexado < mesProxEvt -> proxEvt = evtIndexado
+                        mesEvtIndexado == mesProxEvt -> {
+                            when {
+                                //Dia
+                                diaEvtIndexado < diaProxEvt -> proxEvt = evtIndexado
+                                diaEvtIndexado == diaProxEvt -> {
+                                    when {
+                                        //Hora
+                                        horaEvtIndexado < horaProxEvt -> proxEvt = evtIndexado
+                                        horaEvtIndexado == horaProxEvt -> {
+                                            if (minutoEvtIndexado < minutoProxEvt) {
+                                                proxEvt = evtIndexado
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return proxEvt
     }
 }

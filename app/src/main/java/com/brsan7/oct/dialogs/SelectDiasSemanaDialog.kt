@@ -76,7 +76,7 @@ class SelectDiasSemanaDialog : DialogFragment(), DialogInterface.OnClickListener
                 recorrencia = "projecao_$selectionDiasSemana"
         )
         val dataProjetada = TempoUtils().projecaoSemanalDinamico(hoje)
-        return "${TempoUtils().getStringDiaSemana(dataProjetada.data)}, ${dataProjetada.data}"
+        return "${TempoUtils().diaSemanaToString(dataProjetada.data)}, ${dataProjetada.data}"
     }
 
     private fun onClickSelecionar(){

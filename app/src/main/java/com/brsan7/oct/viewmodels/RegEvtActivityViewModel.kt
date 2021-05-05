@@ -115,7 +115,7 @@ class RegEvtActivityViewModel: ViewModel() {
 
             data = "${evtSelecionado.recorrencia.split("_")[1].split("*")[0]}*" //Regra de recorrência
         }
-        data += "${TempoUtils().getStringDiaSemana(evtSelecionado.data)}, ${evtSelecionado.data}" //Dia da Semana
+        data += "${TempoUtils().diaSemanaToString(evtSelecionado.data)}, ${evtSelecionado.data}" //Dia da Semana
         val evtConvertido = EventoVO(
                 id = -1,
                 titulo = evtSelecionado.titulo,

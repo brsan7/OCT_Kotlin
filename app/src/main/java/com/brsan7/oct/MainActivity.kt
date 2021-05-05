@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.brsan7.oct.adapter.EventosAdapter
 import com.brsan7.oct.dialogs.EventoDetailDialog
 import com.brsan7.oct.model.EventoVO
+import com.brsan7.oct.service.eventosJobScheduler
 import com.brsan7.oct.utils.SharedPreferencesUtils
 import com.brsan7.oct.utils.SolarUtils
 import com.brsan7.oct.viewmodels.MainViewModel
@@ -39,6 +40,7 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
         setupLocalDefault()
         setupRecyclerView()
         setupMainViewModel()
+        eventosJobScheduler()
     }
 
     private fun setupComponentes() {
