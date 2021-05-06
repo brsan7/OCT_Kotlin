@@ -34,4 +34,18 @@ open class SharedPreferencesUtils {
         val convTipo = object : TypeToken<LocalVO>(){}.type
         return Gson().fromJson(ultimoItemRegGson,convTipo)
     }
+
+    fun setShareNotification(statusNotification: String){
+        getInstanceSharedPreferences().edit{
+            putString("setupNotification", Gson().toJson(statusNotification))
+            commit()
+        }
+    }
+
+    fun getShareNotification() : String {
+        val statusNotification = "desconfigurado"
+        val ultimoItemRegGson = getInstanceSharedPreferences().getString("setupNotification", Gson().toJson(statusNotification))
+        val convTipo = object : TypeToken<String>(){}.type
+        return Gson().fromJson(ultimoItemRegGson,convTipo)
+    }
 }

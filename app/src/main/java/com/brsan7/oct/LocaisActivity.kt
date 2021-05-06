@@ -51,8 +51,8 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
 
     private fun setupLocaisViewModel() {
         locaisViewModel = ViewModelProvider(this).get(LocaisViewModel::class.java)
-        locaisViewModel.vmDefLocal.observe(this, { lista->
-            SharedPreferencesUtils().setShareLocalDefault(lista)
+        locaisViewModel.vmDefLocal.observe(this, { local->
+            SharedPreferencesUtils().setShareLocalDefault(local)
             atualizarLocalDefault()
         })
         locaisViewModel.vmRcvLocais.observe(this, { lista->

@@ -1,6 +1,8 @@
 package com.brsan7.oct
 
+import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -10,9 +12,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brsan7.oct.adapter.EventosAdapter
+import com.brsan7.oct.application.OctApplication
 import com.brsan7.oct.dialogs.EventoDetailDialog
 import com.brsan7.oct.model.EventoVO
-import com.brsan7.oct.service.eventosJobScheduler
+import com.brsan7.oct.service.NotificacaoBroadcastReceiver
+import com.brsan7.oct.service.setupGeralNotification
 import com.brsan7.oct.utils.SharedPreferencesUtils
 import com.brsan7.oct.utils.SolarUtils
 import com.brsan7.oct.viewmodels.MainViewModel
@@ -38,9 +42,9 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
         setupDrawerMenu(getString(R.string.menu1_1_Main))
         setupComponentes()
         setupLocalDefault()
+        setupNotification()
         setupRecyclerView()
         setupMainViewModel()
-        eventosJobScheduler()
     }
 
     private fun setupComponentes() {
@@ -74,6 +78,19 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
         carregamentoDados(false)
     }
 
+    private fun setupNotification(){
+        if (SharedPreferencesUtils().getShareNotification() == "desconfigurado"){
+            SharedPreferencesUtils().setShareNotification("configurado")
+            val receiver = ComponentName(OctApplication.instance, NotificacaoBroadcastReceiver::class.java)
+            OctApplication.instance.packageManager.setComponentEnabledSetting(
+                    receiver,
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP
+            )
+            setupGeralNotification()
+        }
+    }
+
     private fun setupRecyclerView(){
         rcvMain.layoutManager = LinearLayoutManager(this)
     }
@@ -92,15 +109,24 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
         fragment.show(supportFragmentManager, "dialog")
     }
 
-    private fun atualizarEventosDoDia(lista: List<EventoVO>){
-        if (lista.isEmpty()){
+    private fun atualizarEventosDoDia(listaFiltrada: List<EventoVO>){
+        if (listaFiltrada.isEmpty()){
             Toast.makeText(this,getString(R.string.aviso_SemEventosHoje), Toast.LENGTH_SHORT).show()
             val intent = Intent(this, CalendarioEventoActivity::class.java)
             startActivity(intent)
         }
-        adapter = EventosAdapter(this,lista) {onClickItemRecyclerView(it)}
-        rcvMain.adapter = adapter
-        carregamentoDados(false)
+        else {
+            val compromissos: MutableList<EventoVO> = mutableListOf()
+            listaFiltrada.forEach {
+                if (it.tipo == OctApplication.instance.getString(R.string.txt_spnRegEvtActTipoCompromisso)) {
+                    compromissos.add(it)
+                }
+            }
+            NotificacaoBroadcastReceiver().agendarProxEvento(compromissos)
+            adapter = EventosAdapter(this, listaFiltrada) { onClickItemRecyclerView(it) }
+            rcvMain.adapter = adapter
+            carregamentoDados(false)
+        }
     }
 
     override fun onDeleteEvento() {
