@@ -10,7 +10,7 @@ import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import com.brsan7.oct.CalendarioEventoActivity
+import com.brsan7.oct.MainActivity
 import com.brsan7.oct.R
 
 lateinit var notificationChannel: NotificationChannel
@@ -21,7 +21,7 @@ lateinit var builder: NotificationCompat.Builder
 fun Context.showNotification(chanelId: String, title: String, body: String){
     notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     notificationManager.cancel(chanelId.toInt())
-    val intent = Intent(this, CalendarioEventoActivity::class.java)
+    val intent = Intent(this, MainActivity::class.java)
     val pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
         notificationChannel = NotificationChannel(chanelId,body,NotificationManager.IMPORTANCE_HIGH).apply {

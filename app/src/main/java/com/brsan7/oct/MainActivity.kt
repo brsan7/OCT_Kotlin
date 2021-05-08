@@ -1,8 +1,6 @@
 package com.brsan7.oct
 
-import android.content.ComponentName
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -12,17 +10,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brsan7.oct.adapter.EventosAdapter
-import com.brsan7.oct.application.OctApplication
 import com.brsan7.oct.dialogs.EventoDetailDialog
 import com.brsan7.oct.model.EventoVO
-import com.brsan7.oct.service.NotificacaoBroadcastReceiver
-import com.brsan7.oct.service.setupGeralNotification
+import com.brsan7.oct.service.ScheduleWorkNotificacao
 import com.brsan7.oct.utils.SharedPreferencesUtils
 import com.brsan7.oct.utils.SolarUtils
 import com.brsan7.oct.viewmodels.MainViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
-
 
 class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
 
@@ -80,14 +75,9 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
 
     private fun setupNotification(){
         if (SharedPreferencesUtils().getShareNotification() == "desconfigurado"){
+
             SharedPreferencesUtils().setShareNotification("configurado")
-            val receiver = ComponentName(OctApplication.instance, NotificacaoBroadcastReceiver::class.java)
-            OctApplication.instance.packageManager.setComponentEnabledSetting(
-                    receiver,
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP
-            )
-            setupGeralNotification()
+            ScheduleWorkNotificacao().setupNotificacaoDiaria()
         }
     }
 
@@ -116,13 +106,7 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
             startActivity(intent)
         }
         else {
-            val compromissos: MutableList<EventoVO> = mutableListOf()
-            listaFiltrada.forEach {
-                if (it.tipo == OctApplication.instance.getString(R.string.txt_spnRegEvtActTipoCompromisso)) {
-                    compromissos.add(it)
-                }
-            }
-            NotificacaoBroadcastReceiver().agendarProxEvento(compromissos)
+            ScheduleWorkNotificacao().setupNotificacaoProxEvt(listaFiltrada)
             adapter = EventosAdapter(this, listaFiltrada) { onClickItemRecyclerView(it) }
             rcvMain.adapter = adapter
             carregamentoDados(false)

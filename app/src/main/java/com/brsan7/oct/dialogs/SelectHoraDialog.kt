@@ -47,7 +47,7 @@ class SelectHoraDialog : DialogFragment(), DialogInterface.OnClickListener {
 
     private fun setupSelectDialogViewModel(){
         selectsDataHoraDiagViewModel = ViewModelProvider(this).get(SelectsDataHoraDialogViewModel::class.java)
-        val hora = EventoVO( hora = "${timePicker.hour}:${timePicker.minute}" )
+        val hora = EventoVO( hora = "${timePicker.hour}:${formatTimePickerMinute()}" )
         selectsDataHoraDiagViewModel.getSelecaoHora(hora)
         selectsDataHoraDiagViewModel.vmRegDlgHora.observe(this, { _hora->
             setupHora(_hora)
@@ -56,19 +56,26 @@ class SelectHoraDialog : DialogFragment(), DialogInterface.OnClickListener {
 
     override fun onPause() {
         super.onPause()
-        selectsDataHoraDiagViewModel.vmRegDlgHora.value?.hora = "${timePicker.hour}:${timePicker.minute}"
+        selectsDataHoraDiagViewModel.vmRegDlgHora.value?.hora = "${timePicker.hour}:${formatTimePickerMinute()}"
     }
 
     private fun setupHora(hora: EventoVO){
         timePicker.hour = hora.hora.split(":")[0].toInt()
-        timePicker.minute = hora.hora.split(":")[0].toInt()
+        timePicker.minute = hora.hora.split(":")[1].toInt()
     }
 
     private fun onClickSelecionar(){
         val horaSelecionada = EventoVO(
-                hora = "${timePicker.hour}:${timePicker.minute}"
+                hora = "${timePicker.hour}:${formatTimePickerMinute()}"
         )
         (activity as(SelecaoHora)).onHoraSelecionada(horaSelecionada)
         dismiss()
+    }
+
+    private fun formatTimePickerMinute(): String{
+        return if (timePicker.minute < 10){
+            "0${timePicker.minute}"
+        }
+        else { "${timePicker.minute}" }
     }
 }

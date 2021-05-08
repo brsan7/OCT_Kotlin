@@ -39,6 +39,7 @@
     <string name="txt_spnRegEvtActRecorrenciaAnualFixo" tools:ignore="Typos">Anual Fixo</string>
     <string name="txt_spnRegEvtActRecorrenciaAnualDin" tools:ignore="Typos">Anual Dinâmico</string>
     <string name="txt_spnRegEvtActRecorrenciaPeriodico">Periódico</string>
+    <string name="txt_spnRegEvtActRecorrenciaEstatico">Estático</string>
     <!-- Recorrencia Eventos -->
     <!-- Recorrencia Periódica Modos -->
     <string name="txt_spnRegEvtActModo">Modo</string>
@@ -65,6 +66,7 @@
     <string name="txt_btnDialogsSelecionar">SELECIONAR</string>
     <string name="txt_btnDialogsExcluir">EXCLUIR</string>
     <string name="txt_btnDialogsEditar">EDITAR</string>
+    <string name="aviso_ProxCompromissoNotification">Próximo Compromisso</string>
     <string name="aviso_SemDescricaoDialogs">Sem Descrição</string>
     <string name="aviso_SemEventosHoje">Nenhum Evento\nRegistrado para Hoje</string>
     <!-- Geral Dialogs -->

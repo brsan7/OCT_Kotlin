@@ -32,6 +32,7 @@
         <item>@string/txt_spnRegEvtActRecorrenciaAnualFixo</item>
         <item>@string/txt_spnRegEvtActRecorrenciaAnualDin</item>
         <item>@string/txt_spnRegEvtActRecorrenciaPeriodico</item>
+        <item>@string/txt_spnRegEvtActRecorrenciaEstatico</item>
     </string-array>
 
     <string-array name="array_recorrencia_periodica_modos">
