@@ -66,6 +66,8 @@
     <string name="txt_btnDialogsSelecionar">SELECIONAR</string>
     <string name="txt_btnDialogsExcluir">EXCLUIR</string>
     <string name="txt_btnDialogsEditar">EDITAR</string>
+    <string name="txt_AproxCompromisso1">Faltam</string>
+    <string name="txt_AproxCompromisso2">Minutos</string>
     <string name="aviso_ProxCompromissoNotification">Próximo Compromisso</string>
     <string name="aviso_SemDescricaoDialogs">Sem Descrição</string>
     <string name="aviso_SemEventosHoje">Nenhum Evento\nRegistrado para Hoje</string>

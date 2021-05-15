@@ -15,6 +15,7 @@ import com.brsan7.oct.model.EventoVO
 import com.brsan7.oct.service.ScheduleWorkNotificacao
 import com.brsan7.oct.utils.SharedPreferencesUtils
 import com.brsan7.oct.utils.SolarUtils
+import com.brsan7.oct.utils.TempoUtils
 import com.brsan7.oct.viewmodels.MainViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
@@ -106,7 +107,9 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
             startActivity(intent)
         }
         else {
-            ScheduleWorkNotificacao().setupNotificacaoProxEvt(listaFiltrada)
+            if (TempoUtils().proxEvento(listaFiltrada).tipo == getString(R.string.txt_spnRegEvtActTipoCompromisso)) {
+                ScheduleWorkNotificacao().startForegroudService()
+            }
             adapter = EventosAdapter(this, listaFiltrada) { onClickItemRecyclerView(it) }
             rcvMain.adapter = adapter
             carregamentoDados(false)

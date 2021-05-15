@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.brsan7.oct">
 
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:name=".application.OctApplication"
         android:icon="@drawable/logo_oct"
@@ -11,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar"
         tools:ignore="AllowBackup">
-        <activity android:name=".CalendarioSolarActivity"/>
+        <activity android:name=".NotificationActivity" />
+        <activity android:name=".CalendarioSolarActivity" />
         <activity android:name=".RegistroLocalActivity" />
         <activity android:name=".LocaisActivity" />
         <activity android:name=".RegistroEventoActivity" />
@@ -19,9 +23,10 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-</application>
+    </application>
 
 </manifest>
