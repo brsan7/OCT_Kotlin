@@ -30,7 +30,8 @@
             android:src="@drawable/logo_oct"
             app:layout_constraintTop_toBottomOf="@id/tvAppName"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="ContentDescription" />
         <TextView
             android:id="@+id/tvNotifActEventoAlpha"
             android:layout_width="wrap_content"
@@ -43,7 +44,7 @@
             android:alpha="0.75"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/efabAction"/>
+            app:layout_constraintBottom_toTopOf="@+id/fabSilenceAction"/>
         <TextView
             android:id="@+id/tvNotifActEvento"
             android:layout_width="wrap_content"
@@ -54,15 +55,27 @@
             android:textColor="@color/selecao"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/efabAction"/>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@id/efabAction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ok"
+            app:layout_constraintBottom_toTopOf="@+id/fabSilenceAction"/>
+        <ImageView
+            android:id="@+id/ivFabAnimation"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:src="@drawable/fab_animation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="ContentDescription" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@id/fabSilenceAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="35dp"
+            android:elevation="24dp"
+            android:src="@drawable/ic_baseline_alarm_off_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="ContentDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

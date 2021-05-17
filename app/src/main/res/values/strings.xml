@@ -105,4 +105,15 @@
     <string name="txt_EstacaoSltInverno">Solstício de Inverno</string>
     <string name="txt_EstacaoSltVerao">Solstício de Verão</string>
     <!-- ConsultaSolarDetailDialog -->
+
+    <!-- NotificationChannels -->
+    <string name="channel_EvtsDoDia_Sumário">Sumário Eventos do Dia</string>
+    <string name="channel_EvtsDoDia_Feriado">Feriados do Dia</string>
+    <string name="channel_EvtsDoDia_Lembrete">Lembretes do Dia</string>
+    <string name="channel_EvtsDoDia_Compromisso">Compromisso do Dia</string>
+    <string name="channel_inicioCompromisso">Inicio Compromisso</string>
+    <string name="channel_aproxCompromisso">Aproximação Compromisso</string>
+    <string name="channel_proxCompromissoAtivo">Próximo Evento Ativo</string>
+    <!-- NotificationChannels -->
+
 </resources>

@@ -80,8 +80,6 @@ fun Context.showNotification(chanelId: String, title: String, body: String, bigT
                 setAutoCancel(false)
             }
             2202 -> { //notificarAproxCompromisso()
-                setStyle(BigTextStyle().bigText(bigText))
-                setContentIntent(pendingIntent)
                 setAutoCancel(true)
             }
             in 2210..2212 -> { //Notificação Todos Eventos do Dia
@@ -100,7 +98,7 @@ fun Context.createForegroundNotification(workId: UUID, title: String, body: Stri
             .createCancelPendingIntent(workId)
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        notificationChannel = NotificationChannel("2201", "body", NotificationManager.IMPORTANCE_LOW).apply {
+        notificationChannel = NotificationChannel("2201", OctApplication.instance.getString(R.string.channel_proxCompromissoAtivo), NotificationManager.IMPORTANCE_LOW).apply {
             enableVibration(true)
             enableLights(true)
             lightColor = Color.BLUE
