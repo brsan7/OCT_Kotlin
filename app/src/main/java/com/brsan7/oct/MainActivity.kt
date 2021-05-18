@@ -59,7 +59,7 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
     }
 
     private fun setupLocalDefault(){
-        val defLocal = SharedPreferencesUtils().getShareLocalDefault()
+        val defLocal = SharedPreferencesUtils().getSharedLocalDefault()
         tvMainLocal.text = defLocal.titulo
         if (defLocal.latitude.toDoubleOrNull() != null) {
             val fotoPeriodo = SolarUtils().fotoPeriodo(
@@ -75,11 +75,7 @@ class MainActivity : DrawerMenuActivity(), EventoDetailDialog.Atualizar {
     }
 
     private fun setupNotification(){
-        if (SharedPreferencesUtils().getShareNotification() == "desconfigurado"){
-
-            SharedPreferencesUtils().setShareNotification("configurado")
-            ScheduleWorkNotificacao().setupNotificacaoDiaria()
-        }
+        ScheduleWorkNotificacao().setupNotificacaoDiaria()
     }
 
     private fun setupRecyclerView(){

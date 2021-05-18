@@ -26,6 +26,7 @@ open class ScheduleWorkNotificacao {
         WorkManager
                 .getInstance(OctApplication.instance)
                 .cancelAllWorkByTag("setupNotificacaoDiaria")
+
         WorkManager
                 .getInstance(OctApplication.instance)
                 .enqueue(notificacaoWorkRequest)
@@ -34,13 +35,12 @@ open class ScheduleWorkNotificacao {
     fun startForegroudService() {
 
         val notificacaoWorkRequest =
-                OneTimeWorkRequestBuilder<ForegroudServiceWorker>()
-                        .build()
+                OneTimeWorkRequestBuilder<ForegroudServiceWorker>().build()
 
         WorkManager
                 .getInstance(OctApplication.instance)
                 .enqueueUniqueWork(
-                        "ForegroudService",
+                        "startForegroudService",
                         ExistingWorkPolicy.REPLACE,
                         notificacaoWorkRequest
                 )

@@ -6,6 +6,7 @@ import com.brsan7.oct.R
 import com.brsan7.oct.application.OctApplication
 import com.brsan7.oct.model.EventoVO
 import com.brsan7.oct.utils.*
+import com.google.common.util.concurrent.ListenableFuture
 import java.util.*
 
 private var evtsDoDiaFeriado: MutableList<EventoVO> = mutableListOf()
@@ -28,10 +29,13 @@ class NotificacaoDiariaWorker(appContext: Context, workerParams: WorkerParameter
         return Result.success()
     }
 }
+
 class ForegroudServiceWorker(appContext: Context, workerParams: WorkerParameters)
     : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
+
+        val workStatus = WorkManager.getInstance(OctApplication.instance).getWorkInfoById(id)
         var evtsDoDia = buscarEventosDoDia()
         val proxEvt = TempoUtils().proxEvento(evtsDoDia)
         setForeground(
@@ -43,13 +47,18 @@ class ForegroudServiceWorker(appContext: Context, workerParams: WorkerParameters
                 )
         )
         return try {
-            verificarNotificarAproxCompromisso(tempoRestanteProxEvt(),proxEvt)
-            notificarInicioCompromisso(proxEvt)
-            atualizarEventos()
-            evtsDoDia = buscarEventosDoDia()
-            filtrarEventosPorTipo(evtsDoDia)
-            if (evtsDoDiaCompromisso.isNotEmpty()){ ScheduleWorkNotificacao().startForegroudService() }
-            Result.success()
+            verificarNotificarAproxCompromisso(tempoRestanteProxEvt(), workStatus)
+            if(workStatus.isCancelled){ Result.failure() }
+            else {
+                notificarInicioCompromisso(proxEvt)
+                atualizarEventos()
+                evtsDoDia = buscarEventosDoDia()
+                filtrarEventosPorTipo(evtsDoDia)
+                if (evtsDoDiaCompromisso.isNotEmpty()) {
+                    ScheduleWorkNotificacao().startForegroudService()
+                }
+                Result.success()
+            }
         }
         catch (throwable: Throwable) {
             Result.failure()
@@ -57,22 +66,27 @@ class ForegroudServiceWorker(appContext: Context, workerParams: WorkerParameters
     }
 }
 
-private fun verificarNotificarAproxCompromisso(tempoRestanteMseg: Long, proxEvt: EventoVO){
+private fun verificarNotificarAproxCompromisso(tempoRestanteMseg: Long,
+                                               workStatus: ListenableFuture<WorkInfo>){
+
     val quinzeMinMseg = 15 * 60 * 1000L
     val meiaHoraAntes = tempoRestanteMseg - (quinzeMinMseg*2)
     val quinzeMinAntes = tempoRestanteMseg - quinzeMinMseg
 
     if (meiaHoraAntes > 0){
         Thread.sleep(meiaHoraAntes)
-        notificarAproxCompromisso(proxEvt,30)
+        if(workStatus.isCancelled){ return }
+        else{ notificarAproxCompromisso(30) }
         Thread.sleep(quinzeMinMseg)
-        notificarAproxCompromisso(proxEvt,15)
+        if(workStatus.isCancelled){ return }
+        else{ notificarAproxCompromisso(15) }
         Thread.sleep(quinzeMinMseg)
     }
     else {
         if (quinzeMinAntes > 0) {
             Thread.sleep(quinzeMinAntes)
-            notificarAproxCompromisso(proxEvt,15)
+            if(workStatus.isCancelled){ return }
+            else{ notificarAproxCompromisso(15) }
             Thread.sleep(quinzeMinMseg)
         }
         else{Thread.sleep(tempoRestanteMseg)}
@@ -103,12 +117,14 @@ private fun notificarEventosDoDia(chanelId: String, evtsTipo: List<EventoVO>){
     }
 }
 
-private fun notificarAproxCompromisso(proxEvt: EventoVO,tempoRestante: Int){
+private fun notificarAproxCompromisso(tempoRestante: Int){
+//private fun notificarAproxCompromisso(proxEvt: EventoVO,tempoRestante: Int){
     OctApplication.instance.showNotification(
         chanelId = "2202",
         title = OctApplication.instance.getString(R.string.aviso_ProxCompromissoNotification),
         body = OctApplication.instance.getString(R.string.txt_AproxCompromisso1)+" $tempoRestante "+OctApplication.instance.getString(R.string.txt_AproxCompromisso2),
-        bigText = "${proxEvt.hora} -> ${proxEvt.titulo}\n\n${OctApplication.instance.getString(R.string.hint_etRegAgActDescricao)}:\n${proxEvt.descricao}"
+        //bigText = "${proxEvt.hora} -> ${proxEvt.titulo}\n\n${OctApplication.instance.getString(R.string.hint_etRegAgActDescricao)}:\n${proxEvt.descricao}"
+        bigText = ""
     )
 }
 

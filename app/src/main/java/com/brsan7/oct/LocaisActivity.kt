@@ -52,7 +52,7 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
     private fun setupLocaisViewModel() {
         locaisViewModel = ViewModelProvider(this).get(LocaisViewModel::class.java)
         locaisViewModel.vmDefLocal.observe(this, { local->
-            SharedPreferencesUtils().setShareLocalDefault(local)
+            SharedPreferencesUtils().setSharedLocalDefault(local)
             atualizarLocalDefault()
         })
         locaisViewModel.vmRcvLocais.observe(this, { lista->
@@ -73,7 +73,7 @@ class LocaisActivity : DrawerMenuActivity(), LocalEditDialog.Atualizar {
     }
 
     private fun atualizarLocalDefault(){
-        val defLocal = SharedPreferencesUtils().getShareLocalDefault()
+        val defLocal = SharedPreferencesUtils().getSharedLocalDefault()
         tvLocActLocal.text = defLocal.titulo
         if (defLocal.latitude.toDoubleOrNull() != null) {
             val fotoPeriodo = SolarUtils().fotoPeriodo(

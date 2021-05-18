@@ -45,7 +45,7 @@ class CalendarioSolarActivity : DrawerMenuActivity() {
     private fun setupCalSolActivityViewModel() {
         calSolActivityViewModel = ViewModelProvider(this).get(CalSolActivityViewModel::class.java)
 
-        localSelecionado = SharedPreferencesUtils().getShareLocalDefault()
+        localSelecionado = SharedPreferencesUtils().getSharedLocalDefault()
         calSolActivityViewModel.getAllLocais(localSelecionado)
 
         calSolActivityViewModel.vmSpnCalSolarActLocal.observe(this, { itensSpinner->

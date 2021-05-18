@@ -12,17 +12,17 @@ import com.google.gson.reflect.TypeToken
 open class SharedPreferencesUtils {
 
     private fun getInstanceSharedPreferences() : SharedPreferences {
-        return OctApplication.instance.getSharedPreferences("com.brsan7.oct.LOCAL_DEFAULT", Context.MODE_PRIVATE)
+        return OctApplication.instance.getSharedPreferences("com.brsan7.oct.SETTINGS", Context.MODE_PRIVATE)
     }
 
-    fun setShareLocalDefault(meuLocal: LocalVO){
+    fun setSharedLocalDefault(meuLocal: LocalVO){
         getInstanceSharedPreferences().edit{
-            putString("localDef", Gson().toJson(meuLocal))
+            putString("LOCAL_DEFAULT", Gson().toJson(meuLocal))
             commit()
         }
     }
 
-    fun getShareLocalDefault() : LocalVO {
+    fun getSharedLocalDefault() : LocalVO {
         val defLocal = LocalVO(
                 id = -1,
                 titulo = OctApplication.instance.getString(R.string.aviso_semLocalDef),
@@ -30,22 +30,8 @@ open class SharedPreferencesUtils {
                 longitude = "",
                 fusoHorario = ""
         )
-        val ultimoItemRegGson = getInstanceSharedPreferences().getString("localDef", Gson().toJson(defLocal))
+        val ultimoItemRegGson = getInstanceSharedPreferences().getString("LOCAL_DEFAULT", Gson().toJson(defLocal))
         val convTipo = object : TypeToken<LocalVO>(){}.type
-        return Gson().fromJson(ultimoItemRegGson,convTipo)
-    }
-
-    fun setShareNotification(statusNotification: String){
-        getInstanceSharedPreferences().edit{
-            putString("setupNotification", Gson().toJson(statusNotification))
-            commit()
-        }
-    }
-
-    fun getShareNotification() : String {
-        val statusNotification = "desconfigurado"
-        val ultimoItemRegGson = getInstanceSharedPreferences().getString("setupNotification", Gson().toJson(statusNotification))
-        val convTipo = object : TypeToken<String>(){}.type
         return Gson().fromJson(ultimoItemRegGson,convTipo)
     }
 }
