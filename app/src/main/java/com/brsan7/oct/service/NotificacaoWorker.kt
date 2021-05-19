@@ -6,12 +6,11 @@ import com.brsan7.oct.R
 import com.brsan7.oct.application.OctApplication
 import com.brsan7.oct.model.EventoVO
 import com.brsan7.oct.utils.*
-import com.google.common.util.concurrent.ListenableFuture
 import java.util.*
 
-private var evtsDoDiaFeriado: MutableList<EventoVO> = mutableListOf()
-private var evtsDoDiaCompromisso: MutableList<EventoVO> = mutableListOf()
-private var evtsDoDiaLembrete: MutableList<EventoVO> = mutableListOf()
+private var filtroEvtsDoDiaFeriado: MutableList<EventoVO> = mutableListOf()
+private var filtroEvtsDoDiaCompromisso: MutableList<EventoVO> = mutableListOf()
+private var filtroEvtsDoDiaLembrete: MutableList<EventoVO> = mutableListOf()
 
 class NotificacaoDiariaWorker(appContext: Context, workerParams: WorkerParameters)
     : Worker(appContext, workerParams) {
@@ -21,11 +20,11 @@ class NotificacaoDiariaWorker(appContext: Context, workerParams: WorkerParameter
         val evtsDoDia = buscarEventosDoDia()
         filtrarEventosPorTipo(evtsDoDia)
         if (evtsDoDia.isNotEmpty()){ notificarEventosDoDia("0",evtsDoDia) }
-        if (evtsDoDiaCompromisso.isNotEmpty()){ notificarEventosDoDia("2212",evtsDoDiaCompromisso) }
-        if (evtsDoDiaLembrete.isNotEmpty()){ notificarEventosDoDia("2211",evtsDoDiaLembrete) }
-        if (evtsDoDiaFeriado.isNotEmpty()){ notificarEventosDoDia("2210",evtsDoDiaFeriado) }
+        if (filtroEvtsDoDiaCompromisso.isNotEmpty()){ notificarEventosDoDia("2212",filtroEvtsDoDiaCompromisso) }
+        if (filtroEvtsDoDiaLembrete.isNotEmpty()){ notificarEventosDoDia("2211",filtroEvtsDoDiaLembrete) }
+        if (filtroEvtsDoDiaFeriado.isNotEmpty()){ notificarEventosDoDia("2210",filtroEvtsDoDiaFeriado) }
         ScheduleWorkNotificacao().setupNotificacaoDiaria()
-        if (evtsDoDiaCompromisso.isNotEmpty()){ ScheduleWorkNotificacao().startForegroudService() }
+        if (filtroEvtsDoDiaCompromisso.isNotEmpty()){ ScheduleWorkNotificacao().startForegroudService() }
         return Result.success()
     }
 }
@@ -34,27 +33,34 @@ class ForegroudServiceWorker(appContext: Context, workerParams: WorkerParameters
     : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
-
-        val workStatus = WorkManager.getInstance(OctApplication.instance).getWorkInfoById(id)
+        SharedPreferencesUtils().setSharedActiveWork(id.toString())
         var evtsDoDia = buscarEventosDoDia()
         val proxEvt = TempoUtils().proxEvento(evtsDoDia)
+        val bigText =
+                if (proxEvt.descricao == ""){ "" }
+                else{ "${proxEvt.hora} -> ${proxEvt.titulo}\n\n${OctApplication.instance.getString(R.string.hint_etRegAgActDescricao)}:\n${proxEvt.descricao}" }
+
         setForeground(
                 OctApplication.instance.createForegroundNotification(
                         workId = id,
                         title = OctApplication.instance.getString(R.string.aviso_ProxCompromissoNotification),
                         body = "${proxEvt.hora} -> ${proxEvt.titulo}",
-                        bigText = "${proxEvt.hora} -> ${proxEvt.titulo}\n\n${OctApplication.instance.getString(R.string.hint_etRegAgActDescricao)}:\n${proxEvt.descricao}"
+                        bigText = bigText
                 )
         )
+
         return try {
-            verificarNotificarAproxCompromisso(tempoRestanteProxEvt(), workStatus)
-            if(workStatus.isCancelled){ Result.failure() }
+
+            verificarNotificarAproxCompromisso(tempoRestanteProxEvt(), id)
+
+            if(!isActive(id)){ Result.failure() }
             else {
+
                 notificarInicioCompromisso(proxEvt)
                 atualizarEventos()
                 evtsDoDia = buscarEventosDoDia()
                 filtrarEventosPorTipo(evtsDoDia)
-                if (evtsDoDiaCompromisso.isNotEmpty()) {
+                if (filtroEvtsDoDiaCompromisso.isNotEmpty()) {
                     ScheduleWorkNotificacao().startForegroudService()
                 }
                 Result.success()
@@ -66,8 +72,11 @@ class ForegroudServiceWorker(appContext: Context, workerParams: WorkerParameters
     }
 }
 
-private fun verificarNotificarAproxCompromisso(tempoRestanteMseg: Long,
-                                               workStatus: ListenableFuture<WorkInfo>){
+private fun isActive(id: UUID): Boolean{
+    return id.toString() == SharedPreferencesUtils().getSharedActiveWorker()
+}
+
+private fun verificarNotificarAproxCompromisso(tempoRestanteMseg: Long, id: UUID){
 
     val quinzeMinMseg = 15 * 60 * 1000L
     val meiaHoraAntes = tempoRestanteMseg - (quinzeMinMseg*2)
@@ -75,17 +84,17 @@ private fun verificarNotificarAproxCompromisso(tempoRestanteMseg: Long,
 
     if (meiaHoraAntes > 0){
         Thread.sleep(meiaHoraAntes)
-        if(workStatus.isCancelled){ return }
+        if(!isActive(id)){ return }
         else{ notificarAproxCompromisso(30) }
         Thread.sleep(quinzeMinMseg)
-        if(workStatus.isCancelled){ return }
+        if(!isActive(id)){ return }
         else{ notificarAproxCompromisso(15) }
         Thread.sleep(quinzeMinMseg)
     }
     else {
         if (quinzeMinAntes > 0) {
             Thread.sleep(quinzeMinAntes)
-            if(workStatus.isCancelled){ return }
+            if(!isActive(id)){ return }
             else{ notificarAproxCompromisso(15) }
             Thread.sleep(quinzeMinMseg)
         }
@@ -95,45 +104,54 @@ private fun verificarNotificarAproxCompromisso(tempoRestanteMseg: Long,
 
 private fun notificarEventosDoDia(chanelId: String, evtsTipo: List<EventoVO>){
 
-    val titulo =
-            if (evtsTipo.first().hora.isEmpty()){ evtsTipo.first().titulo }
+    val body =
+            if (evtsTipo.first().tipo != OctApplication.instance.getString(R.string.txt_spnRegEvtActTipoCompromisso)){ evtsTipo.first().titulo }
             else { "${evtsTipo.first().hora} -> ${evtsTipo.first().titulo}" }
 
     if (evtsTipo.size == 1){
         OctApplication.instance.showNotification(
                 chanelId = chanelId,
-                title = evtsTipo.first().tipo,
-                body = titulo,
+                title = "${evtsTipo.first().tipo}:",
+                body = body,
                 bigText = ""
         )
     }
     else {
+        var bigText = ""
+
+        evtsTipo.forEach { evento->
+            bigText +=
+                    if (evento.tipo != OctApplication.instance.getString(R.string.txt_spnRegEvtActTipoCompromisso)){ "\n${evento.titulo}" }
+                    else{ "\n${evento.hora} -> ${evento.titulo}" }
+        }
+
         OctApplication.instance.showNotification(
                 chanelId = chanelId,
-                title = evtsTipo.first().tipo,
-                body = "+${evtsTipo.size-1}_$titulo",
-                bigText = ""
+                title = "${evtsTipo.first().tipo}:",
+                body = "(+${evtsTipo.size - 1}) $body",
+                bigText = bigText
         )
     }
 }
 
 private fun notificarAproxCompromisso(tempoRestante: Int){
-//private fun notificarAproxCompromisso(proxEvt: EventoVO,tempoRestante: Int){
     OctApplication.instance.showNotification(
         chanelId = "2202",
         title = OctApplication.instance.getString(R.string.aviso_ProxCompromissoNotification),
         body = OctApplication.instance.getString(R.string.txt_AproxCompromisso1)+" $tempoRestante "+OctApplication.instance.getString(R.string.txt_AproxCompromisso2),
-        //bigText = "${proxEvt.hora} -> ${proxEvt.titulo}\n\n${OctApplication.instance.getString(R.string.hint_etRegAgActDescricao)}:\n${proxEvt.descricao}"
         bigText = ""
     )
 }
 
 private fun notificarInicioCompromisso(proxEvt: EventoVO){
+    val bigText =
+            if (proxEvt.descricao == ""){ "" }
+            else{ "${proxEvt.hora} -> ${proxEvt.titulo}\n\n${OctApplication.instance.getString(R.string.hint_etRegAgActDescricao)}:\n${proxEvt.descricao}" }
     OctApplication.instance.showNotification(
             chanelId = "2200",
             title = proxEvt.titulo,
             body = "${proxEvt.hora} -> ${proxEvt.descricao}",
-            bigText = "${proxEvt.hora} -> ${proxEvt.titulo}\n\n${OctApplication.instance.getString(R.string.hint_etRegAgActDescricao)}:\n${proxEvt.descricao}"
+            bigText = bigText
     )
 }
 
@@ -186,18 +204,18 @@ private fun tempoRestanteProxEvt(): Long{
 }
 
 private fun filtrarEventosPorTipo(evtsDoDia: List<EventoVO>){
-    evtsDoDiaFeriado = mutableListOf()
-    evtsDoDiaCompromisso = mutableListOf()
-    evtsDoDiaLembrete = mutableListOf()
+    filtroEvtsDoDiaFeriado = mutableListOf()
+    filtroEvtsDoDiaCompromisso = mutableListOf()
+    filtroEvtsDoDiaLembrete = mutableListOf()
     evtsDoDia.forEach {
         if (it.tipo == OctApplication.instance.getString(R.string.txt_spnRegEvtActTipoFeriado)){
-            evtsDoDiaFeriado.add(it)
+            filtroEvtsDoDiaFeriado.add(it)
         }
         if (it.tipo == OctApplication.instance.getString(R.string.txt_spnRegEvtActTipoLembrete)){
-            evtsDoDiaLembrete.add(it)
+            filtroEvtsDoDiaLembrete.add(it)
         }
         if (it.tipo == OctApplication.instance.getString(R.string.txt_spnRegEvtActTipoCompromisso)){
-            evtsDoDiaCompromisso.add(it)
+            filtroEvtsDoDiaCompromisso.add(it)
         }
     }
 }

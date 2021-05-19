@@ -22,6 +22,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
         <ImageView
             android:id="@+id/ivAppLogo"
             android:layout_width="wrap_content"
@@ -32,30 +33,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="ContentDescription" />
-        <TextView
-            android:id="@+id/tvNotifActEventoAlpha"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="24sp"
-            tools:text="@string/aviso_ProxCompromissoNotification"
-            android:textSize="24sp"
-            android:textColor="@color/selecao"
-            android:background="@color/black"
-            android:alpha="0.75"
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="256dp"
+            android:scrollbars="vertical"
+            android:scrollbarFadeDuration="2000"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/fabSilenceAction"/>
-        <TextView
-            android:id="@+id/tvNotifActEvento"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="24sp"
-            tools:text="@string/aviso_ProxCompromissoNotification"
-            android:textSize="24sp"
-            android:textColor="@color/selecao"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/fabSilenceAction"/>
+            app:layout_constraintBottom_toTopOf="@+id/ivFabAnimation">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="256dp"
+                android:orientation="vertical"
+                android:background="@color/black"
+                android:alpha="0.75">
+                <TextView
+                    android:id="@+id/tvNotifActEvento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="24sp"
+                    tools:text="@string/aviso_ProxCompromissoNotification"
+                    android:textSize="24sp"
+                    android:textColor="@color/selecao"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/fabSilenceAction"/>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
         <ImageView
             android:id="@+id/ivFabAnimation"
             android:layout_width="128dp"
@@ -65,6 +71,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:ignore="ContentDescription" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@id/fabSilenceAction"
             android:layout_width="wrap_content"

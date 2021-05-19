@@ -25,16 +25,20 @@ class NotificationActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         val tvNotifActEvento = findViewById<TextView>(R.id.tvNotifActEvento)
-        val tvNotifActEventoAlpha = findViewById<TextView>(R.id.tvNotifActEventoAlpha)
         val fabSilenceAction = findViewById<FloatingActionButton>(R.id.fabSilenceAction)
         val ivFabAnimation = findViewById<ImageView>(R.id.ivFabAnimation)
-        tvNotifActEvento.text = intent.getStringExtra("Evento")
-        tvNotifActEventoAlpha.text = tvNotifActEvento.text
+
+        var evento = intent.getStringExtra("bigText")
+        if (evento == ""){ evento = intent.getStringExtra("body") }
+        tvNotifActEvento.text = evento
+
         Glide.with(this)
-            .load(R.drawable.fab_animation) // aqui é teu gif
+            .load(R.drawable.fab_animation)
             .asGif()
             .into(ivFabAnimation)
+
         fabSilenceAction.setOnClickListener {
             window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             fabSilenceAction.hide()

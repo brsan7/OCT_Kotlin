@@ -76,7 +76,7 @@ class CalendarioEventoActivity : DrawerMenuActivity() {
         
         mcvCalEvtAct.selectedDate = calEvtActivityViewModel.diaSelecionado
 
-        mcvCalEvtAct.setOnDateChangedListener { widget, date, selected ->
+        mcvCalEvtAct.setOnDateChangedListener { _, date, _ ->
 
             calEvtActivityViewModel.reStartActivity = false
             calEvtActivityViewModel.diaSelecionado = date

@@ -91,7 +91,7 @@ class CalendarioSolarActivity : DrawerMenuActivity() {
 
         mcvCalSolarAct.selectedDate = CalendarDay.today()
 
-        mcvCalSolarAct.setOnDateChangedListener { widget, date, selected ->
+        mcvCalSolarAct.setOnDateChangedListener { _, date, _ ->
 
             val fragment = ConsultaSolarDetailDialog.newInstance(
                     id = localSelecionado.id,

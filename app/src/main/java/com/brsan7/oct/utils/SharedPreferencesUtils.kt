@@ -34,4 +34,17 @@ open class SharedPreferencesUtils {
         val convTipo = object : TypeToken<LocalVO>(){}.type
         return Gson().fromJson(ultimoItemRegGson,convTipo)
     }
+
+    fun setSharedActiveWork(workId: String){
+        getInstanceSharedPreferences().edit{
+            putString("ACTIVE_WORK", Gson().toJson(workId))
+            commit()
+        }
+    }
+
+    fun getSharedActiveWorker() : String {
+        val workIdGson = getInstanceSharedPreferences().getString("ACTIVE_WORK", Gson().toJson("workId"))
+        val convTipo = object : TypeToken<String>(){}.type
+        return Gson().fromJson(workIdGson,convTipo)
+    }
 }

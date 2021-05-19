@@ -34,7 +34,8 @@ fun Context.showNotification(chanelId: String, title: String, body: String, bigT
         tipoToque = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
         volumeTipo = AudioManager.STREAM_ALARM
         intent = Intent(this, NotificationActivity::class.java)
-        intent.putExtra("Evento",bigText)
+        intent.putExtra("body","$body $title")
+        intent.putExtra("bigText",bigText)
     }
     else{
         tipoToque = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -74,15 +75,21 @@ fun Context.showNotification(chanelId: String, title: String, body: String, bigT
                 setStyle(InboxStyle().setSummaryText(OctApplication.instance.getString(R.string.menu1_1_Main)))
             }
             2200 -> { //notificarInicioCompromisso()
-                setStyle(BigTextStyle().bigText(bigText))
+                if (bigText != ""){
+                    setStyle(BigTextStyle().bigText(bigText))
+                }
                 setFullScreenIntent(pendingIntent, true)
                 setVisibility(VISIBILITY_PUBLIC)
                 setAutoCancel(false)
             }
             2202 -> { //notificarAproxCompromisso()
+                setTimeoutAfter(60*1000L)// 1 Minuto
                 setAutoCancel(true)
             }
             in 2210..2212 -> { //Notificação Todos Eventos do Dia
+                if (bigText != ""){
+                    setStyle(BigTextStyle().bigText(bigText))
+                }
                 setGroup("com.brsan7.oct.NOTIFICACAO_DIARIA")
                 setContentIntent(pendingIntent)
                 setAutoCancel(true)
@@ -110,7 +117,9 @@ fun Context.createForegroundNotification(workId: UUID, title: String, body: Stri
     val foregroundNotification = Builder(OctApplication.instance, "2201").apply {
         setContentTitle(title)
         setContentText(body)
-        setStyle(BigTextStyle().bigText(bigText))
+        if (bigText != ""){
+            setStyle(BigTextStyle().bigText(bigText))
+        }
         setSmallIcon(R.drawable.logo_oct_small)
         setOngoing(true)
         setVibrate(longArrayOf(500, 500, 500, 500, 500, 500, 500, 500, 500))
